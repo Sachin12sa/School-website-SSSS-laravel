@@ -1,3 +1,4 @@
-<div>
-    <!-- Live as if you were to die tomorrow. Learn as if you were to live forever. - Mahatma Gandhi -->
-</div>
+@php
+    // This file is a leftover placeholder. Redirect to the correct gallery route.
+    return redirect()->route('gallery.index');
+@endphp

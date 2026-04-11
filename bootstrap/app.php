@@ -6,16 +6,22 @@ use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
+        web:      __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
-        health: '/up',
+        health:   '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Register the 'admin' alias used in routes/web.php
+        // Register the 'admin' middleware alias
+        // Used as: ->middleware(['auth', 'admin']) in routes
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
+
+        // Redirect unauthenticated users to the admin login page
+        // (Laravel's default is route('login') which doesn't exist in this app)
+        $middleware->redirectGuestsTo(fn () => route('admin.login'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->create();

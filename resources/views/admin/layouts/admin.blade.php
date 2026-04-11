@@ -271,6 +271,8 @@
                 </div>
             </div>
 
+
+
             <div class="pt-4 border-t border-white/5">
                 <form action="{{ route('admin.logout') }}" method="POST">
                     @csrf

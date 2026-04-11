@@ -1,90 +1,156 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\GalleryController;
-use App\Http\Controllers\TeacherController;
-use App\Http\Controllers\FaqController;
+use App\Http\Controllers\Admin\AdmissionController  as AdminAdmissionController;
+
+// ── Public controllers ───────────────────────────────────────────────────────
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BlockController;
+use App\Http\Controllers\Admin\ContactController    as AdminContactController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EventController      as AdminEventController;
+use App\Http\Controllers\Admin\FaqController        as AdminFaqController;
+use App\Http\Controllers\Admin\GalleryController    as AdminGalleryController;
+use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\MenuItemController;
+
+// ── Admin controllers ────────────────────────────────────────────────────────
+use App\Http\Controllers\Admin\NewsController       as AdminNewsController;
+use App\Http\Controllers\Admin\PageController       as AdminPageController;
+use App\Http\Controllers\Admin\PageSectionController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\TeacherController    as AdminTeacherController;
+use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\Admin;
-use App\Http\Controllers\Admin\PageController\BlockController;
-// ─── Public Routes ─────────────────────────────────────────────────────────────
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/news', [NewsController::class, 'index'])->name('news.index');
-Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
-Route::get('/events', [EventController::class, 'index'])->name('events.index');
-Route::get('/events/{slug}', [EventController::class, 'show'])->name('events.show');
-Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
-Route::get('/gallery/{id}', [GalleryController::class, 'show'])->name('gallery.show');
-Route::get('/faculty', [TeacherController::class, 'index'])->name('teachers.index');
-Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
-Route::get('/admissions', [AdmissionController::class, 'index'])->name('admissions.index');
+use App\Http\Controllers\TeacherController;
+use Illuminate\Support\Facades\Route;
+
+
+// Home
+Route::get('/',         [HomeController::class, 'index'])->name('home');
+
+// About
+Route::view('/about', 'pages.about')->name('about');
+
+// News
+Route::get('/news',          [NewsController::class, 'index'])->name('news.index');
+Route::get('/news/{slug}',   [NewsController::class, 'show'])->name('news.show');
+
+// Events
+Route::get('/events',          [EventController::class, 'index'])->name('events.index');
+Route::get('/events/{slug}',   [EventController::class, 'show'])->name('events.show');
+
+// Gallery
+Route::get('/gallery',       [GalleryController::class, 'index'])->name('gallery.index');
+Route::get('/gallery/{id}',  [GalleryController::class, 'show'])->name('gallery.show')
+     ->where('id', '[0-9]+');
+
+// Faculty
+Route::get('/faculty',   [TeacherController::class, 'index'])->name('teachers.index');
+
+// FAQ
+Route::get('/faq',       [FaqController::class, 'index'])->name('faq.index');
+
+// Admissions
+Route::get('/admissions',  [AdmissionController::class, 'index'])->name('admissions.index');
 Route::post('/admissions', [AdmissionController::class, 'store'])->name('admissions.store');
-Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+
+// Contact
+Route::get('/contact',  [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-Route::get('/{slug}', [PageController::class, 'show'])->name('page.show');
 
-// ─── Admin Auth ────────────────────────────────────────────────────────────────
-Route::get('/admin/login', [Admin\AuthController::class, 'showLogin'])->name('admin.login');
-Route::post('/admin/login', [Admin\AuthController::class, 'login'])->name('admin.login.post');
-Route::post('/admin/logout', [Admin\AuthController::class, 'logout'])->name('admin.logout');
+// ── Dynamic CMS pages — MUST be last so it doesn't catch /news, /events etc ─
+// The PageController checks for a dedicated template first, then falls back to generic.
+Route::get('/{slug}', [PageController::class, 'show'])->name('page.show')
+     ->where('slug', '[a-z0-9\-]+');
 
-// ─── Admin Panel ───────────────────────────────────────────────────────────────
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
+// ════════════════════════════════════════════════════════════════════════════
+// ADMIN AUTH (outside the middleware group — accessible when logged out)
+// ════════════════════════════════════════════════════════════════════════════
+Route::get('/admin/login',    [AuthController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin/login',   [AuthController::class, 'login'])->name('admin.login.post');
+Route::post('/admin/logout',  [AuthController::class, 'logout'])->name('admin.logout');
 
-    // Settings
-    Route::get('/settings', [Admin\SettingsController::class, 'index'])->name('settings.index');
-    Route::post('/settings', [Admin\SettingsController::class, 'update'])->name('settings.update');
+// ════════════════════════════════════════════════════════════════════════════
+// ADMIN PANEL — protected by auth + admin middleware
+// ════════════════════════════════════════════════════════════════════════════
+Route::prefix('admin')
+     ->name('admin.')
+     ->middleware(['auth', 'admin'])
+     ->group(function () {
 
-    // Pages
-    Route::resource('pages', Admin\PageController::class);
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/about', [Controller::class, 'index'])->name('about');
 
-    // Homepage Blocks
-    Route::get('/blocks', [Admin\BlockController::class, 'index'])->name('blocks.index');
-    Route::put('/blocks/{id}', [Admin\BlockController::class, 'update'])->name('blocks.update');
-    Route::post('/blocks/reorder', [Admin\BlockController::class, 'reorder'])->name('blocks.reorder');
+    // ── Settings (single form, multiple tabs) ──────────────────────────────
+    Route::get('/settings',    [SettingsController::class, 'index'])->name('settings.index');
+    Route::post('/settings',   [SettingsController::class, 'update'])->name('settings.update');
 
-    // Menus
-    Route::resource('menus', Admin\MenuController::class);
-    Route::resource('menu-items', Admin\MenuItemController::class);
+    // ── Pages CMS ──────────────────────────────────────────────────────────
+    Route::resource('pages', AdminPageController::class);
 
-    // News
-    Route::resource('news', Admin\NewsController::class);
+    // ── Homepage Blocks ────────────────────────────────────────────────────
+    Route::get('/blocks',              [BlockController::class, 'index'])->name('blocks.index');
+    Route::put('/blocks/{id}',         [BlockController::class, 'update'])->name('blocks.update');
+    Route::post('/blocks/reorder',     [BlockController::class, 'reorder'])->name('blocks.reorder');
 
-    // Events
-    Route::resource('events', Admin\EventController::class);
+    // ── Menus ──────────────────────────────────────────────────────────────
+    Route::resource('menus', MenuController::class);
+    Route::post('/menu-items',              [MenuItemController::class, 'store'])->name('menu-items.store');
+    Route::put('/menu-items/{menuItem}',    [MenuItemController::class, 'update'])->name('menu-items.update');
+    Route::delete('/menu-items/{menuItem}', [MenuItemController::class, 'destroy'])->name('menu-items.destroy');
 
-    // Teachers
-    Route::resource('teachers', Admin\TeacherController::class);
+    // ── News ───────────────────────────────────────────────────────────────
+    Route::resource('news', AdminNewsController::class);
 
-    // Gallery
-    Route::resource('gallery', Admin\GalleryController::class);
-    Route::post('/gallery/{gallery}/images', [Admin\GalleryController::class, 'uploadImages'])->name('gallery.images.upload');
-    Route::delete('/gallery-images/{image}', [Admin\GalleryController::class, 'deleteImage'])->name('gallery.images.destroy');
+    // ── Events ─────────────────────────────────────────────────────────────
+    Route::resource('events', AdminEventController::class);
 
-    // Testimonials
-    Route::resource('testimonials', Admin\TestimonialController::class);
+    // ── Teachers (Faculty) ─────────────────────────────────────────────────
+    Route::resource('teachers', AdminTeacherController::class);
 
-    // FAQs
-    Route::resource('faqs', Admin\FaqController::class);
+    // ── Gallery ────────────────────────────────────────────────────────────
+    Route::resource('gallery', AdminGalleryController::class);
+    Route::post('/gallery/{gallery}/images',    [AdminGalleryController::class, 'uploadImages'])->name('gallery.images.upload');
+    Route::delete('/gallery-images/{image}',    [AdminGalleryController::class, 'deleteImage'])->name('gallery.images.destroy');
 
-    // Admissions
-    Route::get('/admissions', [Admin\AdmissionController::class, 'index'])->name('admissions.index');
-    Route::get('/admissions/{admission}', [Admin\AdmissionController::class, 'show'])->name('admissions.show');
-    Route::put('/admissions/{admission}/status', [Admin\AdmissionController::class, 'updateStatus'])->name('admissions.status');
-    Route::delete('/admissions/{admission}', [Admin\AdmissionController::class, 'destroy'])->name('admissions.destroy');
+    // ── Testimonials ───────────────────────────────────────────────────────
+    Route::resource('testimonials', TestimonialController::class);
 
-    // Contacts
-    Route::get('/contacts', [Admin\ContactController::class, 'index'])->name('contacts.index');
-    Route::get('/contacts/{contact}', [Admin\ContactController::class, 'show'])->name('contacts.show');
-    Route::put('/contacts/{contact}/read', [Admin\ContactController::class, 'markRead'])->name('contacts.read');
-    Route::delete('/contacts/{contact}', [Admin\ContactController::class, 'destroy'])->name('contacts.destroy');
+    // ── FAQs ───────────────────────────────────────────────────────────────
+    Route::resource('faqs', AdminFaqController::class);
 
-    // Users
-    Route::resource('users', Admin\UserController::class);
+    // ── Admissions inbox ───────────────────────────────────────────────────
+    Route::get('/admissions',                           [AdminAdmissionController::class, 'index'])->name('admissions.index');
+    Route::get('/admissions/{admission}',               [AdminAdmissionController::class, 'show'])->name('admissions.show');
+    Route::put('/admissions/{admission}/status',        [AdminAdmissionController::class, 'updateStatus'])->name('admissions.status');
+    Route::delete('/admissions/{admission}',            [AdminAdmissionController::class, 'destroy'])->name('admissions.destroy');
+
+    // ── Contact messages inbox ─────────────────────────────────────────────
+    Route::get('/contacts',                   [AdminContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/{contact}',         [AdminContactController::class, 'show'])->name('contacts.show');
+    Route::put('/contacts/{contact}/read',    [AdminContactController::class, 'markRead'])->name('contacts.read');
+    Route::delete('/contacts/{contact}',      [AdminContactController::class, 'destroy'])->name('contacts.destroy');
+
+    // ── Users (admin only) ─────────────────────────────────────────────────
+    Route::resource('users', UserController::class);
+
+    // ── Page Sections (dynamic page CMS) ──────────────────────────────────
+    Route::get('/pages/{pageKey}/sections',              [PageSectionController::class, 'index'])->name('sections.index');
+    Route::get('/pages/{pageKey}/sections/create',       [PageSectionController::class, 'create'])->name('sections.create');
+    Route::post('/pages/{pageKey}/sections',             [PageSectionController::class, 'store'])->name('sections.store');
+    Route::get('/pages/{pageKey}/sections/{section}/edit', [PageSectionController::class, 'edit'])->name('sections.edit');
+    Route::put('/pages/{pageKey}/sections/{section}',    [PageSectionController::class, 'update'])->name('sections.update');
+    Route::delete('/pages/{pageKey}/sections/{section}', [PageSectionController::class, 'destroy'])->name('sections.destroy');
+    Route::post('/pages/{pageKey}/sections/{section}/toggle', [PageSectionController::class, 'toggle'])->name('sections.toggle');
+    Route::post('/pages/{pageKey}/sections/reorder',     [PageSectionController::class, 'reorder'])->name('sections.reorder');
 });
