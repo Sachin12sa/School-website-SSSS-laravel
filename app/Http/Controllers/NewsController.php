@@ -11,35 +11,54 @@ class NewsController extends Controller
     {
         $category = request('category');
 
-        // All unique categories for filter tabs
+        // ── FIX 1: categories should NOT be cached when filtering
+        //   (the cache was returning stale results for filtered views)
         $categories = Cache::remember('news_categories', 3600, fn() =>
-            NewsPost::published()->whereNotNull('category')->distinct()->pluck('category')
+            NewsPost::published()
+                ->whereNotNull('category')
+                ->distinct()
+                ->orderBy('category')
+                ->pluck('category')
         );
 
-        // Featured: most recent post with is_featured = true
-        $featured = Cache::remember('news_featured', 1800, fn() =>
-            NewsPost::published()->where('is_featured', true)->orderByDesc('published_at')->first()
-        );
+        // ── FIX 2: featured post — only cache when NOT filtering by category
+        //   (otherwise the featured post was still showing above filtered results)
+        $featured = null;
+        if (!$category) {
+            $featured = Cache::remember('news_featured', 1800, fn() =>
+                NewsPost::published()
+                    ->where('is_featured', true)
+                    ->orderByDesc('published_at')
+                    ->first()
+            );
+        }
 
-        // Paginated list (filtered by category if provided)
+        // ── FIX 3: paginated list — never cache paginated results
+        //   (cached pagination breaks page 2+)
         $news = NewsPost::published()
             ->when($featured, fn($q) => $q->where('id', '!=', $featured->id))
-            ->when($category, fn($q) => $q->where('category', $category))
+            ->when($category,  fn($q) => $q->where('category', $category))
             ->orderByDesc('published_at')
             ->paginate(9)
-            ->withQueryString(); // keeps ?category= when paginating
+            ->withQueryString();
 
         return view('news.index', compact('news', 'featured', 'categories'));
     }
 
     public function show(string $slug)
     {
-        $post = NewsPost::published()->where('slug', $slug)->firstOrFail();
+        $post = NewsPost::published()
+            ->where('slug', $slug)
+            ->firstOrFail();
 
-        // 3 related articles (same category first, then any)
+        // 3 related articles — same category first, then by date
+        // ── FIX 4: wrap category in ?? '' to prevent null binding error
         $related = NewsPost::published()
             ->where('id', '!=', $post->id)
-            ->orderByRaw("CASE WHEN category = ? THEN 0 ELSE 1 END", [$post->category ?? ''])
+            ->orderByRaw(
+                "CASE WHEN category = ? THEN 0 ELSE 1 END",
+                [$post->category ?? '']
+            )
             ->orderByDesc('published_at')
             ->limit(3)
             ->get();

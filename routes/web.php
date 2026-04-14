@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\FaqController        as AdminFaqController;
 use App\Http\Controllers\Admin\GalleryController    as AdminGalleryController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MenuItemController;
+use App\Http\Controllers\CalendarController;
 
 // ── Admin controllers ────────────────────────────────────────────────────────
 use App\Http\Controllers\Admin\NewsController       as AdminNewsController;
@@ -23,7 +24,7 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\TransportController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\GalleryController;
@@ -58,10 +59,18 @@ Route::get('/faculty',   [TeacherController::class, 'index'])->name('teachers.in
 
 // FAQ
 Route::get('/faq',       [FaqController::class, 'index'])->name('faq.index');
+// Calendar
+Route::get('/calendar',     [CalendarController::class, 'index'])->name('calendar.index');
+Route::get('/calendar/day', [CalendarController::class, 'day'])->name('calendar.day');
 
 // Admissions
 Route::get('/admissions',  [AdmissionController::class, 'index'])->name('admissions.index');
 Route::post('/admissions', [AdmissionController::class, 'store'])->name('admissions.store');
+
+// transport 
+Route::get('/transportation',         [TransportController::class, 'index'])->name('transport.index');
+Route::post('/transportation/report', [TransportController::class, 'report'])->name('transport.report');
+
 
 // Contact
 Route::get('/contact',  [ContactController::class, 'index'])->name('contact.index');
@@ -76,7 +85,7 @@ Route::get('/{slug}', [PageController::class, 'show'])->name('page.show')
 // ADMIN AUTH (outside the middleware group — accessible when logged out)
 // ════════════════════════════════════════════════════════════════════════════
 Route::get('/admin/login',    [AuthController::class, 'showLogin'])->name('admin.login');
-Route::post('/admin/login',   [AuthController::class, 'login'])->name('admin.login.post');
+Route::post('/admin/login',   [AuthController::class, 'login'])->name('admin.login.post');/*  */
 Route::post('/admin/logout',  [AuthController::class, 'logout'])->name('admin.logout');
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -89,7 +98,7 @@ Route::prefix('admin')
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/about', [Controller::class, 'index'])->name('about');
+    Route::view('/about', 'pages.about')->name('about');
 
     // ── Settings (single form, multiple tabs) ──────────────────────────────
     Route::get('/settings',    [SettingsController::class, 'index'])->name('settings.index');

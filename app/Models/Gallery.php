@@ -28,7 +28,8 @@ class Gallery extends Model
     public function getCoverUrlAttribute(): string
     {
         if ($this->cover_image && Storage::disk('public')->exists($this->cover_image)) {
-            return Storage::url($this->cover_image);
+            // Return relative URL so it works regardless of port/host (8000 vs 8001)
+            return parse_url(Storage::url($this->cover_image), PHP_URL_PATH);
         }
         return 'https://placehold.co/600x400/1B2A4A/C9A227?text=' . urlencode($this->name);
     }

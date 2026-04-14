@@ -536,7 +536,7 @@
                         </button>
                         <div class="drop-panel" style="min-width:260px">
                             {{-- Dynamic CMS pages --}}
-                            @if ($navPages->count())
+                            {{-- @if ($navPages->count())
                                 <div class="px-4 pt-3 pb-1.5">
                                     <span
                                         class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Pages</span>
@@ -549,7 +549,7 @@
                                     </a>
                                 @endforeach
                                 <div class="my-1 mx-3 border-t border-gray-100"></div>
-                            @endif
+                            @endif --}}
 
                             {{-- News & Events always visible --}}
                             <div class="px-4 pt-2 pb-1.5">
@@ -573,6 +573,11 @@
                     <a href="{{ route('gallery.index') }}"
                         class="nav-item px-3.5 py-2 text-[13px] font-semibold text-navy hover:text-gold transition-colors {{ request()->is('gallery*') ? 'active text-gold' : '' }}">
                         Gallery
+                    </a>
+
+                    <a href="{{ route('calendar.index') }}"
+                        class="nav-item px-3.5 py-2 text-[13px] font-semibold text-navy hover:text-gold transition-colors {{ request()->is('calendar*') ? 'active text-gold' : '' }}">
+                        Calendar
                     </a>
 
                     <a href="{{ route('contact.index') }}"
@@ -733,7 +738,18 @@
                             @endforeach
                         </div>
                     </div>
+                    {{-- Life at SSSS --}}
+                    <a href="{{ route('transport.index') }}"
+                        class="nav-item-light flex items-center gap-2 px-5 h-11 text-[13px] font-semibold text-white/80 hover:text-gold transition-colors {{ request()->is('transport.index') ? 'active !text-gold' : '' }}">
+                        <svg class="w-3.5 h-3.5 opacity-60 shrink-0" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        Transportation
+                    </a>
                 </nav>
+
 
                 {{-- Faculty link --}}
                 <a href="{{ route('teachers.index') }}"

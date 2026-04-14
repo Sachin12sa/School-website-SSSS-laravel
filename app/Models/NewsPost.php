@@ -56,7 +56,8 @@ class NewsPost extends Model
     public function getImageUrlAttribute(): string
     {
         if ($this->image && Storage::disk('public')->exists($this->image)) {
-            return Storage::url($this->image);
+            // Return relative URL so it works regardless of port/host (8000 vs 8001)
+            return parse_url(Storage::url($this->image), PHP_URL_PATH);
         }
         // Fallback placeholder (use a real placeholder image in production)
         return 'https://placehold.co/800x450/1B2A4A/C9A227?text=News';

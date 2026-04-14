@@ -10,13 +10,14 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        // Must be logged in AND have admin or editor role
-        if (!auth()->check()) {
+        // Must be logged in
+        if (!$request->user()) {
             return redirect()->route('admin.login')
                 ->with('error', 'Please log in to access the admin panel.');
         }
 
-        if (!in_array(auth()->user()->role, ['admin', 'editor'])) {
+        // Must have admin or editor role
+        if (!in_array($request->user()->role, ['admin', 'editor'])) {
             abort(403, 'You do not have permission to access the admin panel.');
         }
 
