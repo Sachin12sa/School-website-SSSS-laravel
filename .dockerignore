@@ -11,6 +11,6 @@ storage/framework/views/*
 .editorconfig
 phpunit.xml
 tests
-docker
+# docker (removed to allow COPY in Dockerfile)
 Dockerfile
 README.md
