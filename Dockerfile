@@ -1,58 +1,49 @@
-# Stage 1: Build Frontend Assets
+# -------------------------
+# Stage 1: Frontend build
+# -------------------------
 FROM node:20 AS frontend-builder
+
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+
 COPY . .
 RUN npm run build
 
-# Stage 2: Final Image
+
+# -------------------------
+# Stage 2: PHP App
+# -------------------------
 FROM php:8.3-fpm-alpine
 
-# Install system dependencies
+# System dependencies
 RUN apk add --no-cache \
-    nginx \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    git \
-    oniguruma-dev \
-    curl
+    curl git zip unzip libpng-dev libjpeg-turbo-dev freetype-dev \
+    libzip-dev oniguruma-dev nginx
 
-# Install PHP extensions
+# PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl gd
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Set working directory
 WORKDIR /var/www
 
-# Copy application code
+# Copy project
 COPY . .
 
-# Copy built assets from frontend stage
+# Copy frontend build
 COPY --from=frontend-builder /app/public/build ./public/build
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+# 🔥 IMPORTANT FIX
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+# Permissions
+RUN chmod -R 775 storage bootstrap/cache
 
-# Copy Nginx config
-COPY docker/nginx.conf /etc/nginx/sites-available/default
-RUN mkdir -p /run/nginx
+# Expose Render port
+EXPOSE 10000
 
-# Copy entrypoint script
-COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# Expose the default port (Render will override this via $PORT)
-EXPOSE 80
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# Simple Laravel server (IMPORTANT for Render)
+CMD php artisan serve --host=0.0.0.0 --port=10000
