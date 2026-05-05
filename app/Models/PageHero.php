@@ -47,11 +47,19 @@ class PageHero extends Model
     // ── Fetch with 6h cache ────────────────────────────────────────────
     public static function forPage(string $slug): ?self
     {
-        return Cache::remember(
+        $hero = Cache::remember(
             static::cacheKey($slug),
             now()->addHours(6),
             fn () => static::where('page_slug', $slug)->where('is_active', true)->first()
         );
+
+        if ($hero instanceof self || $hero === null) {
+            return $hero;
+        }
+
+        Cache::forget(static::cacheKey($slug));
+
+        return static::where('page_slug', $slug)->where('is_active', true)->first();
     }
 
     // ── Auto-clear cache on save/delete ───────────────────────────────
