@@ -1,12 +1,15 @@
 <?php namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller {
     public function showLogin() {
         if (Auth::check()) return redirect()->route('admin.dashboard');
-        return view('admin.login');
+        $schoolName = SiteSetting::get('school_name', 'School');
+
+        return view('admin.login', compact('schoolName'));
     }
     public function login(Request $request) {
         $credentials = $request->validate([

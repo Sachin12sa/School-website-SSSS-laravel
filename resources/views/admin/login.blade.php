@@ -37,10 +37,10 @@
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-16 h-16 bg-gold rounded-2xl mb-4 shadow-lg">
                 <span
-                    class="font-display text-white text-2xl font-bold">{{ substr(\App\Models\SiteSetting::get('school_name', 'S'), 0, 1) }}</span>
+                    class="font-display text-white text-2xl font-bold">{{ substr($schoolName ?? 'S', 0, 1) }}</span>
             </div>
             <h1 class="text-white font-display text-3xl font-bold">Admin Panel</h1>
-            <p class="text-white/60 text-sm mt-1">{{ \App\Models\SiteSetting::get('school_name', 'School') }}</p>
+            <p class="text-white/60 text-sm mt-1">{{ $schoolName ?? 'School' }}</p>
         </div>
         <div class="bg-white rounded-2xl shadow-2xl p-8">
             <h2 class="text-navy font-bold text-xl mb-6">Sign In to Continue</h2>
@@ -70,7 +70,7 @@
             </form>
         </div>
         <p class="text-center text-white/40 text-xs mt-6">© {{ date('Y') }}
-            {{ \App\Models\SiteSetting::get('school_name', 'School') }}</p>
+            {{ $schoolName ?? 'School' }}</p>
     </div>
 </body>
 
