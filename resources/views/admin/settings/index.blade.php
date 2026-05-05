@@ -7,7 +7,10 @@
         @csrf
 
         {{-- ── TAB STATE ─────────────────────────────────────────────────────────────── --}}
-        <div x-data="{ tab: window.location.hash.replace('#', '') || 'identity' }">
+        <div x-data="{
+            allowedTabs: ['identity', 'branding', 'social', 'seo', 'admissions', 'popup'],
+            tab: ['identity', 'branding', 'social', 'seo', 'admissions', 'popup'].includes(window.location.hash.replace('#', '')) ? window.location.hash.replace('#', '') : 'identity'
+        }">
             <input type="hidden" name="active_tab" x-model="tab">
 
             {{-- Tab nav --}}
@@ -15,11 +18,9 @@
                 @foreach ([
             ['identity', 'School Identity', 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 5h2a2 2 0 002-2v-1a2 2 0 00-2-2h-2a2 2 0 00-2 2v1a2 2 0 002 2z'],
             ['branding', 'Logo & Branding', 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'],
-            ['contact', 'Contact & Location', 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'],
-            ['about', 'About & Mission', 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
             ['social', 'Social Media', 'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'],
             ['seo', 'SEO & Meta', 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'],
-            ['homepage', 'Homepage Content', 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'],
+            ['admissions', 'Admissions Form', 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'],
             ['popup', 'Popup Banner', 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9'],
         ] as [$id, $label, $icon])
                     <button type="button" @click="tab='{{ $id }}'; window.location.hash='{{ $id }}'"
@@ -342,11 +343,128 @@
                     </div>
                 </div>
             </div>
-            {{-- ══════════════════════════════════════════════════════
+
+            {{-- ════════════════════════════════════════════════════════
+         TAB — ADMISSIONS FORM
+    ════════════════════════════════════════════════════════ --}}
+            <div x-show="tab === 'admissions'" x-cloak>
+                <div class="space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-7 space-y-5">
+                        <h2 class="font-display font-bold text-navy-900 text-lg flex items-center gap-2">
+                            <span class="w-7 h-7 bg-navy-900 rounded-lg flex items-center justify-center text-white text-xs font-bold">A</span>
+                            Admissions Form Settings
+                        </h2>
+                        <p class="text-slate-400 text-xs">Control form text, class choices, visible fields, and required fields. Admission page sections are managed from Admin Pages → Admissions.</p>
+
+                        <div class="grid sm:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Academic Year</label>
+                                <input type="text" name="admission_year" value="{{ \App\Models\SiteSetting::get('admission_year', '2026-27') }}"
+                                    class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+                                    placeholder="2026-27">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Class Options</label>
+                                <input type="text" name="admission_class_options"
+                                    value="{{ \App\Models\SiteSetting::get('admission_class_options', 'Grade 1|Grade 2|Grade 3|Grade 4|Grade 5|Grade 6|Grade 7|Grade 8|Grade 9|Grade 10|+2 Science|+2 Management') }}"
+                                    class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+                                    placeholder="Grade 1|Grade 2|+2 Science">
+                                <p class="text-slate-400 text-xs mt-1">Separate choices with <code class="bg-slate-100 px-1 rounded">|</code>.</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Form Intro Text</label>
+                            <textarea name="admission_form_intro" rows="2"
+                                class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30 resize-none">{{ \App\Models\SiteSetting::get('admission_form_intro', 'Complete this form to apply for admission. Our admissions team will contact you within 2-3 working days.') }}</textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Success Message</label>
+                            <textarea name="admission_success_message" rows="2"
+                                class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30 resize-none">{{ \App\Models\SiteSetting::get('admission_success_message', 'Your application has been submitted successfully.') }}</textarea>
+                        </div>
+                    </div>
+
+                    @php
+                        $fieldLabels = [
+                            'applicant_first_name' => 'Student First Name',
+                            'applicant_last_name' => 'Student Last Name',
+                            'dob' => 'Date of Birth',
+                            'gender' => 'Gender',
+                            'nationality' => 'Nationality',
+                            'religion' => 'Religion',
+                            'address' => 'Permanent Address',
+                            'parent_name' => 'Parent / Guardian Name',
+                            'relationship' => 'Relationship',
+                            'email' => 'Email',
+                            'phone' => 'Phone',
+                            'occupation' => 'Occupation',
+                            'income' => 'Annual Income',
+                            'class_applying' => 'Class Applying For',
+                            'previous_school' => 'Previous School',
+                            'last_class' => 'Last Class / Grade',
+                            'message' => 'Additional Message',
+                        ];
+                        $defaultVisible = implode(',', array_keys($fieldLabels));
+                        $visibleAdmissionFields = explode(',', \App\Models\SiteSetting::get('admission_visible_fields', $defaultVisible));
+                        $requiredAdmissionFields = explode(',', \App\Models\SiteSetting::get('admission_required_fields', 'applicant_first_name,parent_name,email,phone,class_applying'));
+                        $lockedFields = ['parent_name', 'email', 'phone', 'class_applying'];
+                    @endphp
+
+                    <div class="grid lg:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-7">
+                            <h3 class="font-display font-bold text-navy-900 text-base mb-2">Visible Fields</h3>
+                            <p class="text-slate-400 text-xs mb-5">Choose what appears on the public application form.</p>
+                            <div class="grid sm:grid-cols-2 gap-3">
+                                @foreach ($fieldLabels as $key => $label)
+                                    <label class="flex items-center gap-2 rounded-xl border border-slate-100 px-3 py-2 text-sm text-slate-600">
+                                        <input type="checkbox" name="admission_visible_fields[]" value="{{ $key }}"
+                                            {{ in_array($key, $visibleAdmissionFields, true) || in_array($key, $lockedFields, true) ? 'checked' : '' }}
+                                            {{ in_array($key, $lockedFields, true) ? 'onclick=this.checked=true' : '' }}
+                                            class="rounded border-slate-300 text-gold-500 focus:ring-gold-500">
+                                        {{ $label }}
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-7">
+                            <h3 class="font-display font-bold text-navy-900 text-base mb-2">Required Fields</h3>
+                            <p class="text-slate-400 text-xs mb-5">Required fields must be filled before submit.</p>
+                            <div class="grid sm:grid-cols-2 gap-3">
+                                @foreach ($fieldLabels as $key => $label)
+                                    <label class="flex items-center gap-2 rounded-xl border border-slate-100 px-3 py-2 text-sm text-slate-600">
+                                        <input type="checkbox" name="admission_required_fields[]" value="{{ $key }}"
+                                            {{ in_array($key, $requiredAdmissionFields, true) || in_array($key, $lockedFields, true) ? 'checked' : '' }}
+                                            {{ in_array($key, $lockedFields, true) ? 'onclick=this.checked=true' : '' }}
+                                            class="rounded border-slate-300 text-gold-500 focus:ring-gold-500">
+                                        {{ $label }}
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{{-- ══════════════════════════════════════════════════════
      TAB: POPUP BANNER SETTINGS
 ══════════════════════════════════════════════════════ --}}
 
-            <div x-show="tab==='popup'" x-cloak>
+            @php $existingImg = \App\Models\SiteSetting::get('popup_image'); @endphp
+            <div x-show="tab==='popup'" x-cloak
+                x-data="popupEditor({
+                    mode: @js(\App\Models\SiteSetting::get('popup_mode', 'template')),
+                    badge: @js(\App\Models\SiteSetting::get('popup_badge_text', 'Admissions Now Open')),
+                    deadline: @js(\App\Models\SiteSetting::get('popup_deadline', 'March 15, 2026 · Last date for submission')),
+                    title: @js(\App\Models\SiteSetting::get('popup_title', 'Give Your Child the Gift of Human Values')),
+                    subtitle: @js(\App\Models\SiteSetting::get('popup_subtitle', 'Enrol now for the 2026–27 academic year. Limited seats available across all levels.')),
+                    pills: @js(\App\Models\SiteSetting::get('popup_pills', 'Grade 1 to +2|Expert Faculty|Boarding|Human Values|100% Results')),
+                    primaryText: @js(\App\Models\SiteSetting::get('popup_primary_text', 'Apply for Admission')),
+                    secondaryText: @js(\App\Models\SiteSetting::get('popup_secondary_text', 'Learn More')),
+                    imageSrc: @js($existingImg && \Illuminate\Support\Facades\Storage::disk('public')->exists($existingImg) ? \Illuminate\Support\Facades\Storage::url($existingImg) : '')
+                })"
+                @popup-image-preview.window="imagePreview = $event.detail.src">
                 <div class="space-y-6">
 
                     {{-- ── HEADER: master toggle ──────────────────────────────────────────── --}}
@@ -360,17 +478,10 @@
                                 </p>
                             </div>
                             <div class="flex items-center gap-6">
-                                <button type="button"
-                                    onclick="if(window.pbxForceShow) pbxForceShow(); else alert('Please click \'Save All Settings\' at the bottom first! Preview shows your saved banner.')"
-                                    class="hidden sm:flex items-center gap-2 px-4 py-2 bg-navy-50 text-navy-600 hover:bg-navy-100 rounded-xl text-xs font-bold transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                    Live Preview
-                                </button>
+                                <span class="hidden sm:inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 rounded-xl text-xs font-bold">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                    Preview updates while typing
+                                </span>
                                 <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
                                     <input type="checkbox" name="popup_enabled" value="1"
                                         {{ \App\Models\SiteSetting::get('popup_enabled', '1') !== '0' ? 'checked' : '' }}
@@ -389,8 +500,108 @@
                         </div>
                     </div>
 
+                    {{-- ── LIVE PREVIEW ─────────────────────────────────────────────────── --}}
+                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+                        <div class="flex items-center justify-between gap-4 mb-5">
+                            <div>
+                                <h3 class="font-display font-bold text-navy-900 text-base">Live Preview</h3>
+                                <p class="text-slate-400 text-xs mt-1">This preview changes immediately as you type. Save to publish it on the website.</p>
+                            </div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-50 border border-slate-100 rounded-full px-3 py-1" x-text="modeLabel"></span>
+                        </div>
+
+                        <div class="rounded-2xl overflow-hidden border border-slate-200 bg-slate-950/90 shadow-sm max-w-3xl">
+                            <template x-if="mode === 'image'">
+                                <a :href="'#'" class="block bg-slate-100">
+                                    <template x-if="previewImage">
+                                        <img :src="previewImage" alt="Popup preview" class="w-full max-h-[360px] object-cover">
+                                    </template>
+                                    <template x-if="!previewImage">
+                                        <div class="h-72 flex items-center justify-center text-slate-400 text-sm">Upload an image to preview this mode</div>
+                                    </template>
+                                </a>
+                            </template>
+
+                            <template x-if="mode !== 'image'">
+                                <div>
+                                    <template x-if="mode === 'image-top' && previewImage">
+                                        <img :src="previewImage" alt="Popup preview" class="w-full max-h-56 object-cover bg-slate-100">
+                                    </template>
+                                    <div class="relative p-8 sm:p-10 text-white overflow-hidden" style="background:linear-gradient(135deg,#0d1628,#1B2A4A,#2d1f5e)">
+                                        <div class="absolute -right-10 -top-14 w-48 h-48 rounded-full border border-gold-500/20"></div>
+                                        <div class="absolute left-5 bottom-5 grid grid-cols-5 gap-2 opacity-20">
+                                            <template x-for="i in 25" :key="i"><span class="w-1 h-1 rounded-full bg-gold-400"></span></template>
+                                        </div>
+                                        <div class="relative">
+                                            <div class="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-4 py-2 text-[11px] font-bold tracking-wider uppercase text-gold-300" x-show="badge">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-gold-400"></span>
+                                                <span x-text="badge"></span>
+                                            </div>
+                                            <h4 class="font-display text-3xl sm:text-4xl font-bold leading-tight mt-5 max-w-xl" x-html="highlightedTitle"></h4>
+                                            <p class="text-white/70 text-sm mt-4 max-w-xl" x-text="subtitle"></p>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white p-6">
+                                        <div class="flex flex-wrap gap-2 mb-5">
+                                            <template x-for="pill in pillList" :key="pill">
+                                                <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-navy-900">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-gold-500"></span>
+                                                    <span x-text="pill"></span>
+                                                </span>
+                                            </template>
+                                        </div>
+                                        <div class="rounded-xl border border-gold-500/30 bg-gold-50/70 px-5 py-4 mb-5" x-show="deadline">
+                                            <div class="text-[10px] font-bold uppercase tracking-widest text-gold-600 mb-1">Application Deadline</div>
+                                            <div class="font-bold text-navy-900 text-sm" x-text="deadline"></div>
+                                        </div>
+                                        <div class="grid sm:grid-cols-2 gap-3">
+                                            <span class="inline-flex items-center justify-center rounded-xl bg-gold-500 px-5 py-3 text-sm font-bold text-white shadow-sm" x-text="primaryText || 'Primary button'"></span>
+                                            <span class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-navy-900" x-text="secondaryText || 'Secondary button'"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    {{-- ── ADVANCED BEHAVIOR ─────────────────────────────────────────────── --}}
+                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+                        <h3 class="font-display font-bold text-navy-900 text-base mb-2">Display Rules</h3>
+                        <p class="text-slate-400 text-xs mb-5">Control where and how often the popup appears.</p>
+
+                        <div class="grid sm:grid-cols-3 gap-5">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Show On</label>
+                                <select name="popup_show_on"
+                                    class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30 bg-white">
+                                    @foreach (['home' => 'Homepage only', 'all' => 'All public pages'] as $value => $label)
+                                        <option value="{{ $value }}" {{ \App\Models\SiteSetting::get('popup_show_on', 'home') === $value ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Delay</label>
+                                <input type="number" name="popup_delay_ms" min="0" step="100"
+                                    value="{{ \App\Models\SiteSetting::get('popup_delay_ms', '800') }}"
+                                    class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+                                    placeholder="800">
+                                <p class="text-slate-400 text-xs mt-1">Milliseconds before opening.</p>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Hide After Close</label>
+                                <input type="number" name="popup_hide_hours" min="0" step="1"
+                                    value="{{ \App\Models\SiteSetting::get('popup_hide_hours', '24') }}"
+                                    class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+                                    placeholder="24">
+                                <p class="text-slate-400 text-xs mt-1">Hours. Use 0 to show every visit.</p>
+                            </div>
+                        </div>
+                    </div>
+
                     {{-- ── MODE SELECTOR ──────────────────────────────────────────────────── --}}
-                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6" x-data="{ mode: '{{ \App\Models\SiteSetting::get('popup_mode', 'template') }}' }">
+                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
                         <h3 class="font-display font-bold text-navy-900 text-base mb-5">Choose Display Mode</h3>
 
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-7">
@@ -614,6 +825,7 @@
                                         class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Badge
                                         Text</label>
                                     <input type="text" name="popup_badge_text"
+                                        x-model="badge"
                                         value="{{ \App\Models\SiteSetting::get('popup_badge_text', 'Admissions Now Open') }}"
                                         class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30"
                                         placeholder="Admissions Now Open">
@@ -624,6 +836,7 @@
                                         class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Deadline
                                         Text</label>
                                     <input type="text" name="popup_deadline"
+                                        x-model="deadline"
                                         value="{{ \App\Models\SiteSetting::get('popup_deadline', 'March 15, 2026 · Last date for submission') }}"
                                         class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30"
                                         placeholder="March 15, 2026 · Last date for submission">
@@ -633,10 +846,66 @@
 
                             <div>
                                 <label
+                                    class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Main
+                                    Title</label>
+                                <input type="text" name="popup_title"
+                                    x-model="title"
+                                    value="{{ \App\Models\SiteSetting::get('popup_title', 'Give Your Child the Gift of Human Values') }}"
+                                    class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+                                    placeholder="Give Your Child the Gift of Human Values">
+                                <p class="text-slate-400 text-xs mt-1">Words “Human Values” and “SSSS” are highlighted automatically.</p>
+                            </div>
+
+                            <div>
+                                <label
                                     class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Subtitle</label>
                                 <textarea name="popup_subtitle" rows="2"
+                                    x-model="subtitle"
                                     class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30 resize-none"
                                     placeholder="Enrol now for the 2026–27 academic year...">{{ \App\Models\SiteSetting::get('popup_subtitle', 'Enrol now for the 2026–27 academic year. Limited seats available across all levels.') }}</textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Feature Pills</label>
+                                <input type="text" name="popup_pills"
+                                    x-model="pills"
+                                    value="{{ \App\Models\SiteSetting::get('popup_pills', 'Grade 1 to +2|Expert Faculty|Boarding|Human Values|100% Results') }}"
+                                    class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+                                    placeholder="Grade 1 to +2|Expert Faculty|Boarding">
+                                <p class="text-slate-400 text-xs mt-1">Separate pills using <code class="bg-slate-100 px-1 rounded">|</code>. Keep each pill short.</p>
+                            </div>
+
+                            <div class="grid sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Primary Button Text</label>
+                                    <input type="text" name="popup_primary_text"
+                                        x-model="primaryText"
+                                        value="{{ \App\Models\SiteSetting::get('popup_primary_text', 'Apply for Admission') }}"
+                                        class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+                                        placeholder="Apply for Admission">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Primary Button URL</label>
+                                    <input type="text" name="popup_primary_url"
+                                        value="{{ \App\Models\SiteSetting::get('popup_primary_url', route('admissions.index')) }}"
+                                        class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+                                        placeholder="/admissions">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Secondary Button Text</label>
+                                    <input type="text" name="popup_secondary_text"
+                                        x-model="secondaryText"
+                                        value="{{ \App\Models\SiteSetting::get('popup_secondary_text', 'Learn More') }}"
+                                        class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+                                        placeholder="Learn More">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Secondary Button URL</label>
+                                    <input type="text" name="popup_secondary_url"
+                                        value="{{ \App\Models\SiteSetting::get('popup_secondary_url', route('contact.index')) }}"
+                                        class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+                                        placeholder="/contact">
+                                </div>
                             </div>
                         </div>
 
@@ -763,11 +1032,48 @@
         </div>{{-- end x-data --}}
     </form>
 
-    {{-- Include popup component for live preview --}}
-    @include('components.popup-banner', ['forceShow' => true])
-
     @push('scripts')
         <script>
+            function popupEditor(initial) {
+                return {
+                    mode: initial.mode || 'template',
+                    badge: initial.badge || '',
+                    deadline: initial.deadline || '',
+                    title: initial.title || '',
+                    subtitle: initial.subtitle || '',
+                    pills: initial.pills || '',
+                    primaryText: initial.primaryText || '',
+                    secondaryText: initial.secondaryText || '',
+                    imageSrc: initial.imageSrc || '',
+                    imagePreview: '',
+                    get previewImage() {
+                        return this.imagePreview || this.imageSrc;
+                    },
+                    get modeLabel() {
+                        return {
+                            template: 'Designed template',
+                            image: 'Image only',
+                            'image-top': 'Image + CTA'
+                        } [this.mode] || 'Designed template';
+                    },
+                    get pillList() {
+                        return this.pills.split('|').map((pill) => pill.trim()).filter(Boolean).slice(0, 6);
+                    },
+                    get highlightedTitle() {
+                        const safe = (this.title || 'Popup title').replace(/[&<>"']/g, (char) => ({
+                            '&': '&amp;',
+                            '<': '&lt;',
+                            '>': '&gt;',
+                            '"': '&quot;',
+                            "'": '&#039;'
+                        } [char]));
+                        return safe
+                            .replace(/Human Values/gi, '<span class="text-gold-300">$&</span>')
+                            .replace(/SSSS/gi, '<span class="text-gold-300">$&</span>');
+                    }
+                };
+            }
+
             // Live meta description character count
             const metaArea = document.querySelector('textarea[name="meta_description"]');
             const metaCount = document.getElementById('meta-count');
@@ -789,6 +1095,11 @@
                 reader.onload = function(e) {
                     document.getElementById('popup-img-preview-img').src = e.target.result;
                     document.getElementById('popup-img-preview').classList.remove('hidden');
+                    window.dispatchEvent(new CustomEvent('popup-image-preview', {
+                        detail: {
+                            src: e.target.result
+                        }
+                    }));
                 };
                 reader.readAsDataURL(input.files[0]);
             }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Contact, Faq};
+use App\Models\{Contact, Faq, PageHero, PageSection};
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -11,8 +11,10 @@ class ContactController extends Controller
     {
         // Load FAQs for the accordion at the bottom of the contact page
         $faqs = Faq::published()->orderBy('order')->limit(6)->get();
+        $hero = PageHero::forPage('contact');
+        $sections = PageSection::forPageCached('contact');
 
-        return view('contact', compact('faqs'));
+        return view('contact', compact('faqs', 'hero', 'sections'));
     }
 
     public function store(Request $request)

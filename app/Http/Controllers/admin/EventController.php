@@ -4,7 +4,17 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 
 class EventController extends Controller {
-    public function index() { $events = Event::orderByDesc('start_date')->paginate(15); return view('admin.events.index', compact('events')); }
+    public function index() {
+        $events = Event::orderByDesc('start_date')->paginate(15);
+        $stats = [
+            'total' => Event::count(),
+            'published' => Event::where('is_published', true)->count(),
+            'upcoming' => Event::whereDate('start_date', '>=', now())->count(),
+            'past' => Event::whereDate('start_date', '<', now())->count(),
+        ];
+
+        return view('admin.events.index', compact('events', 'stats'));
+    }
     public function create() { return view('admin.events.form', ['event' => new Event]); }
     public function store(Request $request) {
         $data = $this->validated($request);

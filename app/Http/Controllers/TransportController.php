@@ -6,12 +6,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Mail, Storage};
+use App\Models\{PageHero, PageSection};
 
 class TransportController extends Controller
 {
     public function index()
     {
-        return view('transport');
+        return view('transport', [
+            'hero' => PageHero::forPage('transport'),
+            'sections' => PageSection::forPageCached('transport'),
+        ]);
     }
 
     public function report(Request $request)
@@ -44,5 +48,4 @@ class TransportController extends Controller
         return back()->with('report_success', true);
     }
 }
-
 

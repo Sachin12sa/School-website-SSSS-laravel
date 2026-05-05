@@ -14,7 +14,14 @@ class NewsController extends Controller
     public function index()
     {
         $news = NewsPost::orderByDesc('created_at')->paginate(15);
-        return view('admin.news.index', compact('news'));
+        $stats = [
+            'total' => NewsPost::count(),
+            'published' => NewsPost::where('is_published', true)->count(),
+            'drafts' => NewsPost::where('is_published', false)->count(),
+            'latest' => NewsPost::whereNotNull('published_at')->max('published_at'),
+        ];
+
+        return view('admin.news.index', compact('news', 'stats'));
     }
 
     // ── Create form ─────────────────────────────────────────────────────────────

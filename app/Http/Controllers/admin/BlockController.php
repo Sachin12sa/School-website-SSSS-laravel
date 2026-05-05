@@ -5,12 +5,35 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\PageBlock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class BlockController extends Controller
 {
+    /**
+     * All homepage block types recognised by the UI.
+     */
+    public const BLOCK_TYPES = [
+        'hero',
+        'stats',
+        'about_intro',
+        'programs',
+        'values',
+        'legacy',
+        'news_feed',
+        'events_feed',
+        'gallery_preview',
+        'testimonial_slider',
+        'contact_strip',
+        'cta_banner',
+    ];
+
     public function index()
     {
-        $blocks = PageBlock::whereNull('page_id')->orderBy('order')->get();
+        // Only global (non-page) blocks, ordered as they appear on the homepage
+        $blocks = PageBlock::whereNull('page_id')
+            ->orderBy('order')
+            ->get();
+
         return view('admin.blocks.index', compact('blocks'));
     }
 
@@ -20,34 +43,68 @@ class BlockController extends Controller
 
         $data = $request->validate([
             'title'       => 'nullable|string|max:255',
-            'subtitle'    => 'nullable|string',
+            'subtitle'    => 'nullable|string|max:500',
             'content'     => 'nullable|string',
             'button_text' => 'nullable|string|max:100',
             'button_url'  => 'nullable|string|max:500',
             'is_visible'  => 'nullable|boolean',
+            // stats block extras
+            'extra'                  => 'nullable|array',
+            'extra.students'         => 'nullable|string|max:20',
+            'extra.teachers'         => 'nullable|string|max:20',
+            'extra.years'            => 'nullable|string|max:20',
+            'extra.programmes'       => 'nullable|string|max:20',
         ]);
 
-        // Extra fields (stats numbers etc.)
+        // Merge extra fields when present (stats counters etc.)
         if ($request->has('extra')) {
             $data['extra'] = $request->input('extra');
         }
 
+        // Checkbox sends "1" when checked, nothing when unchecked
         $data['is_visible'] = $request->boolean('is_visible');
 
-        // Handle image upload
+        // Image upload — store under storage/app/public/blocks/
         if ($request->hasFile('image_path')) {
-            $data['image_path'] = $request->file('image_path')->store('blocks', 'public');
+            $data['image_path'] = $request->file('image_path')
+                ->store('blocks', 'public');
         }
 
         $block->update($data);
+
+        // Cache bust is handled by PageBlock::booted(), but clear explicitly
+        // in case the model observer runs before the DB write is committed.
+        Cache::forget('homepage_blocks');
+
         return back()->with('success', 'Block updated successfully.');
     }
 
+    /**
+     * Quick visibility toggle — called from the eye-icon button in the card header.
+     * Accepts a single PUT with `is_visible` only.
+     */
+    public function toggleVisibility(Request $request, $id)
+    {
+        $block = PageBlock::findOrFail($id);
+        $block->update(['is_visible' => $request->boolean('is_visible')]);
+        Cache::forget('homepage_blocks');
+
+        return back()->with('success', 'Visibility updated.');
+    }
+
+    /**
+     * Drag-and-drop reorder — called by JS fetch with { order: [id, id, …] }.
+     */
     public function reorder(Request $request)
     {
-        foreach ($request->order as $i => $id) {
-            PageBlock::where('id', $id)->update(['order' => $i]);
+        $request->validate(['order' => 'required|array', 'order.*' => 'integer']);
+
+        foreach ($request->order as $position => $id) {
+            PageBlock::where('id', $id)->update(['order' => $position]);
         }
+
+        Cache::forget('homepage_blocks');
+
         return response()->json(['ok' => true]);
     }
 }

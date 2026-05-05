@@ -31,6 +31,15 @@
         </a>
     </div>
 
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        @foreach ([['Total Articles', $stats['total'] ?? 0], ['Published', $stats['published'] ?? 0], ['Drafts', $stats['drafts'] ?? 0], ['Latest Publish', !empty($stats['latest']) ? \Carbon\Carbon::parse($stats['latest'])->format('d M Y') : '—']] as [$label, $value])
+            <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+                <p class="text-xs font-bold uppercase tracking-wide text-slate-400">{{ $label }}</p>
+                <p class="mt-2 font-display font-bold text-2xl text-navy-900">{{ $value }}</p>
+            </div>
+        @endforeach
+    </div>
+
     {{-- Table --}}
     @if ($news->count())
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">

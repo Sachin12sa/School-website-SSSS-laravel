@@ -9,6 +9,14 @@
             </svg>Add FAQ
         </a>
     </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        @foreach ([['Total FAQs', $stats['total'] ?? 0], ['Published', $stats['published'] ?? 0], ['Hidden', $stats['hidden'] ?? 0], ['Categories', $stats['categories'] ?? 0]] as [$label, $value])
+            <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+                <p class="text-xs font-bold uppercase tracking-wide text-slate-400">{{ $label }}</p>
+                <p class="mt-2 font-display font-bold text-2xl text-navy-900">{{ $value }}</p>
+            </div>
+        @endforeach
+    </div>
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
         <table class="w-full text-sm">
             <thead>

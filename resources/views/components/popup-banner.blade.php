@@ -15,8 +15,9 @@
 
 @php
     $forceShow = $forceShow ?? false;
-    // Only enable if on the homepage ('/') OR if forceShow is true (for admin preview)
-    $enabled = $forceShow || (\App\Models\SiteSetting::get('popup_enabled', '1') !== '0' && request()->is('/'));
+    $showOn = \App\Models\SiteSetting::get('popup_show_on', 'home');
+    $isAllowedPage = $showOn === 'all' || request()->routeIs('home') || request()->path() === '/';
+    $enabled = $forceShow || (\App\Models\SiteSetting::get('popup_enabled', '1') !== '0' && $isAllowedPage);
     $mode = \App\Models\SiteSetting::get('popup_mode', 'template'); // 'image' | 'template' | 'image-top'
     $imageFile = \App\Models\SiteSetting::get('popup_image');
     $imageUrl =
@@ -29,11 +30,20 @@
 
     // Template fields
     $badgeText = \App\Models\SiteSetting::get('popup_badge_text', 'Admissions Now Open');
+    $title = \App\Models\SiteSetting::get('popup_title', 'Give Your Child the Gift of Human Values');
     $subtitle = \App\Models\SiteSetting::get(
         'popup_subtitle',
         'Enrol now for the 2026–27 academic year. Limited seats available.',
     );
     $deadline = \App\Models\SiteSetting::get('popup_deadline', 'March 15, 2026 · Last date for submission');
+    $primaryText = \App\Models\SiteSetting::get('popup_primary_text', 'Apply for Admission');
+    $primaryUrl = \App\Models\SiteSetting::get('popup_primary_url', route('admissions.index'));
+    $secondaryText = \App\Models\SiteSetting::get('popup_secondary_text', 'Learn More');
+    $secondaryUrl = \App\Models\SiteSetting::get('popup_secondary_url', route('contact.index'));
+    $pillsRaw = \App\Models\SiteSetting::get('popup_pills', 'Grade 1 to +2|Expert Faculty|Boarding|Human Values|100% Results');
+    $pills = collect(explode('|', $pillsRaw))->map(fn ($pill) => trim($pill))->filter()->take(6);
+    $delayMs = max(0, (int) \App\Models\SiteSetting::get('popup_delay_ms', '800'));
+    $hideHours = max(0, (int) \App\Models\SiteSetting::get('popup_hide_hours', '24'));
 
     // Skip if disabled, or if image-mode but no image uploaded yet
     $show = $enabled && ($mode === 'template' || ($imageUrl && in_array($mode, ['image', 'image-top'])));
@@ -380,6 +390,15 @@
             font-family: 'DM Sans', system-ui, sans-serif;
         }
 
+        .pbx-pill::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 999px;
+            background: #C9A227;
+            flex-shrink: 0;
+        }
+
         .pbx-deadline {
             display: flex;
             align-items: center;
@@ -590,7 +609,7 @@
         <div id="pbx-card" class="mode-{{ $mode }}">
 
             {{-- Close button --}}
-            <button id="pbx-close" onclick="pbxClose()" aria-label="Close">
+            <button id="pbx-close" onclick="pbxClose(true)" aria-label="Close">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -604,7 +623,7 @@
             @if ($mode === 'image' && $imageUrl)
                 <div class="pbx-img-wrap">
                     @if ($imageLink)
-                        <a href="{{ $imageLink }}" onclick="pbxClose()">
+                        <a href="{{ $imageLink }}" onclick="pbxClose(true)">
                             <img src="{{ $imageUrl }}" alt="School announcement banner">
                         </a>
                     @else
@@ -613,9 +632,9 @@
                 </div>
                 {{-- Optional apply CTA strip below image --}}
                 <div class="pbx-img-cta">
-                    <span class="pbx-img-cta-text">Questions? <a href="{{ route('contact.index') }}"
-                            onclick="pbxClose()" style="color:#C9A227;font-weight:600">Contact us →</a></span>
-                    <a href="{{ route('admissions.index') }}" onclick="pbxClose()" class="pbx-btn-apply">Apply Now</a>
+                    <span class="pbx-img-cta-text">Questions? <a href="{{ $secondaryUrl }}"
+                            onclick="pbxClose(true)" style="color:#C9A227;font-weight:600">{{ $secondaryText }} →</a></span>
+                    <a href="{{ $primaryUrl }}" onclick="pbxClose(true)" class="pbx-btn-apply">{{ $primaryText }}</a>
                 </div>
 
                 {{-- ════════════════════════════════════════
@@ -626,7 +645,7 @@
                 {{-- Image section --}}
                 <div class="pbx-img-top">
                     @if ($imageLink)
-                        <a href="{{ $imageLink }}" onclick="pbxClose()">
+                        <a href="{{ $imageLink }}" onclick="pbxClose(true)">
                             <img src="{{ $imageUrl }}" alt="School announcement banner">
                         </a>
                     @else
@@ -643,18 +662,17 @@
                         <span class="pbx-dl-badge">Limited Seats</span>
                     </div>
                     <div class="pbx-btns pa">
-                        <a href="{{ route('admissions.index') }}" class="pbx-btn-main" onclick="pbxClose()">
+                        <a href="{{ $primaryUrl }}" class="pbx-btn-main" onclick="pbxClose(true)">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
-                            Apply for Admission
+                            {{ $primaryText }}
                         </a>
-                        <a href="{{ route('contact.index') }}" class="pbx-btn-sec" onclick="pbxClose()">Ask a
-                            Question</a>
+                        <a href="{{ $secondaryUrl }}" class="pbx-btn-sec" onclick="pbxClose(true)">{{ $secondaryText }}</a>
                     </div>
                     <div class="pbx-dismiss pa">
-                        <button onclick="pbxClose()">Continue to website ↓</button>
+                        <button onclick="pbxClose(true)">Continue to website ↓</button>
                     </div>
                 </div>
 
@@ -687,14 +705,14 @@
                     </div>
                     {{-- Heading --}}
                     <h2 class="pbx-heading pa">
-                        Give Your Child<br>the Gift of <span class="g">Human Values</span>
+                        {!! str_replace(['Human Values', 'SSSS'], ['<span class="g">Human Values</span>', '<span class="g">SSSS</span>'], e($title)) !!}
                     </h2>
                     <p class="pbx-sub pa">{{ $subtitle }}</p>
                 </div>
                 {{-- Body --}}
                 <div class="pbx-body">
                     <div class="pbx-pills pa">
-                        @foreach (['🎓 Grade 1 to +2', '👨‍🏫 Expert Faculty', '🏠 Boarding', '🌟 Human Values', '🏆 100% Results'] as $pill)
+                        @foreach ($pills as $pill)
                             <span class="pbx-pill">{{ $pill }}</span>
                         @endforeach
                     </div>
@@ -703,20 +721,20 @@
                             <div class="pbx-dl-label">Application Deadline</div>
                             <div class="pbx-dl-date">{{ $deadline }}</div>
                         </div>
-                        <span class="pbx-dl-badge">Apply Now</span>
+                        <span class="pbx-dl-badge">{{ $primaryText }}</span>
                     </div>
                     <div class="pbx-btns pa">
-                        <a href="{{ route('admissions.index') }}" class="pbx-btn-main" onclick="pbxClose()">
+                        <a href="{{ $primaryUrl }}" class="pbx-btn-main" onclick="pbxClose(true)">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
-                            Apply for Admission
+                            {{ $primaryText }}
                         </a>
-                        <a href="{{ route('contact.index') }}" class="pbx-btn-sec" onclick="pbxClose()">Learn More</a>
+                        <a href="{{ $secondaryUrl }}" class="pbx-btn-sec" onclick="pbxClose(true)">{{ $secondaryText }}</a>
                     </div>
                     <div class="pbx-dismiss pa">
-                        <button onclick="pbxClose()">Continue to website ↓</button>
+                        <button onclick="pbxClose(true)">Continue to website ↓</button>
                     </div>
                 </div>
             @endif
@@ -727,19 +745,36 @@
     <script>
         (function() {
             var o = document.getElementById('pbx');
-            // Ensure display is block or flex before animation starts running
-            o.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            var force = @json($forceShow);
+            var delay = @json($delayMs);
+            var hideHours = @json($hideHours);
+            var storageKey = 'ssss_popup_hidden_until';
+            var hiddenUntil = parseInt(localStorage.getItem(storageKey) || '0', 10);
+            var canShow = force || !hiddenUntil || Date.now() > hiddenUntil;
+
+            function showPopup() {
+                o.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            if (canShow) {
+                window.setTimeout(showPopup, force ? 0 : delay);
+            }
 
             o.addEventListener('click', function(e) {
-                if (e.target === o) pbxClose();
+                if (e.target === o) pbxClose(true);
             });
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') pbxClose();
+                if (e.key === 'Escape') pbxClose(true);
             });
         })();
-        window.pbxClose = function() {
+        window.pbxClose = function(remember) {
             var o = document.getElementById('pbx');
+            var hideHours = @json($hideHours);
+
+            if (remember && hideHours > 0) {
+                localStorage.setItem('ssss_popup_hidden_until', String(Date.now() + hideHours * 60 * 60 * 1000));
+            }
 
             o.classList.add('closing');
             setTimeout(function() {

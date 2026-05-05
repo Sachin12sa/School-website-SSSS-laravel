@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Page, Teacher, Gallery, PageSection};
+use App\Models\{Page, Teacher, Gallery, PageHero, PageSection};
 use Illuminate\Support\Facades\Cache;
 
 class PageController extends Controller
@@ -18,11 +18,15 @@ class PageController extends Controller
             $page = Cache::remember("page_{$slug}", 3600, fn() =>
                 Page::published()->with('blocks')->where('slug', $slug)->first()
             );
+            $hero = PageHero::forPage($slug);
+            $sections = PageSection::forPageCached($slug);
 
             return match($slug) {
 
                 'about' => view('pages.about', [
                     'page'       => $page,
+                    'hero'       => $hero,
+                    'sections'   => $sections,
                     'leadership' => Cache::remember('leaders', 3600, fn() =>
                         Teacher::published()
                             ->whereIn('department', ['Leadership','leadership','Management','Administration'])
@@ -32,6 +36,8 @@ class PageController extends Controller
 
                 'life-at-ssss' => view('pages.life-at-ssss', [
                     'page'      => $page,
+                    'hero'      => $hero,
+                    'sections'  => $sections,
                     'galleries' => Cache::remember('campus_galleries', 3600, fn() =>
                         Gallery::published()
                             ->with(['images' => fn($q) => $q->orderBy('order')->limit(1)])
@@ -40,7 +46,7 @@ class PageController extends Controller
                 ]),
 
                 // Programs and boarding — just pass sections; view handles rendering
-                default => view('pages.' . $slug, compact('page')),
+                default => view('pages.' . $slug, compact('page', 'hero', 'sections')),
             };
         }
 

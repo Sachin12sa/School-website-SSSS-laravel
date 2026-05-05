@@ -11,7 +11,14 @@ class FaqController extends Controller
     public function index()
     {
         $faqs = Faq::orderBy('order')->paginate(20);
-        return view('admin.faqs.index', compact('faqs'));
+        $stats = [
+            'total' => Faq::count(),
+            'published' => Faq::where('is_published', true)->count(),
+            'hidden' => Faq::where('is_published', false)->count(),
+            'categories' => Faq::whereNotNull('category')->where('category', '!=', '')->distinct('category')->count('category'),
+        ];
+
+        return view('admin.faqs.index', compact('faqs', 'stats'));
     }
 
     public function create()

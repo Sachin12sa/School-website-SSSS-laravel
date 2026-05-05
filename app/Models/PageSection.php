@@ -9,11 +9,15 @@ class PageSection extends Model
 {
     protected $fillable = [
         'page_key', 'title', 'subtitle', 'content',
-        'image', 'badge_text', 'badge_color', 'layout',
-        'button_text', 'button_url', 'order', 'is_published',
+        'items', 'image', 'badge_text', 'badge_color', 'layout',
+        'button_text', 'button_url', 'settings', 'order', 'is_published',
     ];
 
-    protected $casts = ['is_published' => 'boolean'];
+    protected $casts = [
+        'items'        => 'array',
+        'settings'     => 'array',
+        'is_published' => 'boolean',
+    ];
 
     // ── Scopes ─────────────────────────────────────────────────────────────────
     public function scopePublished($q) { return $q->where('is_published', true); }

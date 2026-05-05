@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
             PageBlock::create($block);
         }
 
-        // ─── Static Pages ─────────────────────────────────────────────────────────
+        // ─── Legacy CMS Pages (generic fallback content) ─────────────────────────
         Page::create(['title' => 'About Us', 'slug' => 'about', 'hero_title' => 'About Greenfield Academy', 'hero_subtitle' => 'Our story, our mission, our values.', 'content' => '<h2>Our Mission</h2><p>To provide a world-class education that equips every student with the knowledge, skills, values, and resilience to lead fulfilling and impactful lives.</p><h2>Our Vision</h2><p>To be recognised as a centre of excellence where every learner is inspired to achieve their personal best in a nurturing, inclusive, and innovative environment.</p><h2>Our History</h2><p>Founded in 1980 by a group of passionate educators, Greenfield Academy began as a small primary school with just 50 students. Today, we serve over 1,200 students from Nursery through to Year 12, with a faculty of more than 80 dedicated teaching professionals.</p>', 'is_published' => true, 'order' => 1]);
         Page::create(['title' => 'Academics', 'slug' => 'academics', 'hero_title' => 'Academic Programmes', 'hero_subtitle' => 'Rigorous, innovative, and student-centred.', 'content' => '<h2>Our Curriculum</h2><p>We offer a broad and balanced curriculum designed to challenge and inspire students at every stage of their education. From early childhood through to sixth form, our programmes are built around the belief that deep understanding matters more than rote memorisation.</p><h2>Programmes Offered</h2><ul><li>Early Years Foundation (Nursery–Reception)</li><li>Primary Education (Year 1–6)</li><li>Secondary Education (Year 7–11)</li><li>Sixth Form (Year 12–13)</li></ul>', 'is_published' => true, 'order' => 2]);
 
@@ -133,5 +133,11 @@ class DatabaseSeeder extends Seeder
         foreach ($testimonials as $t) {
             \App\Models\Testimonial::create(array_merge($t, ['is_published' => true]));
         }
+
+        $this->call([
+            PageHeroSeeder::class,
+            HomePageBlockSeeder::class,
+            PageSectionSeeder::class,
+        ]);
     }
 }

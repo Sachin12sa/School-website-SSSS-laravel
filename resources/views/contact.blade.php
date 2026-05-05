@@ -5,11 +5,27 @@
 
 @section('content')
 
-    @include('components.page-hero', [
-        'breadcrumb' => 'Contact',
-        'title' => 'Contact Us',
-        'subtitle' => "We're here to answer your questions and help guide your child's educational journey.",
-    ])
+    @if ($hero)
+        <x-page-hero :hero="$hero" />
+    @else
+        @include('components.page-hero', [
+            'breadcrumb' => 'Contact',
+            'title' => 'Contact Us',
+            'subtitle' => "We're here to answer your questions and help guide your child's educational journey.",
+        ])
+    @endif
+
+    @php
+        $contactSections = $sections ?? collect();
+        $ctaSections = $contactSections->where('layout', 'cta');
+        $contentSections = $contactSections->where('layout', '!=', 'cta');
+    @endphp
+
+    @if ($contactSections->isNotEmpty())
+        @foreach ($contentSections as $i => $section)
+            @include('components.section-renderer', ['section' => $section, 'index' => $i])
+        @endforeach
+    @else
 
     {{-- ── 4 INFO CARDS ─────────────────────────────────────────────────────────── --}}
     <section class="py-12 bg-white">
@@ -33,12 +49,14 @@
         </div>
     </section>
 
+    @endif
+
     {{-- ── FORM + MAP ───────────────────────────────────────────────────────────── --}}
-    <section class="py-14 bg-gray-50">
+    <section class="py-14 bg-gray-50" id="contact-form">
         <div class="max-w-7xl mx-auto px-4 lg:px-8 grid lg:grid-cols-2 gap-12">
 
             {{-- Contact Form --}}
-            <div>
+            <div id="map">
                 <h2 class="font-display font-bold text-3xl text-navy mb-2">Send Us a Message</h2>
                 <div class="w-10 h-0.5 bg-gold mb-6 rounded-full"></div>
 
@@ -169,6 +187,7 @@
         </div>
     </section>
 
+    @if (($sections ?? collect())->isEmpty())
     {{-- ── DEPARTMENT DIRECTORY ─────────────────────────────────────────────────── --}}
     <section class="py-14 bg-white">
         <div class="max-w-5xl mx-auto px-4 lg:px-8">
@@ -243,6 +262,13 @@
                 </div>
             </div>
         </section>
+    @endif
+    @endif
+
+    @if (($ctaSections ?? collect())->isNotEmpty())
+        @foreach ($ctaSections as $i => $section)
+            @include('components.section-renderer', ['section' => $section, 'index' => $i])
+        @endforeach
     @endif
 
 @endsection

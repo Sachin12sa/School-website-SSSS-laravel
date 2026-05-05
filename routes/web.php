@@ -16,7 +16,6 @@ use App\Http\Controllers\CalendarController;
 
 // ── Admin controllers ────────────────────────────────────────────────────────
 use App\Http\Controllers\Admin\NewsController       as AdminNewsController;
-use App\Http\Controllers\Admin\PageController       as AdminPageController;
 use App\Http\Controllers\Admin\PageSectionController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TeacherController    as AdminTeacherController;
@@ -31,15 +30,18 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Admin\HeroController;
+ 
 
 // Home
 Route::get('/',         [HomeController::class, 'index'])->name('home');
 
-// About
-Route::view('/about', 'pages.about')->name('about');
+// About keeps its friendly route name while using the same dynamic controller.
+Route::get('/about', [PageController::class, 'show'])->defaults('slug', 'about')->name('about');
 
 // News
 Route::get('/news',          [NewsController::class, 'index'])->name('news.index');
@@ -59,6 +61,8 @@ Route::get('/faculty',   [TeacherController::class, 'index'])->name('teachers.in
 
 // FAQ
 Route::get('/faq',       [FaqController::class, 'index'])->name('faq.index');
+// Testimonials
+Route::get('/testimonials', [TestimonialsController::class, 'index'])->name('testimonials.index');
 // Calendar
 Route::get('/calendar',     [CalendarController::class, 'index'])->name('calendar.index');
 Route::get('/calendar/day', [CalendarController::class, 'day'])->name('calendar.day');
@@ -98,14 +102,10 @@ Route::prefix('admin')
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::view('/about', 'pages.about')->name('about');
 
     // ── Settings (single form, multiple tabs) ──────────────────────────────
     Route::get('/settings',    [SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings',   [SettingsController::class, 'update'])->name('settings.update');
-
-    // ── Pages CMS ──────────────────────────────────────────────────────────
-    Route::resource('pages', AdminPageController::class);
 
     // ── Homepage Blocks ────────────────────────────────────────────────────
     Route::get('/blocks',              [BlockController::class, 'index'])->name('blocks.index');
@@ -162,4 +162,9 @@ Route::prefix('admin')
     Route::delete('/pages/{pageKey}/sections/{section}', [PageSectionController::class, 'destroy'])->name('sections.destroy');
     Route::post('/pages/{pageKey}/sections/{section}/toggle', [PageSectionController::class, 'toggle'])->name('sections.toggle');
     Route::post('/pages/{pageKey}/sections/reorder',     [PageSectionController::class, 'reorder'])->name('sections.reorder');
+      // Hero management
+    Route::get   ('heroes',                 [HeroController::class, 'index'])->name('heroes.index');
+    Route::get   ('heroes/{hero}/edit',     [HeroController::class, 'edit'])->name('heroes.edit');
+    Route::put   ('heroes/{hero}',          [HeroController::class, 'update'])->name('heroes.update');
+    Route::delete('heroes/{hero}/image',    [HeroController::class, 'removeImage'])->name('heroes.remove-image');
 });

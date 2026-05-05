@@ -4,311 +4,250 @@
 
 @push('styles')
     <style>
-        /* ── Scroll reveal ──────────────────────────────────────────────────────── */
-        .reveal {
-            opacity: 0;
-            transform: translateY(32px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
+        /* ══════════════════════════════════════════════════════════════
+           HOME PAGE — Luxury Editorial
+           Inherits design tokens from layouts/app.blade.php
+        ══════════════════════════════════════════════════════════════ */
+
+        /* ── Hero animations ─────────────────────────────────────────── */
+        @keyframes hero-enter {
+            from { opacity: 0; transform: translateY(22px) }
+            to   { opacity: 1; transform: none }
         }
-
-        .reveal.from-left {
-            transform: translateX(-40px);
+        @keyframes hero-badge {
+            from { opacity: 0; transform: translateY(-10px) scale(.95) }
+            to   { opacity: 1; transform: none }
         }
-
-        .reveal.from-right {
-            transform: translateX(40px);
+        @keyframes float-gentle {
+            0%, 100% { transform: translateY(0) }
+            50%       { transform: translateY(-8px) }
         }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translate(0);
+        @keyframes shimmer-gold {
+            from { background-position: -200% 0 }
+            to   { background-position:  200% 0 }
         }
-
-        /* staggered children */
-        .stagger>* {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity .6s ease, transform .6s ease;
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1) }
+            50%       { opacity: .5; transform: scale(1.4) }
         }
-
-        .stagger.visible>*:nth-child(1) {
-            opacity: 1;
-            transform: none;
-            transition-delay: .05s;
+        @keyframes bounce-y {
+            0%, 100% { transform: translateY(0) }
+            50%       { transform: translateY(7px) }
         }
-
-        .stagger.visible>*:nth-child(2) {
-            opacity: 1;
-            transform: none;
-            transition-delay: .15s;
-        }
-
-        .stagger.visible>*:nth-child(3) {
-            opacity: 1;
-            transform: none;
-            transition-delay: .25s;
-        }
-
-        .stagger.visible>*:nth-child(4) {
-            opacity: 1;
-            transform: none;
-            transition-delay: .35s;
-        }
-
-        .stagger.visible>*:nth-child(5) {
-            opacity: 1;
-            transform: none;
-            transition-delay: .45s;
-        }
-
-        .stagger.visible>*:nth-child(6) {
-            opacity: 1;
-            transform: none;
-            transition-delay: .55s;
-        }
-
-        /* ── Hero ───────────────────────────────────────────────────────────────── */
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0)
-            }
-
-            50% {
-                transform: translateY(-10px)
-            }
-        }
-
-        @keyframes pulse-ring {
-            0% {
-                transform: scale(1);
-                opacity: .4
-            }
-
-            100% {
-                transform: scale(1.5);
-                opacity: 0
-            }
-        }
-
-        @keyframes hero-text {
-            from {
-                opacity: 0;
-                transform: translateY(24px)
-            }
-
-            to {
-                opacity: 1;
-                transform: none
-            }
-        }
-
         @keyframes shimmer {
-            from {
-                background-position: -200% 0
-            }
-
-            to {
-                background-position: 200% 0
-            }
+            to { background-position: 200% center; }
+        }
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(20px) }
+            to   { opacity: 1; transform: none }
+        }
+        @keyframes count-in {
+            from { opacity: 0; transform: scale(0.8) }
+            to   { opacity: 1; transform: scale(1) }
         }
 
-        @keyframes count-up {
-            from {
-                opacity: 0;
-                transform: translateY(12px)
-            }
+        /* Staggered hero sequence */
+        .h-anim-1 { animation: hero-badge .6s .05s both cubic-bezier(0.23, 1, 0.32, 1); }
+        .h-anim-2 { animation: hero-enter .9s .15s both cubic-bezier(0.23, 1, 0.32, 1); }
+        .h-anim-3 { animation: hero-enter .9s .32s both cubic-bezier(0.23, 1, 0.32, 1); }
+        .h-anim-4 { animation: hero-enter .9s .48s both cubic-bezier(0.23, 1, 0.32, 1); }
+        .h-anim-5 { animation: hero-enter .9s .64s both cubic-bezier(0.23, 1, 0.32, 1); }
 
-            to {
-                opacity: 1;
-                transform: none
-            }
-        }
+        .float-badge { animation: float-gentle 4.5s ease-in-out infinite; }
+        .float-card  { animation: float-gentle 5.5s 1.2s ease-in-out infinite; }
+        .bounce      { animation: bounce-y 1.8s linear infinite; }
 
-        .hero-text-1 {
-            animation: hero-text .8s .2s both ease;
-        }
-
-        .hero-text-2 {
-            animation: hero-text .8s .45s both ease;
-        }
-
-        .hero-text-3 {
-            animation: hero-text .8s .65s both ease;
-        }
-
-        .hero-btn {
-            animation: hero-text .8s .85s both ease;
-        }
-
-        .float-badge {
-            animation: float 4s ease-in-out infinite;
-        }
-
-        /* Pulse ring around stat numbers */
-        .stat-ring {
-            position: relative;
-        }
-
-        .stat-ring::before {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 2px solid #C9A227;
-            animation: pulse-ring 2.5s ease-out infinite;
-        }
-
-        /* ── Card hover effects ──────────────────────────────────────────────────── */
-        .prog-card {
-            transition: transform .3s ease, box-shadow .3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .prog-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #C9A227, #e0b830);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform .3s ease;
-        }
-
-        .prog-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 24px 48px rgba(27, 42, 74, .13);
-        }
-
-        .prog-card:hover::after {
-            transform: scaleX(1);
-        }
-
-        .news-card {
-            transition: transform .3s ease, box-shadow .3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .news-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(27, 42, 74, .11);
-        }
-
-        .news-card .img-wrap img {
-            transition: transform .5s ease;
-        }
-
-        .news-card:hover .img-wrap img {
-            transform: scale(1.06);
-        }
-
-        .contact-card {
-            transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
-            border: 1px solid #e5e7eb;
-        }
-
-        .contact-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 32px rgba(27, 42, 74, .10);
-            border-color: #C9A227;
-        }
-
-        /* ── Value list items ────────────────────────────────────────────────────── */
-        .value-item {
-            transition: transform .25s ease, background .25s ease;
-            border-radius: 12px;
-            padding: 10px 12px;
-            cursor: default;
-        }
-
-        .value-item:hover {
-            transform: translateX(6px);
-            background: rgba(201, 162, 39, .06);
-        }
-
-        /* ── Timeline dot ────────────────────────────────────────────────────────── */
-        .timeline-item {
-            position: relative;
-        }
-
-        .timeline-item .dot {
-            width: 12px;
-            height: 12px;
-            background: #C9A227;
-            border-radius: 50%;
-            flex-shrink: 0;
-            margin-top: 4px;
-            transition: transform .25s ease, box-shadow .25s ease;
-        }
-
-        .timeline-item:hover .dot {
-            transform: scale(1.4);
-            box-shadow: 0 0 0 4px rgba(201, 162, 39, .25);
-        }
-
-        .timeline-item:hover p {
-            color: #1B2A4A;
-            font-weight: 500;
-        }
-
-        /* ── Gold shimmer on CTA heading ─────────────────────────────────────────── */
-        .shimmer-text {
-            background: linear-gradient(90deg, #fff 0%, #C9A227 40%, #fff 60%, #fff 100%);
-            background-size: 200% 100%;
+        /* ── Shimmer gold text ────────────────────────────────────────── */
+        .text-shimmer {
+            background: linear-gradient(90deg, #fff 0%, #C9A227 35%, #E2B93B 50%, #fff 65%, #fff 100%);
+            background-size: 250% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: shimmer 3.5s linear infinite;
+            animation: shimmer-gold 4s linear infinite;
         }
 
-        /* ── Section heading gold underline animate ───────────────────────────────── */
-        .gold-line {
-            width: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #C9A227, #e0b830);
-            border-radius: 2px;
-            transition: width .6s .2s ease;
+        /* ── Hero pill ────────────────────────────────────────────────── */
+        .hero-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.14);
+            backdrop-filter: blur(12px);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.88);
+            font-size: 10.5px; font-weight: 700;
+            letter-spacing: 0.13em; text-transform: uppercase;
+            padding: 8px 18px; border-radius: 50px; margin-bottom: 2rem;
         }
 
-        .reveal.visible .gold-line,
-        .gold-line.visible {
-            width: 52px;
+        /* ── Stat card ────────────────────────────────────────────────── */
+        .stat-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.09);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 16px; padding: 20px 24px;
+            transition: background 0.22s var(--ease-out), border-color 0.22s var(--ease-out), transform 0.22s var(--ease-spring);
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .stat-card:hover { background: rgba(255,255,255,0.10); border-color: rgba(201,162,39,0.3); transform: translateY(-3px); }
+        }
+        .stat-num {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 2.5rem; font-weight: 700;
+            color: var(--gold-light); line-height: 1;
         }
 
-        /* ── Image hover zoom container ──────────────────────────────────────────── */
-        .img-zoom {
-            overflow: hidden;
+        /* ── Program cards ────────────────────────────────────────────── */
+        .prog-card {
+            position: relative; overflow: hidden; border-radius: 20px; cursor: pointer;
+            transition: transform .35s var(--ease-spring), box-shadow .35s var(--ease-out);
+        }
+        .prog-card::after {
+            content: ''; position: absolute; inset: 0; border-radius: 20px;
+            border: 1.5px solid transparent;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0);
+            transition: border-color .28s var(--ease-out), box-shadow .28s var(--ease-out);
+            pointer-events: none;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .prog-card:hover { transform: translateY(-8px); box-shadow: 0 32px 64px rgba(13,27,46,0.16); }
+            .prog-card:hover::after { border-color: rgba(201,162,39,0.5); box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); }
+        }
+        .prog-card:active { transform: translateY(-4px) scale(0.99); }
+        .prog-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, transparent 30%, rgba(13,27,46,0.92) 100%);
         }
 
-        .img-zoom img {
-            transition: transform .5s ease;
+        /* ── Value items ──────────────────────────────────────────────── */
+        .value-item {
+            display: flex; align-items: flex-start; gap: 16px;
+            padding: 14px 12px; border-radius: 14px; border: 1px solid transparent;
+            transition: background .22s var(--ease-out), border-color .22s var(--ease-out), transform .22s var(--ease-out);
+            cursor: default;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .value-item:hover { background: rgba(201,162,39,0.05); border-color: rgba(201,162,39,0.15); transform: translateX(6px); }
+            .value-item:hover .value-num { background: rgba(201,162,39,0.15); border-color: rgba(201,162,39,0.5); }
+        }
+        .value-num {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700;
+            color: var(--gold); flex-shrink: 0; margin-top: 1px;
+            border: 1.5px solid rgba(201,162,39,0.3);
+            background: rgba(201,162,39,0.07);
+            transition: background .22s var(--ease-out), border-color .22s var(--ease-out);
         }
 
-        .img-zoom:hover img {
-            transform: scale(1.04);
+        /* ── Timeline ─────────────────────────────────────────────────── */
+        .timeline-row { display: flex; gap: 20px; align-items: flex-start; }
+        .timeline-dot {
+            width: 11px; height: 11px; border-radius: 50%; background: var(--gold);
+            flex-shrink: 0; margin-top: 5px;
+            transition: transform .25s var(--ease-spring), box-shadow .25s ease;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .timeline-row:hover .timeline-dot { transform: scale(1.5); box-shadow: 0 0 0 5px rgba(201,162,39,0.2); }
+            .timeline-row:hover .timeline-text { color: var(--navy); }
+        }
+        .timeline-year { font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: 0.06em; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .timeline-text { font-size: 13.5px; color: var(--text-muted); line-height: 1.65; transition: color .18s var(--ease-out); }
+
+        /* ── News cards ───────────────────────────────────────────────── */
+        .news-card { overflow: hidden; border-radius: 20px; transition: transform .28s var(--ease-out), box-shadow .28s ease; }
+        @media (hover: hover) and (pointer: fine) {
+            .news-card:hover { transform: translateY(-6px); box-shadow: 0 24px 56px rgba(13,27,46,0.11); }
+            .news-card:hover .img-wrap img { transform: scale(1.06); }
+            .news-card:hover .news-title { color: var(--gold); }
+        }
+        .news-card:active { transform: translateY(-3px) scale(0.99); }
+        .news-card .img-wrap { overflow: hidden; }
+        .news-card .img-wrap img { transition: transform .55s var(--ease-out); }
+        .news-title { transition: color .18s var(--ease-out); }
+
+        /* ── Contact card ─────────────────────────────────────────────── */
+        .contact-card {
+            border: 1px solid rgba(13,27,46,0.08); border-radius: 20px;
+            transition: transform .28s var(--ease-spring), box-shadow .28s ease, border-color .25s var(--ease-out);
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .contact-card:hover { transform: translateY(-5px); box-shadow: 0 20px 44px rgba(13,27,46,0.09); border-color: rgba(201,162,39,0.35); }
+            .contact-card:hover .contact-icon { background: rgba(201,162,39,0.14); border-color: rgba(201,162,39,0.4); }
+        }
+        .contact-card:active { transform: translateY(-2px) scale(0.99); }
+        .contact-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            background: rgba(201,162,39,0.08); border: 1px solid rgba(201,162,39,0.18);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 14px;
+            transition: background .2s var(--ease-out), border-color .2s var(--ease-out);
         }
 
-        /* Scroll hint bounce */
-        @keyframes bounce-y {
+        /* ── CTA / Grand Banner ───────────────────────────────────────── */
+        .grand-cta { position: relative; overflow: hidden; z-index: 1; }
+        .cta-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
-            0%,
-            100% {
-                transform: translateY(0)
-            }
+        /* ── Reveal on scroll ─────────────────────────────────────────── */
+        .reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-            50% {
-                transform: translateY(6px)
-            }
+        /* ── Gallery grid ─────────────────────────────────────────────── */
+        .gallery-item {
+            position: relative; overflow: hidden; border-radius: 16px; cursor: pointer;
+            transition: transform .32s var(--ease-spring), box-shadow .32s var(--ease-out);
+        }
+        .gallery-item::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(13,27,46,0.75) 100%);
+            opacity: 0; transition: opacity .28s var(--ease-out);
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .gallery-item:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 28px 56px rgba(13,27,46,0.18); }
+            .gallery-item:hover::after { opacity: 1; }
+            .gallery-item:hover .gallery-overlay-text { opacity: 1; transform: translateY(0); }
+            .gallery-item:hover img { transform: scale(1.08); }
+        }
+        .gallery-item img { transition: transform .55s var(--ease-out); width: 100%; height: 100%; object-fit: cover; }
+        .gallery-overlay-text {
+            position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+            padding: 16px 18px;
+            opacity: 0; transform: translateY(8px);
+            transition: opacity .28s var(--ease-out), transform .28s var(--ease-out);
         }
 
-        .bounce {
-            animation: bounce-y 1.6s ease-in-out infinite;
+        /* ── Testimonial cards ────────────────────────────────────────── */
+        .testi-card {
+            border-radius: 20px; padding: 28px;
+            border: 1px solid rgba(13,27,46,0.07);
+            transition: transform .28s var(--ease-spring), box-shadow .28s ease, border-color .25s var(--ease-out);
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .testi-card:hover { transform: translateY(-6px); box-shadow: 0 24px 52px rgba(13,27,46,0.10); border-color: rgba(201,162,39,0.25); }
+        }
+        .testi-stars { color: var(--gold); font-size: 13px; letter-spacing: 1px; }
+        .testi-quote {
+            font-size: 28px; line-height: 1; color: var(--gold); opacity: 0.25;
+            font-family: 'Cormorant Garamond', serif; font-weight: 700;
+        }
+
+        /* ── Events feed ──────────────────────────────────────────────── */
+        .event-row {
+            display: flex; gap: 20px; align-items: flex-start; padding: 18px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            transition: background .2s var(--ease-out), padding-left .2s var(--ease-out);
+            border-radius: 10px;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .event-row:hover { background: rgba(255,255,255,0.04); padding-left: 10px; }
+        }
+        .event-date-box {
+            min-width: 52px; text-align: center; border-radius: 12px; padding: 8px 6px;
+            background: rgba(201,162,39,0.15); border: 1px solid rgba(201,162,39,0.25); flex-shrink: 0;
         }
     </style>
 @endpush
@@ -316,380 +255,451 @@
 @section('content')
 
     @php
-        $hero = $blocks->firstWhere('type', 'hero');
-        $stats = $blocks->firstWhere('type', 'stats');
-        $about = $blocks->firstWhere('type', 'about_intro');
-        $cta = $blocks->firstWhere('type', 'cta_banner');
-        $sd = $stats ? $stats->extra ?? [] : [];
+        // ── Block shortcuts (controller already passes these, but also resolve from $blocks for safety) ──
+        $heroBlock     = $hero  ?? $blocks->firstWhere('type', 'hero');
+        $aboutBlock    = $about ?? $blocks->firstWhere('type', 'about_intro');
+        $statsBlock    = $stats ?? $blocks->firstWhere('type', 'stats');
+        $ctaBlock      = $cta   ?? $blocks->firstWhere('type', 'cta_banner');
+        $programsBlock = $blocks->firstWhere('type', 'programs');
+        $valuesBlock   = $blocks->firstWhere('type', 'values');
+        $legacyBlock   = $blocks->firstWhere('type', 'legacy');
+        $newsBlock     = $blocks->firstWhere('type', 'news_feed');
+        $eventsBlock   = $blocks->firstWhere('type', 'events_feed');
+        $galleryBlock  = $blocks->firstWhere('type', 'gallery_preview');
+        $testiBlock    = $blocks->firstWhere('type', 'testimonial_slider');
+        $contactBlock  = $blocks->firstWhere('type', 'contact_strip');
+
+        // Stats extra data
+        $sd = $statsBlock ? ($statsBlock->extra ?? []) : [];
+
+        // Years of excellence from settings or fallback
+        $yearsOfExcellence = \App\Models\SiteSetting::get('established_year')
+            ? date('Y') - intval(\App\Models\SiteSetting::get('established_year'))
+            : '26';
     @endphp
 
-    {{-- ══════════════════════════════════════════════════
-     HERO — full viewport, parallax bg, animated text
-══════════════════════════════════════════════════ --}}
-    <section class="relative min-h-screen flex items-center overflow-hidden" style="background:#0c1322">
-
-        {{-- Background image --}}
-        @if ($hero && $hero->image_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($hero->image_path))
-            <div class="absolute inset-0" id="hero-bg"
-                style="background-image:url('{{ \Illuminate\Support\Facades\Storage::url($hero->image_path) }}');
-                background-size:cover; background-position:center;
-                transform:scale(1.08); transition:transform 8s ease; opacity:.35;">
+    {{-- ══════════════════════════════════════════════════════════════
+     § 1 — HERO — handled by x-page-hero component (unchanged)
+    ══════════════════════════════════════════════════════════════ --}}
+    @if ($heroBlock)
+        <x-page-hero :hero="$heroBlock">
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 bounce" aria-hidden="true">
+                <svg class="w-5 h-5 text-white/25" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+                </svg>
             </div>
-        @else
-            {{-- Animated gradient fallback --}}
-            <div class="absolute inset-0"
-                style="
-        background: linear-gradient(135deg,
-            rgba(26,35,126,0.98) 0%,
-            rgba(74,20,140,0.85) 40%,
-            rgba(183,28,28,0.70) 80%,
-            rgba(201,162,39,0.25) 100%);">
-            </div>
-            {{-- Geometric decoration --}}
-            <div class="absolute inset-0 overflow-hidden pointer-events-none">
-                <div class="absolute top-20 right-20 w-80 h-80 border border-white/8 rounded-full"
-                    style="animation:float 6s ease-in-out infinite"></div>
-                <div class="absolute top-40 right-40 w-48 h-48 border border-gold/15 rounded-full"
-                    style="animation:float 8s 1s ease-in-out infinite"></div>
-                <div class="absolute bottom-32 left-1/4 w-6 h-6 bg-gold/20 rounded-full"
-                    style="animation:float 5s 2s ease-in-out infinite"></div>
-                <div class="absolute top-1/3 left-16 w-3 h-3 bg-white/15 rounded-full"
-                    style="animation:float 7s .5s ease-in-out infinite"></div>
-            </div>
-        @endif
+        </x-page-hero>
+    @endif
 
-        {{-- Overlay gradient --}}
-        <div class="absolute inset-0"
-            style="background:linear-gradient(135deg,rgba(12,19,34,0.92) 0%,rgba(27,42,74,0.82) 55%,rgba(201,162,39,0.18) 100%)">
-        </div>
+    {{-- ══════════════════════════════════════════════════════════════
+     § 2 — ABOUT INTRO
+    ══════════════════════════════════════════════════════════════ --}}
+    @if ($aboutBlock && $aboutBlock->is_visible)
+        <section class="py-28" style="background:var(--cream)">
+            <div class="max-w-7xl mx-auto px-6 lg:px-10">
+                <div class="grid lg:grid-cols-2 gap-20 items-center">
 
-        {{-- Content --}}
-        <div class="relative max-w-7xl mx-auto px-4 lg:px-8 w-full py-36">
-            <div class="max-w-3xl mx-auto text-center">
-
-                {{-- Badge --}}
-                <div
-                    class="hero-text-1 inline-flex items-center gap-2 bg-white/10 border border-white/20
-                        text-white/90 text-xs font-semibold tracking-widest uppercase
-                        px-5 py-2.5 rounded-full mb-8 backdrop-blur-sm">
-                    <span class="w-1.5 h-1.5 bg-gold rounded-full" style="animation:pulse-ring 2s ease infinite"></span>
-                    {{ \App\Models\SiteSetting::get('established_year') ? 'Est. ' . \App\Models\SiteSetting::get('established_year') : 'Grade 1 to +2 Level' }}
-                </div>
-
-                {{-- Main heading --}}
-                <h1 class="hero-text-2 font-display font-bold leading-tight text-white mb-6"
-                    style="font-size:clamp(2.4rem, 6vw, 4.5rem); line-height:1.15">
-                    {{ $hero->title ?? \App\Models\SiteSetting::get('school_name', 'Education in Human Values') }}
-                </h1>
-
-                {{-- Subtitle --}}
-                <p class="hero-text-3 text-white/70 leading-relaxed mb-10 mx-auto max-w-xl"
-                    style="font-size:clamp(1rem, 2.5vw, 1.2rem)">
-                    {{ $hero->subtitle ?? \App\Models\SiteSetting::get('hero_subtitle', 'Nurturing excellence and character from Grade 1 to +2 with dedicated focus on holistic development.') }}
-                </p>
-
-                {{-- Buttons --}}
-                <div class="hero-btn flex flex-wrap gap-4 justify-center">
-                    <a href="{{ route('admissions.index') }}"
-                        class="group relative overflow-hidden bg-white text-navy font-bold px-8 py-4 rounded-xl
-                          shadow-lg hover:shadow-white/20 transition-all duration-300 text-sm">
-                        <span class="relative z-10 flex items-center gap-2">
-                            Apply for Admission
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </span>
-                        <div
-                            class="absolute inset-0 bg-gold translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    {{-- Text --}}
+                    <div class="reveal from-left">
+                        <div class="section-label">Who We Are</div>
+                        <h2 class="section-title">{{ $aboutBlock->title ?? 'About Our School' }}</h2>
+                        <div class="gold-bar mt-4 mb-8"></div>
+                        <div class="text-gray-500 text-[14.5px] leading-[1.85] space-y-4 mt-8"
+                            style="font-family:'Plus Jakarta Sans',sans-serif">
+                            {!! $aboutBlock->content ??
+                                '<p>At Sathya Sai Shiksha Sadan, we believe that education extends beyond textbooks. Our mission is to nurture young minds with a perfect blend of academic excellence and human values, creating responsible citizens and future leaders.</p><br><p>From primary education through higher secondary (+2) levels, we provide a supportive environment where students develop intellectually, emotionally, and morally. Our dedicated faculty ensures every student receives personalized attention and guidance.</p>'
+                            !!}
                         </div>
-                        <span
-                            class="absolute inset-0 flex items-center justify-center text-white font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 gap-2">
-                            Apply for Admission
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </span>
-                    </a>
-                    <a href="{{ $hero->button_url ?? route('page.show', 'about') }}"
-                        class="border-2 border-white/40 hover:border-gold text-white hover:text-gold
-                          font-semibold px-8 py-4 rounded-xl transition-all duration-300 text-sm">
-                        {{ $hero->button_text ?? 'Learn More' }}
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        {{-- Scroll hint --}}
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 bounce">
-            <span class="text-[10px] tracking-widest uppercase">Scroll</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-        </div>
-    </section>
-
-    {{-- ══════════════════════════════════════════════════
-     WELCOME / ABOUT INTRO
-══════════════════════════════════════════════════ --}}
-    <section class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-
-                {{-- Text --}}
-                <div class="reveal from-left">
-                    <p class="text-gold font-bold text-xs tracking-widest uppercase mb-3">Welcome</p>
-                    <h2 class="font-display font-bold text-navy mb-5 leading-tight"
-                        style="font-size:clamp(1.8rem,4vw,2.8rem)">
-                        Welcome to {{ \App\Models\SiteSetting::get('school_name', 'Sathya Sai Shiksha Sadan') }}
-                    </h2>
-                    <div class="gold-line mb-7"></div>
-                    <div class="text-gray-600 leading-relaxed space-y-4 text-base mt-8">
-                        {!! $about->content ??
-                            \App\Models\SiteSetting::get(
-                                'about_content',
-                                '<p>At Sathya Sai Shiksha Sadan, we believe that education extends beyond textbooks. Our mission is to nurture young minds with a perfect blend of academic excellence and human values, creating responsible citizens and future leaders.</p>
-                                            <p>From primary education through higher secondary (+2) levels, we provide a supportive environment where students develop intellectually, emotionally, and morally. Our dedicated faculty ensures every student receives personalised attention and guidance.</p>',
-                            ) !!}
-                    </div>
-                    <a href="{{ route('page.show', 'about') }}"
-                        class="group inline-flex items-center gap-2 mt-8 bg-navy hover:bg-gold text-white
-                      font-bold px-7 py-3.5 rounded-xl transition-all duration-300 text-sm shadow-md hover:shadow-lg">
-                        Learn More About Us
-                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </a>
-                </div>
-
-                {{-- Image --}}
-                <div class="reveal from-right relative">
-                    <div class="img-zoom rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
-                        @if ($about && $about->image_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($about->image_path))
-                            <img src="{{ \Illuminate\Support\Facades\Storage::url($about->image_path) }}"
-                                alt="{{ \App\Models\SiteSetting::get('school_name') }}" class="w-full h-full object-cover">
-                        @else
-                            <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=800" alt="Students"
-                                class="w-full h-full object-cover">
-                        @endif
-                    </div>
-                    {{-- Floating badge --}}
-                    <div
-                        class="float-badge absolute -bottom-5 -right-4 bg-gold text-white rounded-2xl px-6 py-4 shadow-xl text-center">
-                        <div class="font-display font-bold text-3xl leading-none" id="years-count">26+</div>
-                        <div class="text-white/80 text-xs mt-1">Years of Excellence</div>
-                    </div>
-                    {{-- Decorative accent --}}
-                    <div class="absolute -bottom-8 -left-8 w-28 h-28 bg-navy/5 rounded-2xl -z-10"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- ══════════════════════════════════════════════════
-     ACADEMIC PROGRAMS — 3 cards matching screenshot
-══════════════════════════════════════════════════ --}}
-    <section class="py-24 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 lg:px-8">
-            <div class="text-center mb-14 reveal">
-                <p class="text-gold font-bold text-xs tracking-widest uppercase mb-2">What We Offer</p>
-                <h2 class="font-display font-bold text-3xl lg:text-4xl text-navy mb-2">Our Academic Programs</h2>
-                <div class="gold-line mx-auto mb-4"></div>
-                <p class="text-gray-500 text-sm max-w-xl mx-auto mt-5">
-                    Comprehensive education from foundation to specialisation, designed to unlock every student's potential.
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-7 stagger">
-                @foreach ([
-            [
-                'title' => 'Primary Level (1–5)',
-                'desc' => 'Building strong foundations in core subjects with focus on holistic development.',
-                'badge' => 'Grades 1–5',
-                'color' => '#e53e3e',
-                'img' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700',
-                'url' => route('page.show', 'programs') . '#primary',
-            ],
-            [
-                'title' => 'Secondary Level (6–10)',
-                'desc' => 'Comprehensive education preparing students for higher secondary and beyond.',
-                'badge' => 'Grades 6–10',
-                'color' => '#1a237e',
-                'img' => 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700',
-                'url' => route('page.show', 'programs') . '#secondary',
-            ],
-            [
-                'title' => '+2 Science & Management',
-                'desc' => 'Specialised courses in Science and Management streams for grades 11 and 12.',
-                'badge' => 'Grades 11–12',
-                'color' => '#d97706',
-                'img' => 'https://images.unsplash.com/photo-1576319155264-99536e0be1ee?w=700',
-                'url' => route('page.show', 'programs') . '#science',
-            ],
-        ] as $prog)
-                    <div class="prog-card bg-white rounded-2xl overflow-hidden shadow-sm">
-                        {{-- Image --}}
-                        <div class="aspect-video overflow-hidden relative">
-                            <img src="{{ $prog['img'] }}" alt="{{ $prog['title'] }}"
-                                class="w-full h-full object-cover">
-                            <div class="absolute top-3 left-3 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-md"
-                                style="background:{{ $prog['color'] }}">
-                                {{ $prog['badge'] }}
-                            </div>
-                        </div>
-                        {{-- Body --}}
-                        <div class="p-6">
-                            <h3 class="font-display font-bold text-navy text-xl mb-2">{{ $prog['title'] }}</h3>
-                            <p class="text-gray-500 text-sm leading-relaxed mb-5">{{ $prog['desc'] }}</p>
-                            <a href="{{ $prog['url'] }}"
-                                class="group inline-flex items-center gap-1 text-sm font-bold transition-colors"
-                                style="color:{{ $prog['color'] }}">
-                                Learn More
-                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7" />
+                        <div class="flex flex-wrap gap-4 mt-10">
+                            <a href="{{ route('about') }}" class="btn-primary">
+                                Our Story
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                 </svg>
                             </a>
+                            <a href="{{ route('page.show', 'programs') }}" class="btn-ghost">View Programs</a>
                         </div>
                     </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
 
-    {{-- ══════════════════════════════════════════════════
-     FIVE HUMAN VALUES — left image, right numbered list
-══════════════════════════════════════════════════ --}}
-    <section class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    {{-- Image + floating badge --}}
+                    <div class="reveal from-right relative">
+                        <div class="img-zoom rounded-[24px] overflow-hidden shadow-[0_32px_80px_rgba(13,27,46,0.15)]" style="aspect-ratio:4/3">
+                            @if ($aboutBlock->image_exists)
+                                <img src="{{ $aboutBlock->image_url }}" alt="{{ \App\Models\SiteSetting::get('school_name') }}" class="w-full h-full object-cover">
+                            @else
+                                <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=800" alt="Students" class="w-full h-full object-cover">
+                            @endif
+                        </div>
 
-                {{-- Image --}}
-                <div class="reveal from-left order-2 lg:order-1">
-                    <div class="img-zoom rounded-2xl overflow-hidden aspect-[4/3] shadow-2xl">
-                        <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=800" alt="Campus"
-                            class="w-full h-full object-cover">
+                        <div class="float-badge absolute -bottom-6 -right-5 rounded-[20px] px-7 py-5 shadow-[0_20px_48px_rgba(201,162,39,0.35)] text-center"
+                            style="background:linear-gradient(135deg,#C9A227,#A8841F)">
+                            <div class="font-display font-bold text-white text-4xl leading-none" style="font-family:'Cormorant Garamond',serif">{{ $yearsOfExcellence }}+</div>
+                            <div class="text-white/80 text-[11px] font-medium mt-1.5 tracking-wide uppercase" style="font-family:'Plus Jakarta Sans',sans-serif">Years of Excellence</div>
+                        </div>
+
+                        <div class="absolute -bottom-10 -left-10 w-32 h-32 rounded-2xl -z-10 opacity-50" style="background:var(--cream-mid)"></div>
                     </div>
+
+                </div>
+            </div>
+        </section>
+    @endif
+
+    {{-- ══════════════════════════════════════════════════════════════
+     § 3 — ACADEMIC PROGRAMS
+    ══════════════════════════════════════════════════════════════ --}}
+    @if (!$programsBlock || $programsBlock->is_visible)
+        <section class="py-28" style="background:#fff">
+            <div class="max-w-7xl mx-auto px-6 lg:px-10">
+
+                <div class="text-center mb-16 reveal">
+                    <div class="section-label justify-center">What We Offer</div>
+                    <h2 class="section-title">{{ $programsBlock->title ?? 'Our Academic Programs' }}</h2>
+                    <p class="text-gray-400 text-sm mt-5 max-w-lg mx-auto leading-relaxed" style="font-family:'Plus Jakarta Sans',sans-serif">
+                        {{ $programsBlock->subtitle ?? 'Comprehensive education from foundation to specialisation, designed to unlock every student\'s potential.' }}
+                    </p>
                 </div>
 
-                {{-- Values list --}}
-                <div class="reveal from-right order-1 lg:order-2">
-                    <p class="text-gold font-bold text-xs tracking-widest uppercase mb-3">Our Philosophy</p>
-                    <h2 class="font-display font-bold text-3xl lg:text-4xl text-navy mb-4">Five Human Values</h2>
-                    <div class="gold-line mb-7"></div>
-                    <p class="text-gray-500 text-sm leading-relaxed mb-8 mt-7">
-                        Our educational philosophy is built on five pillars that shape character and guide our students:
-                    </p>
-
-                    <div class="space-y-3">
-                        @foreach ([['1', 'Truth (Sathya)', 'Honesty and integrity in thought, word, and deed', '#C9A227'], ['2', 'Right Conduct (Dharma)', 'Moral and ethical behavior in all situations', '#C9A227'], ['3', 'Peace (Shanti)', 'Inner harmony and calm disposition', '#C9A227'], ['4', 'Love (Prema)', 'Compassion and selfless service to others', '#C9A227'], ['5', 'Non-Violence (Ahimsa)', 'Respect for all life and peaceful coexistence', '#C9A227']] as [$n, $title, $desc, $color])
-                            <div class="value-item flex items-start gap-4">
-                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0 mt-0.5 shadow-md"
-                                    style="background:{{ $color }}">{{ $n }}</div>
-                                <div>
-                                    <h4 class="font-semibold text-navy text-sm">{{ $title }}</h4>
-                                    <p class="text-gray-500 text-xs mt-0.5 leading-relaxed">{{ $desc }}</p>
+                <div class="grid md:grid-cols-3 gap-6 stagger">
+                    @foreach ([
+                        ['Primary Level',      'Grades 1–5',   'Building strong foundations in core subjects with focus on holistic development.',             'var(--gold)',      'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700',  route('page.show','programs').'#primary'],
+                        ['Secondary Level',    'Grades 6–10',  'Comprehensive education preparing students for higher secondary and beyond.',                  'var(--navy)',      'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700',  route('page.show','programs').'#secondary'],
+                        ['+2 Science & Mgmt',  'Grades 11–12', 'Specialised streams in Science and Management for confident future pathways.',                 'var(--gold-dark)', 'https://images.unsplash.com/photo-1576319155264-99536e0be1ee?w=700',  route('page.show','programs').'#science'],
+                    ] as [$title, $badge, $desc, $color, $img, $url])
+                        <a href="{{ $url }}" class="prog-card block group">
+                            <div class="relative" style="aspect-ratio:3/4">
+                                <img src="{{ $img }}" alt="{{ $title }}" class="absolute inset-0 w-full h-full object-cover">
+                                <div class="prog-overlay"></div>
+                                <div class="absolute top-5 left-5 text-[10.5px] font-bold px-3.5 py-1.5 rounded-full tracking-wide uppercase"
+                                    style="background:{{ $color }};font-family:'Plus Jakarta Sans',sans-serif;color:{{ $color === 'var(--navy)' ? 'var(--gold)' : 'var(--navy)' }}">
+                                    {{ $badge }}
+                                </div>
+                                <div class="absolute bottom-0 left-0 right-0 p-7">
+                                    <h3 class="font-display font-bold text-white text-2xl mb-2 leading-tight">{{ $title }}</h3>
+                                    <p class="text-white/65 text-sm leading-relaxed mb-5" style="font-family:'Plus Jakarta Sans',sans-serif">{{ $desc }}</p>
+                                    <div class="flex items-center gap-2 font-semibold text-sm" style="color:var(--gold);font-family:'Plus Jakarta Sans',sans-serif">
+                                        Explore
+                                        <svg class="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
-                        @endforeach
-                    </div>
+                        </a>
+                    @endforeach
                 </div>
+
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
 
-    {{-- ══════════════════════════════════════════════════
-     LEGACY — "Our Story" badge, timeline, building image
-══════════════════════════════════════════════════ --}}
-    <section class="py-24 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
+    {{-- ══════════════════════════════════════════════════════════════
+     § 4 — FIVE HUMAN VALUES
+    ══════════════════════════════════════════════════════════════ --}}
+    @if (!$valuesBlock || $valuesBlock->is_visible)
+        <section class="py-28" style="background:var(--cream)">
+            <div class="max-w-7xl mx-auto px-6 lg:px-10">
+                <div class="grid lg:grid-cols-2 gap-20 items-center">
 
-                {{-- Timeline --}}
-                <div class="reveal from-left">
-                    <div
-                        class="inline-flex items-center gap-2 bg-gold/10 text-gold text-xs font-bold px-3 py-1.5 rounded-full mb-5">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Our Story
-                    </div>
-                    <h2 class="font-display font-bold text-3xl lg:text-4xl text-navy mb-4">A Legacy of Excellence</h2>
-                    <div class="gold-line mb-7"></div>
-                    <p class="text-gray-600 leading-relaxed mb-8 mt-7">
-                        Since our founding in 2000, Sathya Sai Shiksha Sadan has been a beacon of value-based education.
-                        What began as a small institution with a big vision has grown into a comprehensive school serving
-                        hundreds of students from Grade 1 to +2.
-                    </p>
-
-                    {{-- Timeline entries --}}
-                    <div class="space-y-4 relative">
-                        {{-- Vertical line --}}
-                        <div
-                            class="absolute left-[5px] top-3 bottom-3 w-px bg-gradient-to-b from-gold via-gold/40 to-transparent">
+                    <div class="reveal from-left order-2 lg:order-1">
+                        <div class="img-zoom rounded-[24px] overflow-hidden shadow-[0_32px_80px_rgba(13,27,46,0.13)]" style="aspect-ratio:4/3">
+                            <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=800" alt="Campus" class="w-full h-full object-cover">
                         </div>
+                    </div>
 
-                        @foreach ([['2000', 'Sathya Sai Shiksha Sadan established with a vision of value-based education'], ['2005', 'Expanded to secondary level — welcoming students up to Grade 10'], ['2010', '+2 Science stream introduced for Grades 11 & 12'], ['2015', '+2 Management stream launched to serve aspiring business leaders'], ['2026', '26 proud years of nurturing excellence and human values']] as [$year, $text])
-                            <div class="timeline-item flex gap-5 items-start pl-1">
-                                <div class="dot shrink-0"></div>
-                                <div>
-                                    <span
-                                        class="text-xs font-bold text-gold block leading-none mb-1">{{ $year }}</span>
-                                    <p class="text-gray-600 text-sm leading-relaxed transition-colors">{{ $text }}
-                                    </p>
+                    <div class="reveal from-right order-1 lg:order-2">
+                        <div class="section-label">Our Philosophy</div>
+                        <h2 class="section-title mb-4">{{ $valuesBlock->title ?? 'Five Human Values' }}</h2>
+                        <div class="gold-bar mb-8"></div>
+                        <p class="text-gray-500 text-sm leading-[1.85] mb-8 max-w-md mt-8" style="font-family:'Plus Jakarta Sans',sans-serif">
+                            {{ $valuesBlock->subtitle ?? 'Our educational philosophy is built on five pillars that shape character and guide every student\'s growth:' }}
+                        </p>
+
+                        <div class="space-y-1">
+                            @foreach ([
+                                ['1', 'Truth (Sathya)',            'Honesty and integrity in thought, word, and deed'],
+                                ['2', 'Right Conduct (Dharma)',    'Moral and ethical behavior in all situations'],
+                                ['3', 'Peace (Shanti)',            'Inner harmony and calm disposition'],
+                                ['4', 'Love (Prema)',              'Compassion and selfless service to others'],
+                                ['5', 'Non-Violence (Ahimsa)',     'Respect for all life and peaceful coexistence'],
+                            ] as [$n, $vtitle, $vdesc])
+                                <div class="value-item">
+                                    <div class="value-num">{{ $n }}</div>
+                                    <div>
+                                        <h4 class="font-semibold text-[14.5px]" style="color:var(--navy);font-family:'Plus Jakarta Sans',sans-serif">{{ $vtitle }}</h4>
+                                        <p class="text-gray-400 text-[12.5px] mt-0.5 leading-relaxed" style="font-family:'Plus Jakarta Sans',sans-serif">{{ $vdesc }}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                {{-- Building image --}}
-                <div class="reveal from-right relative">
-                    <div class="img-zoom rounded-2xl overflow-hidden aspect-[4/3] shadow-2xl">
-                        <img src="https://images.unsplash.com/photo-1607827448387-a67db1383b93?w=800"
-                            alt="School building" class="w-full h-full object-cover">
-                    </div>
-                    {{-- Stat badge on image --}}
-                    <div
-                        class="float-badge absolute bottom-5 right-5 bg-navy/90 backdrop-blur-sm text-white rounded-xl px-5 py-3 text-center border border-white/10">
-                        <div class="font-display font-bold text-3xl leading-none text-gold" id="counter-years">
-                            {{ \App\Models\SiteSetting::get('established_year') ? date('Y') - intval(\App\Models\SiteSetting::get('established_year')) : '26' }}+
+                            @endforeach
                         </div>
-                        <div class="text-white/70 text-xs mt-1">Years of Educational Excellence</div>
                     </div>
+
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
 
-    {{-- ══════════════════════════════════════════════════
-     LATEST NEWS — 3 cards with category badges
-══════════════════════════════════════════════════ --}}
-    @if ($latestNews->count())
-        <section class="py-24 bg-white">
-            <div class="max-w-7xl mx-auto px-4 lg:px-8">
+    {{-- ══════════════════════════════════════════════════════════════
+     § 5 — LEGACY / TIMELINE
+    ══════════════════════════════════════════════════════════════ --}}
+    @if (!$legacyBlock || $legacyBlock->is_visible)
+        @php
+            $timelineEntries = $legacyBlock?->extra['timeline'] ?? [
+                ['year' => '2000', 'text' => 'Sathya Sai Shiksha Sadan established with a vision of value-based education'],
+                ['year' => '2005', 'text' => 'Expanded to secondary level — welcoming students up to Grade 10'],
+                ['year' => '2010', 'text' => '+2 Science stream introduced for Grades 11 & 12'],
+                ['year' => '2015', 'text' => '+2 Management stream launched to serve aspiring business leaders'],
+                ['year' => '2026', 'text' => '26 proud years of nurturing excellence and human values'],
+            ];
+        @endphp
+        <section class="py-28" style="background:#fff">
+            <div class="max-w-7xl mx-auto px-6 lg:px-10">
+                <div class="grid lg:grid-cols-2 gap-20 items-center">
+
+                    <div class="reveal from-left">
+                        <div class="inline-flex items-center gap-2 text-[11px] font-bold px-4 py-2 rounded-full mb-7 tracking-wide uppercase border"
+                            style="background:rgba(201,162,39,0.08);color:var(--gold);border-color:rgba(201,162,39,0.22);font-family:'Plus Jakarta Sans',sans-serif">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Our Story
+                        </div>
+                        <h2 class="section-title mb-4">{{ $legacyBlock->title ?? 'A Legacy of Excellence' }}</h2>
+                        <div class="gold-bar mb-8"></div>
+                        <p class="text-gray-500 leading-[1.85] mb-10 text-[14.5px] mt-8 max-w-md" style="font-family:'Plus Jakarta Sans',sans-serif">
+                            {{ $legacyBlock->content ?? 'Since our founding in 2000, Sathya Sai Shiksha Sadan has been a beacon of value-based education. What began as a small institution with a big vision has grown into a comprehensive school serving hundreds of students from Grade 1 to +2.' }}
+                        </p>
+
+                        <div class="relative space-y-5">
+                            <div class="absolute left-[4.5px] top-3 bottom-3 w-px"
+                                style="background:linear-gradient(180deg,var(--gold) 0%,rgba(201,162,39,0.2) 85%,transparent 100%)">
+                            </div>
+                            @foreach ($timelineEntries as $entry)
+                                <div class="timeline-row pl-1.5 group cursor-default">
+                                    <div class="timeline-dot"></div>
+                                    <div>
+                                        <span class="timeline-year block mb-1">{{ $entry['year'] }}</span>
+                                        <p class="timeline-text">{{ $entry['text'] }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="reveal from-right relative">
+                        <div class="img-zoom rounded-[24px] overflow-hidden shadow-[0_32px_80px_rgba(13,27,46,0.14)]" style="aspect-ratio:4/3">
+                            @if ($legacyBlock?->image_exists)
+                                <img src="{{ $legacyBlock->image_url }}" alt="School building" class="w-full h-full object-cover">
+                            @elseif ($aboutBlock?->image_exists)
+                                <img src="{{ $aboutBlock->image_url }}" alt="{{ \App\Models\SiteSetting::get('school_name') }}" class="w-full h-full object-cover">
+                            @else
+                                <img src="https://images.unsplash.com/photo-1607827448387-a67db1383b93?w=800" alt="School building" class="w-full h-full object-cover">
+                            @endif
+                        </div>
+                        <div class="float-card absolute bottom-6 right-6 rounded-[18px] px-6 py-4 text-center border border-white/10"
+                            style="background:rgba(13,27,46,0.88);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)">
+                            <div class="font-display font-bold text-4xl leading-none" style="color:var(--gold-light);font-family:'Cormorant Garamond',serif">{{ $yearsOfExcellence }}+</div>
+                            <div class="text-white/50 text-[11px] mt-1.5 tracking-wide uppercase" style="font-family:'Plus Jakarta Sans',sans-serif">Years of Excellence</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    @endif
+
+    {{-- ══════════════════════════════════════════════════════════════
+     § 6 — GALLERY PREVIEW
+    ══════════════════════════════════════════════════════════════ --}}
+    @if ((!$galleryBlock || $galleryBlock->is_visible) && isset($galleryAlbums) && $galleryAlbums->count())
+        <section class="py-28" style="background:var(--cream)">
+            <div class="max-w-7xl mx-auto px-6 lg:px-10">
 
                 <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-14 reveal">
                     <div>
-                        <p class="text-gold font-bold text-xs tracking-widest uppercase mb-2">Stay Informed</p>
-                        <h2 class="font-display font-bold text-3xl lg:text-4xl text-navy mb-2">Latest News & Updates</h2>
-                        <div class="gold-line"></div>
-                        <p class="text-gray-500 text-sm mt-5">Stay informed about what's happening at SSSS</p>
+                        <div class="section-label">Campus Life</div>
+                        <h2 class="section-title mt-1">{{ $galleryBlock->title ?? 'Our Gallery' }}</h2>
+                        <div class="gold-bar mt-4"></div>
+                    </div>
+                    <a href="{{ route('gallery.index') }}"
+                        class="group mt-6 sm:mt-0 flex items-center gap-2 text-sm font-bold hover:text-navy transition-colors"
+                        style="color:var(--navy);opacity:.6;transition-timing-function:var(--ease-out)">
+                        {{ $galleryBlock->button_text ?? 'View Gallery' }}
+                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </a>
+                </div>
+
+                {{-- Masonry-style 4-up grid --}}
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 stagger">
+                    @foreach ($galleryAlbums->take(4) as $album)
+                        <a href="{{ route('gallery.show', $album->id) }}"
+                            class="gallery-item {{ $loop->first ? 'row-span-2 md:col-span-2' : '' }}"
+                            style="{{ $loop->first ? 'aspect-ratio:1/1' : 'aspect-ratio:4/3' }}">
+                            @if ($album->cover_url ?? null)
+                                <img src="{{ $album->cover_url }}" alt="{{ $album->name }}">
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-navy/20 to-navy/5 flex items-center justify-center">
+                                    <svg class="w-10 h-10 text-navy/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                            @endif
+                            <div class="gallery-overlay-text">
+                                <p class="text-white font-bold text-sm leading-tight" style="font-family:'Plus Jakarta Sans',sans-serif">
+                                    {{ $album->name }}
+                                </p>
+                                @if ($album->images_count)
+                                    <p class="text-white/60 text-[11px] mt-0.5">{{ $album->images_count }} photos</p>
+                                @endif
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+
+            </div>
+        </section>
+    @endif
+
+    {{-- ══════════════════════════════════════════════════════════════
+     § 7 — TESTIMONIALS
+    ══════════════════════════════════════════════════════════════ --}}
+    @if ((!$testiBlock || $testiBlock->is_visible) && isset($testimonials) && $testimonials->count())
+        <section class="py-28" style="background:#fff">
+            <div class="max-w-7xl mx-auto px-6 lg:px-10">
+
+                <div class="text-center mb-16 reveal">
+                    <div class="section-label justify-center">Voices</div>
+                    <h2 class="section-title">{{ $testiBlock->title ?? 'What Parents & Alumni Say' }}</h2>
+                    <div class="gold-bar mx-auto mt-4"></div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6 stagger">
+                    @foreach ($testimonials->take(3) as $t)
+                        <div class="testi-card" style="background:var(--cream)">
+                            <div class="testi-quote mb-3">"</div>
+                            <p class="text-gray-500 text-[13.5px] leading-[1.85] mb-6" style="font-family:'Plus Jakarta Sans',sans-serif">
+                                {{ $t->content ?? $t->message ?? $t->body }}
+                            </p>
+                            <div class="testi-stars mb-4">
+                                @for ($s = 0; $s < ($t->rating ?? 5); $s++) ★ @endfor
+                            </div>
+                            <div class="flex items-center gap-3 pt-4 border-t border-navy/6">
+                                @if ($t->avatar_url ?? $t->image_url ?? null)
+                                    <img src="{{ $t->avatar_url ?? $t->image_url }}" alt="{{ $t->name }}"
+                                        class="w-10 h-10 rounded-full object-cover border-2 border-gold/20">
+                                @else
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-sm shrink-0"
+                                        style="background:var(--gold)">
+                                        {{ strtoupper(substr($t->name ?? 'P', 0, 1)) }}
+                                    </div>
+                                @endif
+                                <div>
+                                    <p class="font-bold text-[13px]" style="color:var(--navy);font-family:'Plus Jakarta Sans',sans-serif">{{ $t->name }}</p>
+                                    @if ($t->role ?? $t->designation ?? null)
+                                        <p class="text-[11px] text-gray-400" style="font-family:'Plus Jakarta Sans',sans-serif">{{ $t->role ?? $t->designation }}</p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
+        </section>
+    @endif
+
+    {{-- ══════════════════════════════════════════════════════════════
+     § 8 — UPCOMING EVENTS
+    ══════════════════════════════════════════════════════════════ --}}
+    @if ((!$eventsBlock || $eventsBlock->is_visible) && isset($upcomingEvents) && $upcomingEvents->count())
+        <section class="py-28" style="background:#0d1b2e">
+            <div class="max-w-7xl mx-auto px-6 lg:px-10">
+                <div class="grid lg:grid-cols-2 gap-16 items-start">
+
+                    <div class="reveal from-left">
+                        <div class="inline-flex items-center gap-2 text-[11px] font-bold px-4 py-2 rounded-full mb-7 tracking-wide uppercase border"
+                            style="background:rgba(201,162,39,0.1);color:var(--gold);border-color:rgba(201,162,39,0.25);font-family:'Plus Jakarta Sans',sans-serif">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zM4 8h12v8H4V8z"/>
+                            </svg>
+                            What's Coming
+                        </div>
+                        <h2 class="section-title mb-4" style="color:#fff">{{ $eventsBlock->title ?? 'Upcoming Events' }}</h2>
+                        <div class="gold-bar mb-8"></div>
+                        <p class="text-white/40 text-[14px] leading-relaxed mt-8 mb-10 max-w-sm" style="font-family:'Plus Jakarta Sans',sans-serif">
+                            Stay connected with school life. Join us for these upcoming events and activities.
+                        </p>
+                        <a href="{{ route('events.index') }}" class="btn-primary">
+                            {{ $eventsBlock->button_text ?? 'View All Events' }}
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="reveal from-right">
+                        <div class="space-y-0">
+                            @foreach ($upcomingEvents->take(4) as $event)
+                                <div class="event-row">
+                                    <div class="event-date-box">
+                                        <div class="text-[11px] font-bold uppercase tracking-wide" style="color:var(--gold);font-family:'Plus Jakarta Sans',sans-serif">
+                                            {{ $event->start_date->format('M') }}
+                                        </div>
+                                        <div class="font-display font-bold text-2xl leading-tight text-white" style="font-family:'Cormorant Garamond',serif">
+                                            {{ $event->start_date->format('d') }}
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="font-bold text-white text-[14px] leading-snug mb-1" style="font-family:'Plus Jakarta Sans',sans-serif">
+                                            <a href="{{ route('events.show', $event->slug ?? $event->id) }}" class="hover:text-gold transition-colors" style="transition-timing-function:var(--ease-out)">
+                                                {{ $event->title }}
+                                            </a>
+                                        </h4>
+                                        @if ($event->location ?? null)
+                                            <p class="text-white/40 text-[12px] flex items-center gap-1.5" style="font-family:'Plus Jakarta Sans',sans-serif">
+                                                <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                                </svg>
+                                                {{ $event->location }}
+                                            </p>
+                                        @endif
+                                        @if ($event->excerpt ?? $event->description ?? null)
+                                            <p class="text-white/30 text-[12px] mt-1 leading-relaxed" style="font-family:'Plus Jakarta Sans',sans-serif">
+                                                {{ Str::limit($event->excerpt ?? $event->description, 80) }}
+                                            </p>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    @endif
+
+    {{-- ══════════════════════════════════════════════════════════════
+     § 9 — LATEST NEWS
+    ══════════════════════════════════════════════════════════════ --}}
+    @if ((!$newsBlock || $newsBlock->is_visible) && isset($latestNews) && $latestNews->count())
+        <section class="py-28" style="background:var(--cream)">
+            <div class="max-w-7xl mx-auto px-6 lg:px-10">
+
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-16 reveal">
+                    <div>
+                        <div class="section-label">{{ $newsBlock->subtitle ?? 'Stay Informed' }}</div>
+                        <h2 class="section-title mt-1">{{ $newsBlock->title ?? 'Latest News & Updates' }}</h2>
+                        <div class="gold-bar mt-4"></div>
                     </div>
                     <a href="{{ route('news.index') }}"
-                        class="group mt-6 sm:mt-0 inline-flex items-center gap-2 border border-gray-200 hover:border-gold
-                  text-navy hover:text-gold font-semibold text-sm px-5 py-2.5 rounded-xl transition-all">
-                        View All
-                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        class="group mt-6 sm:mt-0 flex items-center gap-2 text-sm font-bold text-navy/60 hover:text-navy transition-colors"
+                        style="transition-timing-function:var(--ease-out)">
+                        {{ $newsBlock->button_text ?? 'View All' }}
+                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
                     </a>
                 </div>
@@ -697,49 +707,41 @@
                 <div class="grid md:grid-cols-3 gap-7 stagger">
                     @foreach ($latestNews as $post)
                         @php
-                            $catColors = [
-                                'Achievement' => '#f59e0b',
-                                'Campus News' => '#e53e3e',
-                                'Student Success' => '#1a237e',
-                            ];
-                            $catColor = $catColors[$post->category] ?? '#6b7280';
+                            $catColors = ['Achievement' => '#D97706', 'Campus News' => '#1a237e', 'Student Success' => '#DC2626'];
+                            $catColor  = $catColors[$post->category] ?? '#6B7A8D';
                         @endphp
-                        <article
-                            class="news-card bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm flex flex-col">
-                            {{-- Image --}}
-                            <a href="{{ route('news.show', $post->slug) }}"
-                                class="block aspect-video overflow-hidden img-wrap">
-                                <img src="{{ $post->image_url }}" alt="{{ $post->title }}"
-                                    class="w-full h-full object-cover">
+                        <article class="news-card bg-white flex flex-col shadow-[0_4px_24px_rgba(13,27,46,0.06)] border border-navy/6">
+                            <a href="{{ route('news.show', $post->slug) }}" class="block aspect-video img-wrap">
+                                <img src="{{ $post->image_url }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
                             </a>
-
                             <div class="p-6 flex flex-col flex-1">
-                                {{-- Category badge --}}
                                 @if ($post->category)
                                     <div class="flex items-center gap-2 mb-4">
-                                        <div class="w-5 h-5 rounded flex items-center justify-center text-white text-[10px]"
-                                            style="background:{{ $catColor }}">★</div>
-                                        <span class="text-xs font-bold"
-                                            style="color:{{ $catColor }}">{{ $post->category }}</span>
+                                        <span class="w-2 h-2 rounded-full" style="background:{{ $catColor }}"></span>
+                                        <span class="text-[11px] font-bold tracking-wide uppercase"
+                                            style="color:{{ $catColor }};font-family:'Plus Jakarta Sans',sans-serif">{{ $post->category }}</span>
                                     </div>
                                 @endif
-
-                                {{-- Title --}}
-                                <h3 class="font-display font-bold text-navy text-xl mb-3 leading-snug flex-1">
-                                    <a href="{{ route('news.show', $post->slug) }}"
-                                        class="hover:text-gold transition-colors duration-200">
-                                        {{ $post->title }}
-                                    </a>
+                                <h3 class="news-title font-display font-bold text-navy text-xl mb-3 leading-snug flex-1">
+                                    <a href="{{ route('news.show', $post->slug) }}">{{ $post->title }}</a>
                                 </h3>
-
-                                {{-- Date --}}
-                                <div class="flex items-center gap-1.5 text-gray-400 text-xs mt-auto">
-                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ $post->published_at->format('M d, Y') }}
+                                @if ($post->excerpt)
+                                    <p class="text-gray-400 text-[13px] leading-relaxed mb-4" style="font-family:'Plus Jakarta Sans',sans-serif">
+                                        {{ Str::limit($post->excerpt, 100) }}
+                                    </p>
+                                @endif
+                                <div class="flex items-center justify-between pt-4 mt-auto border-t border-navy/5">
+                                    <span class="text-[11.5px] text-gray-400" style="font-family:'Plus Jakarta Sans',sans-serif">
+                                        {{ $post->published_at->format('d M Y') }}
+                                    </span>
+                                    <a href="{{ route('news.show', $post->slug) }}"
+                                        class="flex items-center gap-1 text-[12.5px] font-semibold hover:underline"
+                                        style="color:var(--gold);font-family:'Plus Jakarta Sans',sans-serif">
+                                        Read
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                        </svg>
+                                    </a>
                                 </div>
                             </div>
                         </article>
@@ -750,94 +752,101 @@
         </section>
     @endif
 
-    {{-- ══════════════════════════════════════════════════
-     GET IN TOUCH — 3 contact cards + button
-══════════════════════════════════════════════════ --}}
-    <section class="py-24 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 lg:px-8 text-center">
+    {{-- ══════════════════════════════════════════════════════════════
+     § 10 — GET IN TOUCH
+    ══════════════════════════════════════════════════════════════ --}}
+    @if (!$contactBlock || $contactBlock->is_visible)
+        <section class="py-28" style="background:#fff">
+            <div class="max-w-7xl mx-auto px-6 lg:px-10 text-center">
 
-            <div class="reveal">
-                <p class="text-gold font-bold text-xs tracking-widest uppercase mb-2">Reach Out</p>
-                <h2 class="font-display font-bold text-3xl lg:text-4xl text-navy mb-2">Get in Touch</h2>
-                <div class="gold-line mx-auto mb-4"></div>
-                <p class="text-gray-500 text-sm mt-5 mb-12 max-w-lg mx-auto">
-                    We'd love to hear from you. Reach out to our team for admissions, enquiries, or campus visits.
+                <div class="reveal">
+                    <div class="section-label justify-center">Reach Out</div>
+                    <h2 class="section-title">{{ $contactBlock->title ?? 'Get in Touch' }}</h2>
+                    <div class="gold-bar mx-auto mt-4 mb-5"></div>
+                    <p class="text-gray-400 text-sm mt-7 mb-14 max-w-md mx-auto leading-relaxed" style="font-family:'Plus Jakarta Sans',sans-serif">
+                        {{ $contactBlock->subtitle ?? 'We\'d love to hear from you. Reach out to our team for admissions, enquiries, or campus visits.' }}
+                    </p>
+                </div>
+
+                <div class="grid sm:grid-cols-3 gap-5 max-w-3xl mx-auto mb-12 stagger">
+                    @foreach ([
+                        [
+                            'icon'  => '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>',
+                            'title' => 'Call Us',
+                            'value' => \App\Models\SiteSetting::get('phone', '+977-1-XXXXXXX'),
+                            'sub'   => 'Mon–Fri, 8 AM – 4 PM',
+                            'href'  => 'tel:' . \App\Models\SiteSetting::get('phone', ''),
+                        ],
+                        [
+                            'icon'  => '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>',
+                            'title' => 'Email Us',
+                            'value' => \App\Models\SiteSetting::get('email', 'info@school.edu'),
+                            'sub'   => 'We reply within 24 hours',
+                            'href'  => 'mailto:' . \App\Models\SiteSetting::get('email', ''),
+                        ],
+                        [
+                            'icon'  => '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>',
+                            'title' => 'Visit Us',
+                            'value' => \App\Models\SiteSetting::get('address', 'Nepal'),
+                            'sub'   => '',
+                            'href'  => null,
+                        ],
+                    ] as $contact)
+                        <div class="contact-card p-8 text-center" style="background:var(--cream)">
+                            <div class="contact-icon" style="color:var(--gold)">{!! $contact['icon'] !!}</div>
+                            <h4 class="font-display font-bold text-navy text-lg mb-2">{{ $contact['title'] }}</h4>
+                            @if ($contact['href'])
+                                <a href="{{ $contact['href'] }}" class="text-gray-400 text-[13px] hover:text-navy transition-colors block"
+                                    style="font-family:'Plus Jakarta Sans',sans-serif">{{ $contact['value'] }}</a>
+                            @else
+                                <p class="text-gray-400 text-[13px]" style="font-family:'Plus Jakarta Sans',sans-serif">{{ $contact['value'] }}</p>
+                            @endif
+                            @if ($contact['sub'])
+                                <p class="text-gray-300 text-[11.5px] mt-1" style="font-family:'Plus Jakarta Sans',sans-serif">{{ $contact['sub'] }}</p>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="reveal">
+                    <a href="{{ route('contact.index') }}" class="btn-primary">
+                        {{ $contactBlock->button_text ?? 'Contact Us' }}
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+    @endif
+
+    {{-- ══════════════════════════════════════════════════════════════
+     § 11 — JOIN US CTA BANNER (unchanged design)
+    ══════════════════════════════════════════════════════════════ --}}
+    @if (!$ctaBlock || $ctaBlock->is_visible)
+        <section class="grand-cta py-16 text-center" data-particle-1="rgba(255,255,255,0.1)" data-particle-2="rgba(201,162,39,0.4)" style="background:#111a30">
+            {{-- Decorative rings --}}
+            <div class="absolute -top-24 -left-24 w-96 h-96 border rounded-full pointer-events-none" style="border-color:rgba(255,255,255,0.04)"></div>
+            <div class="absolute -bottom-24 -right-24 w-[500px] h-[500px] border rounded-full pointer-events-none" style="border-color:rgba(201,162,39,0.07)"></div>
+
+            <div class="relative max-w-2xl mx-auto px-4 reveal">
+                <div class="section-label justify-center" style="color:rgba(201,162,39,0.8)">Join Our Community</div>
+                <h2 class="font-display font-bold leading-tight mb-3 mt-2" style="font-size:clamp(2.2rem,5vw,4rem)">
+                    <span class="text-shimmer">{{ $ctaBlock->title ?? 'Join Our Learning Community' }}</span>
+                </h2>
+                <p class="text-white/50 mb-12 leading-relaxed text-[15px]" style="font-family:'Plus Jakarta Sans',sans-serif">
+                    {{ $ctaBlock->subtitle ?? 'Give your child the gift of quality education grounded in human values. Admissions are now open!' }}
                 </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <a href="{{ $ctaBlock->button_url ?? route('admissions.index') }}" class="btn-primary">
+                        {{ $ctaBlock->button_text ?? 'Apply Now' }}
+                    </a>
+                    <a href="{{ route('contact.index') }}" class="btn-ghost-white">Learn More</a>
+                </div>
             </div>
-
-            {{-- 3 cards --}}
-            <div class="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto mb-10 stagger">
-                @foreach ([['📞', 'Call Us', \App\Models\SiteSetting::get('phone', '+977-1-XXXXXXX'), 'Mon–Fri, 8 AM – 4 PM', 'tel:' . \App\Models\SiteSetting::get('phone', '')], ['📧', 'Email Us', \App\Models\SiteSetting::get('email', 'info@sathyasaishiksha.edu.np'), 'We reply within 24 hours', 'mailto:' . \App\Models\SiteSetting::get('email', '')], ['📍', 'Visit Us', \App\Models\SiteSetting::get('address', 'Sathya Sai Shiksha Sadan, Nepal'), '', null]] as [$icon, $title, $value, $sub, $href])
-                    <div class="contact-card bg-white rounded-2xl p-8 text-center">
-                        <div class="text-4xl mb-4">{{ $icon }}</div>
-                        <h4 class="font-display font-bold text-navy text-lg mb-2">{{ $title }}</h4>
-                        @if ($href)
-                            <a href="{{ $href }}"
-                                class="text-gray-500 text-sm hover:text-navy transition-colors block">{{ $value }}</a>
-                        @else
-                            <p class="text-gray-500 text-sm">{{ $value }}</p>
-                        @endif
-                        @if ($sub)
-                            <p class="text-gray-400 text-xs mt-1">{{ $sub }}</p>
-                        @endif
-                    </div>
-                @endforeach
-            </div>
-
-            <div class="reveal">
-                <a href="{{ route('contact.index') }}"
-                    class="group inline-flex items-center gap-2 bg-navy hover:bg-gold text-white
-                  font-bold px-8 py-4 rounded-xl transition-all duration-300 text-sm shadow-md hover:shadow-lg">
-                    Contact Us
-                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                </a>
-            </div>
-
-        </div>
-    </section>
-
-    {{-- ══════════════════════════════════════════════════
-     JOIN US CTA — matching "Join Our Learning Community"
-══════════════════════════════════════════════════ --}}
-    <section class="relative py-24 text-white text-center overflow-hidden"
-        style="background:linear-gradient(135deg,#1B2A4A 0%,#16223d 50%,#4a148c 100%)">
-
-        {{-- Decorative rings --}}
-        <div class="absolute inset-0 pointer-events-none overflow-hidden">
-            <div class="absolute -top-20 -left-20 w-80 h-80 border border-white/5 rounded-full"></div>
-            <div class="absolute -bottom-20 -right-20 w-96 h-96 border border-gold/10 rounded-full"></div>
-            <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] border border-white/5 rounded-full">
-            </div>
-        </div>
-
-        <div class="relative max-w-2xl mx-auto px-4 reveal">
-            <h2 class="font-display font-bold mb-4 shimmer-text" style="font-size:clamp(1.8rem,4vw,3rem)">
-                {{ $cta->title ?? 'Join Our Learning Community' }}
-            </h2>
-            <p class="text-white/65 mb-10 leading-relaxed">
-                {{ $cta->subtitle ?? 'Give your child the gift of quality education grounded in human values. Admissions are now open!' }}
-            </p>
-            <div class="flex flex-wrap gap-4 justify-center">
-                <a href="{{ route('admissions.index') }}"
-                    class="group relative overflow-hidden bg-white text-navy font-bold px-10 py-4 rounded-xl shadow-lg text-sm">
-                    <span class="relative z-10 group-hover:text-white transition-colors duration-300">Apply Now</span>
-                    <div
-                        class="absolute inset-0 bg-gold translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    </div>
-                </a>
-                <a href="{{ route('contact.index') }}"
-                    class="border-2 border-white/30 hover:border-gold text-white hover:text-gold
-                      font-semibold px-10 py-4 rounded-xl transition-all duration-300 text-sm">
-                    Learn More
-                </a>
-            </div>
-        </div>
-    </section>
+        </section>
+    @endif
 
 @endsection
 
@@ -845,68 +854,107 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // ── Scroll reveal with IntersectionObserver ─────────────────────────────
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        // Don't unobserve — allow re-animation if user scrolls back (optional)
-                    }
-                });
-            }, {
-                threshold: 0.12,
-                rootMargin: '0px 0px -40px 0px'
-            });
-
-            document.querySelectorAll('.reveal, .stagger, .gold-line').forEach(el => {
-                observer.observe(el);
-            });
-
-            // ── Hero background subtle pan on load ──────────────────────────────────
-            const heroBg = document.getElementById('hero-bg');
-            if (heroBg) {
-                setTimeout(() => {
-                    heroBg.style.transform = 'scale(1)';
-                }, 100);
-            }
-
-            // ── Animated number counters ────────────────────────────────────────────
-            function animateCounter(el, target, suffix = '+', duration = 1600) {
-                let start = 0;
-                const startTime = performance.now();
-                const update = (now) => {
-                    const elapsed = now - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    // Ease out quart
-                    const eased = 1 - Math.pow(1 - progress, 4);
-                    el.textContent = Math.round(eased * target) + suffix;
-                    if (progress < 1) requestAnimationFrame(update);
-                };
-                requestAnimationFrame(update);
-            }
-
-            // Counter observer
-            const counterObs = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const el = entry.target;
-                        const raw = el.dataset.count;
-                        if (raw) animateCounter(el, parseInt(raw), el.dataset.suffix || '+');
-                        counterObs.unobserve(el);
-                    }
-                });
-            }, {
-                threshold: 0.5
-            });
-
-            document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
-
-            // ── Smooth page entry ───────────────────────────────────────────────────
+            // ── Page fade-in ────────────────────────────────────────────
             document.body.style.opacity = '0';
-            document.body.style.transition = 'opacity .4s ease';
-            requestAnimationFrame(() => {
-                document.body.style.opacity = '1';
+            document.body.style.transition = 'opacity 0.35s cubic-bezier(0.23,1,0.32,1)';
+            requestAnimationFrame(() => requestAnimationFrame(() => { document.body.style.opacity = '1'; }));
+
+            // ── Tactile press feedback ──────────────────────────────────
+            document.querySelectorAll('.prog-card, .news-card, .contact-card, .stat-card, .testi-card, .gallery-item').forEach(el => {
+                el.addEventListener('mousedown', () => el.style.transition = 'transform 0.1s var(--ease-out)');
+                el.addEventListener('mouseup',   () => el.style.transition = '');
             });
+
+            // ── Scroll reveal (IntersectionObserver) ────────────────────
+            const revealObs = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('active'); revealObs.unobserve(e.target); } });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+            // ── Stagger children of .stagger containers ─────────────────
+            document.querySelectorAll('.stagger').forEach(container => {
+                Array.from(container.children).forEach((child, i) => {
+                    child.style.opacity    = '0';
+                    child.style.transform  = 'translateY(24px)';
+                    child.style.transition = `opacity 0.6s ${i * 0.1}s ease-out, transform 0.6s ${i * 0.1}s ease-out`;
+                });
+                const staggerObs = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        if (e.isIntersecting) {
+                            Array.from(e.target.children).forEach(child => {
+                                child.style.opacity   = '1';
+                                child.style.transform = 'none';
+                            });
+                            staggerObs.unobserve(e.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                staggerObs.observe(container);
+            });
+
+            // ── CTA particle canvas ─────────────────────────────────────
+            document.querySelectorAll('.grand-cta').forEach(section => {
+                const canvas = document.createElement('canvas');
+                canvas.className = 'cta-canvas';
+                section.prepend(canvas);
+                const ctx = canvas.getContext('2d');
+                const primaryColor   = section.getAttribute('data-particle-1') || 'rgba(255,255,255,0.2)';
+                const secondaryColor = section.getAttribute('data-particle-2') || 'rgba(201,162,39,0.3)';
+
+                const resize = () => { canvas.width = section.offsetWidth; canvas.height = section.offsetHeight; };
+                window.addEventListener('resize', resize);
+                resize();
+
+                const particles = Array.from({ length: 40 }, () => {
+                    const p = {};
+                    const init = () => {
+                        p.x      = Math.random() * canvas.width;
+                        p.y      = Math.random() * canvas.height;
+                        p.size   = Math.random() * 3 + 1;
+                        p.speedX = (Math.random() - 0.5) * 0.5;
+                        p.speedY = (Math.random() - 0.5) * 0.5;
+                        p.color  = Math.random() > 0.5 ? primaryColor : secondaryColor;
+                    };
+                    p.update = () => {
+                        p.x += p.speedX; p.y += p.speedY;
+                        if (p.x < 0 || p.x > canvas.width || p.y < 0 || p.y > canvas.height) init();
+                    };
+                    p.draw = () => { ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); };
+                    init();
+                    return p;
+                });
+
+                const animate = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    particles.forEach(p => { p.update(); p.draw(); });
+                    requestAnimationFrame(animate);
+                };
+                animate();
+            });
+
+            // ── Stat counters (animate numbers up) ─────────────────────
+            const counterEls = document.querySelectorAll('[data-count]');
+            if (counterEls.length) {
+                const countObs = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        if (!e.isIntersecting) return;
+                        const el     = e.target;
+                        const target = parseFloat(el.getAttribute('data-count'));
+                        const suffix = el.getAttribute('data-suffix') || '';
+                        const dur    = 1400;
+                        const start  = performance.now();
+                        const tick   = (now) => {
+                            const progress = Math.min((now - start) / dur, 1);
+                            const eased    = 1 - Math.pow(1 - progress, 3);
+                            el.textContent = Math.round(target * eased) + suffix;
+                            if (progress < 1) requestAnimationFrame(tick);
+                        };
+                        requestAnimationFrame(tick);
+                        countObs.unobserve(el);
+                    });
+                }, { threshold: 0.5 });
+                counterEls.forEach(el => countObs.observe(el));
+            }
         });
     </script>
 @endpush

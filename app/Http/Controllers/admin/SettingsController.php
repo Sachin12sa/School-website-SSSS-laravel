@@ -23,9 +23,13 @@ class SettingsController extends Controller
             'phone', 'email', 'address', 'map_embed',
             'mission', 'vision', 'history_intro', 'about_content', 'hero_subtitle',
             'facebook', 'twitter', 'instagram', 'youtube',
-            'meta_description', 'ga_id','popup_badge_text',   
-    'popup_subtitle',  
-    'popup_deadline', 'popup_mode', 'popup_image_link',
+            'meta_description', 'ga_id',
+            'popup_badge_text', 'popup_title', 'popup_subtitle', 'popup_deadline',
+            'popup_mode', 'popup_image_link', 'popup_primary_text', 'popup_primary_url',
+            'popup_secondary_text', 'popup_secondary_url', 'popup_pills',
+            'popup_show_on', 'popup_delay_ms', 'popup_hide_hours',
+            'admission_year', 'admission_form_intro', 'admission_class_options',
+            'admission_success_message',
         ];
 
         \App\Models\SiteSetting::set('popup_enabled', $request->has('popup_enabled') ? '1' : '0');
@@ -34,6 +38,14 @@ class SettingsController extends Controller
             if ($request->has($field)) {
                 SiteSetting::set($field, $request->input($field));
             }
+        }
+
+        if ($request->has('admission_visible_fields')) {
+            SiteSetting::set('admission_visible_fields', implode(',', $request->input('admission_visible_fields', [])));
+        }
+
+        if ($request->has('admission_required_fields')) {
+            SiteSetting::set('admission_required_fields', implode(',', $request->input('admission_required_fields', [])));
         }
 
         // ── 1.5. Popup Image upload ──────────────────────────────────────────

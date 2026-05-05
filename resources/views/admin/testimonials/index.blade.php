@@ -9,6 +9,14 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>Add Testimonial</a>
     </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        @foreach ([['Total Stories', $stats['total'] ?? 0], ['Published', $stats['published'] ?? 0], ['Featured', $stats['featured'] ?? 0], ['Hidden', $stats['hidden'] ?? 0]] as [$label, $value])
+            <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+                <p class="text-xs font-bold uppercase tracking-wide text-slate-400">{{ $label }}</p>
+                <p class="mt-2 font-display font-bold text-2xl text-navy-900">{{ $value }}</p>
+            </div>
+        @endforeach
+    </div>
     <div class="space-y-3">
         @forelse($testimonials as $t)
             <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex items-start justify-between gap-4">

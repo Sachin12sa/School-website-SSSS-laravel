@@ -19,6 +19,16 @@
                     </div>
                 @endforeach
             </dl>
+            @if (!empty($admission->extra_data))
+                <div class="mt-4 grid sm:grid-cols-2 gap-4">
+                    @foreach ($admission->extra_data as $label => $val)
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <dt class="text-xs font-semibold text-gray-400 uppercase tracking-wide">{{ str($label)->replace('_', ' ')->title() }}</dt>
+                            <dd class="text-navy font-medium mt-1">{{ $val ?? '—' }}</dd>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
             @if ($admission->message)
                 <div class="mt-4 bg-gray-50 rounded-xl p-4">
                     <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Message</p>

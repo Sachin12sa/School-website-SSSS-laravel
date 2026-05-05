@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{PageSection, Page};
+use App\Models\PageSection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class PageSectionController extends Controller
 {
@@ -15,6 +16,9 @@ class PageSectionController extends Controller
         'life-at-ssss'=> 'Life at SSSS',
         'boarding'    => 'Boarding',
         'about'       => 'About Us',
+        'transport'   => 'Transportation',
+        'contact'     => 'Contact',
+        'admissions'  => 'Admissions',
     ];
 
     public function index(string $pageKey)
@@ -43,13 +47,16 @@ class PageSectionController extends Controller
             'content'      => 'nullable|string',
             'badge_text'   => 'nullable|string|max:100',
             'badge_color'  => 'nullable|string|max:20',
-            'layout'       => 'required|in:default,image-left,image-right,full-image,cards,list',
+            'items_json'   => 'nullable|string',
+            'settings_json'=> 'nullable|string',
+            'layout'       => 'required|in:default,image-left,image-right,full-image,cards,list,stats,timeline,cta,program-tabs,steps,routes,video',
             'button_text'  => 'nullable|string|max:100',
             'button_url'   => 'nullable|string|max:500',
             'order'        => 'nullable|integer',
             'is_published' => 'nullable|boolean',
         ]);
 
+        $data = $this->decodeStructuredFields($data);
         $data['page_key']     = $pageKey;
         $data['is_published'] = $request->boolean('is_published');
         $data['order']        = $data['order'] ?? PageSection::forPage($pageKey)->count();
@@ -82,13 +89,16 @@ class PageSectionController extends Controller
             'content'      => 'nullable|string',
             'badge_text'   => 'nullable|string|max:100',
             'badge_color'  => 'nullable|string|max:20',
-            'layout'       => 'required|in:default,image-left,image-right,full-image,cards,list',
+            'items_json'   => 'nullable|string',
+            'settings_json'=> 'nullable|string',
+            'layout'       => 'required|in:default,image-left,image-right,full-image,cards,list,stats,timeline,cta,program-tabs,steps,routes,video',
             'button_text'  => 'nullable|string|max:100',
             'button_url'   => 'nullable|string|max:500',
             'order'        => 'nullable|integer',
             'is_published' => 'nullable|boolean',
         ]);
 
+        $data = $this->decodeStructuredFields($data);
         $data['is_published'] = $request->boolean('is_published');
 
         if ($request->hasFile('image')) {
@@ -130,5 +140,29 @@ class PageSectionController extends Controller
     {
         $section->update(['is_published' => !$section->is_published]);
         return back()->with('success', 'Visibility updated.');
+    }
+
+    protected function decodeStructuredFields(array $data): array
+    {
+        foreach (['items_json' => 'items', 'settings_json' => 'settings'] as $input => $column) {
+            $raw = trim((string) ($data[$input] ?? ''));
+            unset($data[$input]);
+
+            if ($raw === '') {
+                $data[$column] = null;
+                continue;
+            }
+
+            $decoded = json_decode($raw, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw ValidationException::withMessages([
+                    $input => 'Please enter valid JSON.',
+                ]);
+            }
+
+            $data[$column] = $decoded;
+        }
+
+        return $data;
     }
 }

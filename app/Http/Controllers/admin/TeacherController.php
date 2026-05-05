@@ -4,7 +4,17 @@ use App\Models\Teacher;
 use Illuminate\Http\Request;
 
 class TeacherController extends Controller {
-    public function index() { $teachers = Teacher::orderBy('order')->paginate(20); return view('admin.teachers.index', compact('teachers')); }
+    public function index() {
+        $teachers = Teacher::orderBy('order')->paginate(20);
+        $stats = [
+            'total' => Teacher::count(),
+            'published' => Teacher::where('is_published', true)->count(),
+            'hidden' => Teacher::where('is_published', false)->count(),
+            'departments' => Teacher::whereNotNull('department')->where('department', '!=', '')->distinct('department')->count('department'),
+        ];
+
+        return view('admin.teachers.index', compact('teachers', 'stats'));
+    }
     public function create() { return view('admin.teachers.form', ['teacher' => new Teacher]); }
     public function store(Request $request) {
         $data = $this->validated($request);
