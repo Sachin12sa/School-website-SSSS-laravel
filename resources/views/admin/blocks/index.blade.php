@@ -38,6 +38,40 @@
 
         @php
             // Map each block type to a rich config used for the card UI
+            $jsonExamples = [
+                'programs' => [
+                    'cards' => [
+                        ['title' => 'Primary Level', 'badge' => 'Grades 1-5', 'description' => 'Building strong foundations in core subjects with holistic development.', 'color' => 'var(--gold)', 'image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700', 'url' => '/programs#primary'],
+                        ['title' => 'Secondary Level', 'badge' => 'Grades 6-10', 'description' => 'Comprehensive education preparing students for higher secondary and beyond.', 'color' => 'var(--navy)', 'image' => 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700', 'url' => '/programs#secondary'],
+                        ['title' => '+2 Science & Mgmt', 'badge' => 'Grades 11-12', 'description' => 'Specialised streams for confident future pathways.', 'color' => '#A8841F', 'image' => 'https://images.unsplash.com/photo-1576319155264-99536e0be1ee?w=700', 'url' => '/programs#science'],
+                    ],
+                ],
+                'values' => [
+                    'items' => [
+                        ['number' => '1', 'title' => 'Truth (Sathya)', 'description' => 'Honesty and integrity in thought, word, and deed'],
+                        ['number' => '2', 'title' => 'Right Conduct (Dharma)', 'description' => 'Moral and ethical behavior in all situations'],
+                    ],
+                ],
+                'legacy' => [
+                    'timeline' => [
+                        ['year' => '2000', 'text' => 'Sathya Sai Shiksha Sadan established'],
+                        ['year' => '2026', 'text' => '26 proud years of nurturing excellence and human values'],
+                    ],
+                ],
+                'contact_strip' => [
+                    'cards' => [
+                        ['title' => 'Call Us', 'value' => '+977-1-XXXXXXX', 'sub' => 'Mon-Fri, 8 AM - 4 PM', 'href' => 'tel:+977-1-XXXXXXX'],
+                        ['title' => 'Email Us', 'value' => 'info@school.edu', 'sub' => 'We reply within 24 hours', 'href' => 'mailto:info@school.edu'],
+                        ['title' => 'Visit Us', 'value' => 'Sathya Sai Shiksha Sadan, Nepal', 'sub' => '', 'href' => null],
+                    ],
+                ],
+                'cta_banner' => [
+                    'secondary_button_text' => 'Learn More',
+                    'secondary_button_url' => '/contact',
+                    'particle_1' => 'rgba(255,255,255,0.1)',
+                    'particle_2' => 'rgba(201,162,39,0.4)',
+                ],
+            ];
             $blockMeta = [
                 'hero' => [
                     'label' => 'Hero Section',
@@ -55,7 +89,7 @@
                     'icon' =>
                         'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
                     'color' => '#1B2A4A',
-                    'fields' => ['stats', 'visible'],
+                    'fields' => ['stats', 'appearance', 'json', 'visible'],
                 ],
                 'about_intro' => [
                     'label' => 'Welcome / About Intro',
@@ -63,25 +97,25 @@
                     'hint' => 'Edit the full HTML in Admin → Settings → About & Mission for richer formatting.',
                     'icon' => 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
                     'color' => '#0f6e56',
-                    'fields' => ['title', 'content', 'image', 'visible'],
+                    'fields' => ['title', 'content', 'button_text', 'button_url', 'image', 'appearance', 'json', 'visible'],
                 ],
                 'programs' => [
                     'label' => 'Academic Programs',
                     'desc' => 'Three hover-animated program cards — Primary, Secondary, +2.',
-                    'hint' => 'Card content is static. Edit program details in Admin → Pages → Programs.',
+                    'hint' => 'Use Structured JSON to edit program cards, images, links, and card colors.',
                     'icon' =>
                         'M12 14l9-5-9-5-9 5 9 5z M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z',
                     'color' => '#C9A227',
-                    'fields' => ['title', 'subtitle', 'visible'],
+                    'fields' => ['title', 'subtitle', 'json', 'appearance', 'visible'],
                 ],
                 'values' => [
                     'label' => 'Five Human Values',
                     'desc' => 'Left campus image + right numbered list of Sathya, Dharma, Shanti, Prema, Ahimsa.',
-                    'hint' => 'Values list is part of school philosophy — toggle visibility here.',
+                    'hint' => 'Use Structured JSON to edit the values list. Upload an image to replace the left-side campus photo.',
                     'icon' =>
                         'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
                     'color' => '#C9A227',
-                    'fields' => ['visible'],
+                    'fields' => ['title', 'subtitle', 'image', 'json', 'appearance', 'visible'],
                 ],
                 'legacy' => [
                     'label' => 'Legacy / History Timeline',
@@ -89,7 +123,7 @@
                     'hint' => 'Edit the history intro text in Admin → Settings → About & Mission.',
                     'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
                     'color' => '#854F0B',
-                    'fields' => ['title', 'content', 'image', 'visible'],
+                    'fields' => ['title', 'content', 'image', 'json', 'appearance', 'visible'],
                 ],
                 'news_feed' => [
                     'label' => 'Latest News',
@@ -98,7 +132,7 @@
                     'icon' =>
                         'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z',
                     'color' => '#185FA5',
-                    'fields' => ['title', 'subtitle', 'visible'],
+                    'fields' => ['title', 'subtitle', 'button_text', 'button_url', 'appearance', 'visible'],
                 ],
                 'events_feed' => [
                     'label' => 'Upcoming Events',
@@ -106,7 +140,7 @@
                     'hint' => 'Add events in Admin → Events. Hidden automatically if no upcoming events exist.',
                     'icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
                     'color' => '#185FA5',
-                    'fields' => ['title', 'visible'],
+                    'fields' => ['title', 'subtitle', 'button_text', 'button_url', 'appearance', 'visible'],
                 ],
                 'gallery_preview' => [
                     'label' => 'Gallery Preview',
@@ -115,7 +149,7 @@
                     'icon' =>
                         'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z',
                     'color' => '#534AB7',
-                    'fields' => ['title', 'visible'],
+                    'fields' => ['title', 'subtitle', 'button_text', 'button_url', 'appearance', 'visible'],
                 ],
                 'testimonial_slider' => [
                     'label' => 'Testimonials',
@@ -124,7 +158,7 @@
                     'icon' =>
                         'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z',
                     'color' => '#534AB7',
-                    'fields' => ['title', 'visible'],
+                    'fields' => ['title', 'subtitle', 'button_text', 'button_url', 'appearance', 'visible'],
                 ],
                 'contact_strip' => [
                     'label' => 'Get in Touch',
@@ -133,7 +167,7 @@
                     'icon' =>
                         'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z',
                     'color' => '#0f6e56',
-                    'fields' => ['title', 'subtitle', 'visible'],
+                    'fields' => ['title', 'subtitle', 'button_text', 'button_url', 'json', 'appearance', 'visible'],
                 ],
                 'cta_banner' => [
                     'label' => 'Join Us — CTA Banner',
@@ -142,7 +176,7 @@
                     'icon' =>
                         'M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z',
                     'color' => '#4a148c',
-                    'fields' => ['title', 'subtitle', 'button_text', 'button_url', 'visible'],
+                    'fields' => ['title', 'subtitle', 'button_text', 'button_url', 'json', 'appearance', 'visible'],
                 ],
             ];
         @endphp
@@ -335,6 +369,90 @@
                                         </div>
                                     @endforeach
                                 </div>
+                            </div>
+                        @endif
+
+                        {{-- ── APPEARANCE CONTROLS ─────────────────────────────────── --}}
+                        @if (in_array('appearance', $fields))
+                            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                                <div class="flex items-center justify-between gap-3 mb-4">
+                                    <div>
+                                        <h4 class="font-display font-bold text-navy-900 text-sm">Template & Colors</h4>
+                                        <p class="text-slate-400 text-xs mt-0.5">Optional. Leave blank to keep the current design defaults.</p>
+                                    </div>
+                                </div>
+                                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Small Label</label>
+                                        <input type="text" name="extra[section_label]"
+                                            value="{{ old('extra.section_label', data_get($block->extra, 'section_label', '')) }}"
+                                            class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gold/30"
+                                            placeholder="e.g. What We Offer">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Template</label>
+                                        <select name="extra[template]"
+                                            class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gold/30">
+                                            @foreach (['default' => 'Default', 'compact' => 'Compact', 'editorial' => 'Editorial', 'feature' => 'Feature'] as $value => $label)
+                                                <option value="{{ $value }}" {{ data_get($block->extra, 'template', 'default') === $value ? 'selected' : '' }}>{{ $label }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @foreach ([
+                                        'background' => ['Section Background', 'var(--cream) or #ffffff'],
+                                        'accent' => ['Accent Color', 'var(--gold) or #C9A227'],
+                                        'card_bg' => ['Card Background', 'var(--cream) or #ffffff'],
+                                        'text_color' => ['Text Color', 'var(--navy) or #0D1B2E'],
+                                        'muted_color' => ['Muted Text', '#9CA3AF'],
+                                        'button_bg' => ['Button Color', 'var(--gold)'],
+                                        'button_text_color' => ['Button Text', '#ffffff'],
+                                        'overlay' => ['Image Overlay', 'rgba(13,27,46,0.92)'],
+                                    ] as $key => [$label, $placeholder])
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">{{ $label }}</label>
+                                            <input type="text" name="extra[{{ $key }}]"
+                                                value="{{ old("extra.$key", data_get($block->extra, $key, '')) }}"
+                                                class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gold/30"
+                                                placeholder="{{ $placeholder }}">
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="mt-4 flex flex-wrap gap-2">
+                                    @foreach ([
+                                        ['Clean White', '#fff', 'var(--gold)', '#0D1B2E'],
+                                        ['Soft Cream', 'var(--cream)', 'var(--gold)', '#0D1B2E'],
+                                        ['Navy Gold', '#0d1b2e', 'var(--gold)', '#ffffff'],
+                                        ['Warm Feature', '#fff7ed', '#D97706', '#0D1B2E'],
+                                    ] as [$name, $bg, $accent, $text])
+                                        <button type="button"
+                                            onclick="const box=this.closest('.bg-slate-50'); box.querySelector('[name=\'extra[background]\']').value='{{ $bg }}'; box.querySelector('[name=\'extra[accent]\']').value='{{ $accent }}'; box.querySelector('[name=\'extra[text_color]\']').value='{{ $text }}';"
+                                            class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-xs font-semibold text-slate-500 hover:border-gold hover:text-navy-900 transition-colors">
+                                            {{ $name }}
+                                        </button>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
+                        {{-- ── STRUCTURED JSON ─────────────────────────────────────── --}}
+                        @if (in_array('json', $fields))
+                            @php
+                                $storedStructured = collect($block->extra ?? [])
+                                    ->except(['template', 'background', 'accent', 'card_bg', 'text_color', 'students', 'teachers', 'years', 'programmes'])
+                                    ->filter(fn ($value) => filled($value))
+                                    ->all();
+                                $exampleStructured = $jsonExamples[$block->type] ?? [];
+                                $jsonValue = old('extra_json', json_encode($storedStructured ?: $exampleStructured, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+                            @endphp
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Structured Items JSON</label>
+                                <textarea name="extra_json" rows="9"
+                                    class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-gold/30 resize-y"
+                                    placeholder='{"cards":[{"title":"...","image":"..."}]}'>{{ $jsonValue }}</textarea>
+                                @error('extra_json')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                                <p class="text-slate-400 text-xs mt-2">Use this for cards, lists, timelines, button options, and custom images. Keep valid JSON: double quotes, commas between items, square brackets for lists.</p>
                             </div>
                         @endif
 

@@ -8,8 +8,8 @@
 
         {{-- ── TAB STATE ─────────────────────────────────────────────────────────────── --}}
         <div x-data="{
-            allowedTabs: ['identity', 'branding', 'social', 'seo', 'admissions', 'popup'],
-            tab: ['identity', 'branding', 'social', 'seo', 'admissions', 'popup'].includes(window.location.hash.replace('#', '')) ? window.location.hash.replace('#', '') : 'identity'
+            allowedTabs: ['identity', 'branding', 'footer', 'social', 'seo', 'admissions', 'popup'],
+            tab: ['identity', 'branding', 'footer', 'social', 'seo', 'admissions', 'popup'].includes(window.location.hash.replace('#', '')) ? window.location.hash.replace('#', '') : 'identity'
         }">
             <input type="hidden" name="active_tab" x-model="tab">
 
@@ -18,6 +18,7 @@
                 @foreach ([
             ['identity', 'School Identity', 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 5h2a2 2 0 002-2v-1a2 2 0 00-2-2h-2a2 2 0 00-2 2v1a2 2 0 002 2z'],
             ['branding', 'Logo & Branding', 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'],
+            ['footer', 'Footer', 'M4 5a2 2 0 012-2h12a2 2 0 012 2v14l-4-2-4 2-4-2-4 2V5z'],
             ['social', 'Social Media', 'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'],
             ['seo', 'SEO & Meta', 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'],
             ['admissions', 'Admissions Form', 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'],
@@ -271,6 +272,70 @@
                             hero.</p>
                     </div>
 
+                </div>
+            </div>
+
+            {{-- ════════════════════════════════════════════════════════
+         TAB — FOOTER
+    ════════════════════════════════════════════════════════ --}}
+            <div x-show="tab === 'footer'" x-cloak>
+                @php
+                    $defaultFooterLinks = json_encode([
+                        ['label' => 'Home', 'url' => '/'],
+                        ['label' => 'About Us', 'url' => '/about'],
+                        ['label' => 'Programs', 'url' => '/programs'],
+                        ['label' => 'Life at SSSS', 'url' => '/life-at-ssss'],
+                        ['label' => 'Boarding', 'url' => '/boarding'],
+                        ['label' => 'Admissions', 'url' => '/admissions'],
+                        ['label' => 'News', 'url' => '/news'],
+                        ['label' => 'Testimonials', 'url' => '/testimonials'],
+                        ['label' => 'Gallery', 'url' => '/gallery'],
+                        ['label' => 'Contact', 'url' => '/contact'],
+                    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+                @endphp
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-7 space-y-6">
+                    <h2 class="font-display font-bold text-navy-900 text-lg flex items-center gap-2">
+                        <span class="w-7 h-7 bg-navy-900 rounded-lg flex items-center justify-center text-white text-xs font-bold">F</span>
+                        Footer Content
+                    </h2>
+                    <p class="text-slate-400 text-xs">Edit footer text and links without changing the footer design, particles, colors, or layout.</p>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Footer About Text</label>
+                        <textarea name="footer_about" rows="3"
+                            class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30 resize-none"
+                            placeholder="Short footer introduction...">{{ \App\Models\SiteSetting::get('footer_about', \App\Models\SiteSetting::get('about_short', 'Nurturing young minds with academic excellence and human values since our establishment.')) }}</textarea>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Quick Links Heading</label>
+                            <input type="text" name="footer_quick_title"
+                                value="{{ \App\Models\SiteSetting::get('footer_quick_title', 'Quick Links') }}"
+                                class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Contact Heading</label>
+                            <input type="text" name="footer_contact_title"
+                                value="{{ \App\Models\SiteSetting::get('footer_contact_title', 'Contact Us') }}"
+                                class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Quick Links JSON</label>
+                        <textarea name="footer_links_json" rows="10"
+                            class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+                            placeholder='[{"label":"Home","url":"/"}]'>{{ \App\Models\SiteSetting::get('footer_links_json', $defaultFooterLinks) }}</textarea>
+                        <p class="text-slate-400 text-xs mt-2">Use this format: <code class="bg-slate-100 px-1 rounded">[{"label":"Admissions","url":"/admissions"}]</code>. Keep URLs as website paths like <code class="bg-slate-100 px-1 rounded">/contact</code>.</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Bottom Credit Text</label>
+                        <input type="text" name="footer_credit"
+                            value="{{ \App\Models\SiteSetting::get('footer_credit', 'Built with Laravel · PHP 8.4') }}"
+                            class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/30">
+                    </div>
                 </div>
             </div>
 

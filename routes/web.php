@@ -39,6 +39,7 @@ use App\Http\Controllers\Admin\HeroController;
 
 // Home
 Route::get('/',         [HomeController::class, 'index'])->name('home');
+Route::get('/healthz', [App\Http\Controllers\HealthController::class, 'show'])->name('healthz');
 
 // About keeps its friendly route name while using the same dynamic controller.
 Route::get('/about', [PageController::class, 'show'])->defaults('slug', 'about')->name('about');

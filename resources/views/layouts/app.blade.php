@@ -973,6 +973,28 @@
     ══════════════════════════════════════════════════════════ --}}
     <main>@yield('content')</main>
 
+    @php
+        $defaultFooterLinks = [
+            ['label' => 'Home', 'url' => route('home')],
+            ['label' => 'About Us', 'url' => route('about')],
+            ['label' => 'Programs', 'url' => route('page.show', 'programs')],
+            ['label' => 'Life at SSSS', 'url' => route('page.show', 'life-at-ssss')],
+            ['label' => 'Boarding', 'url' => route('page.show', 'boarding')],
+            ['label' => 'Admissions', 'url' => route('admissions.index')],
+            ['label' => 'News', 'url' => route('news.index')],
+            ['label' => 'Testimonials', 'url' => route('testimonials.index')],
+            ['label' => 'Gallery', 'url' => route('gallery.index')],
+            ['label' => 'Contact', 'url' => route('contact.index')],
+        ];
+        $footerLinksRaw = \App\Models\SiteSetting::get('footer_links_json');
+        $footerLinksDecoded = $footerLinksRaw ? json_decode($footerLinksRaw, true) : null;
+        $footerLinks = is_array($footerLinksDecoded) ? $footerLinksDecoded : $defaultFooterLinks;
+        $footerAbout = \App\Models\SiteSetting::get('footer_about', \App\Models\SiteSetting::get('about_short', 'Nurturing young minds with academic excellence and human values since our establishment.'));
+        $footerQuickTitle = \App\Models\SiteSetting::get('footer_quick_title', 'Quick Links');
+        $footerContactTitle = \App\Models\SiteSetting::get('footer_contact_title', 'Contact Us');
+        $footerCredit = \App\Models\SiteSetting::get('footer_credit', 'Built with Laravel · PHP 8.4');
+    @endphp
+
     {{-- ══════════════════════════════════════════════════════════
          FOOTER
     ══════════════════════════════════════════════════════════ --}}
@@ -1011,7 +1033,7 @@
 
                 <div class="w-10 h-0.5 rounded-full mb-5" style="background:var(--gold)"></div>
                 <p class="text-sm leading-relaxed mb-6 max-w-xs" style="color:rgba(255,255,255,0.45)">
-                    {{ \App\Models\SiteSetting::get('about_short', 'Nurturing young minds with academic excellence and human values since our establishment.') }}
+                    {{ $footerAbout }}
                 </p>
 
                 {{-- Socials --}}
@@ -1055,10 +1077,15 @@
 
             {{-- Quick Links --}}
             <div>
-                <h4 class="font-display font-semibold text-sm text-white mb-4">Quick Links</h4>
+                <h4 class="font-display font-semibold text-sm text-white mb-4">{{ $footerQuickTitle }}</h4>
                 <div class="w-8 h-0.5 rounded-full mb-4" style="background:var(--gold)"></div>
                 <ul class="space-y-2.5">
-                    @foreach ([['Home', route('home')], ['About Us', route('about')], ['Programs', route('page.show', 'programs')], ['Life at SSSS', route('page.show', 'life-at-ssss')], ['Boarding', route('page.show', 'boarding')], ['Admissions', route('admissions.index')], ['News', route('news.index')], ['Testimonials', route('testimonials.index')], ['Gallery', route('gallery.index')], ['Contact', route('contact.index')]] as [$l, $u])
+                    @foreach ($footerLinks as $link)
+                        @php
+                            $l = data_get($link, 'label');
+                            $u = data_get($link, 'url', '#');
+                        @endphp
+                        @continue(!filled($l))
                         <li>
                             <a href="{{ $u }}"
                                 class="flex items-center gap-2 text-sm group transition-colors"
@@ -1079,7 +1106,7 @@
 
             {{-- Contact --}}
             <div>
-                <h4 class="font-display font-semibold text-sm text-white mb-4">Contact Us</h4>
+                <h4 class="font-display font-semibold text-sm text-white mb-4">{{ $footerContactTitle }}</h4>
                 <div class="w-8 h-0.5 rounded-full mb-4" style="background:var(--gold)"></div>
                 <ul class="space-y-4">
                     @if (\App\Models\SiteSetting::get('address'))
@@ -1139,7 +1166,7 @@
                 style="color:rgba(255,255,255,0.28)">
                 <p>© {{ date('Y') }} <span style="color:rgba(255,255,255,0.48)">{{ $schoolName }}</span>. All
                     rights reserved.</p>
-                <p>Built with <span style="color:rgba(201,162,39,0.65)">♥</span> using Laravel · PHP 8.4</p>
+                <p>{{ $footerCredit }}</p>
             </div>
         </div>
     </footer>

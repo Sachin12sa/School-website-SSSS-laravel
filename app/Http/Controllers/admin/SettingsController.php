@@ -20,6 +20,8 @@ class SettingsController extends Controller
         // ── 1. Simple key/value settings ─────────────────────────────────────
         $textFields = [
             'school_name', 'school_tagline', 'established_year', 'about_short',
+            'footer_about', 'footer_quick_title', 'footer_contact_title', 'footer_credit',
+            'footer_links_json',
             'phone', 'email', 'address', 'map_embed',
             'mission', 'vision', 'history_intro', 'about_content', 'hero_subtitle',
             'facebook', 'twitter', 'instagram', 'youtube',

@@ -50,6 +50,7 @@ class BlockController extends Controller
             'is_visible'  => 'nullable|boolean',
             // stats block extras
             'extra'                  => 'nullable|array',
+            'extra_json'             => 'nullable|string',
             'extra.students'         => 'nullable|string|max:20',
             'extra.teachers'         => 'nullable|string|max:20',
             'extra.years'            => 'nullable|string|max:20',
@@ -57,9 +58,21 @@ class BlockController extends Controller
         ]);
 
         // Merge extra fields when present (stats counters etc.)
+        $extra = $block->extra ?? [];
         if ($request->has('extra')) {
-            $data['extra'] = $request->input('extra');
+            $extra = array_replace_recursive($extra, $request->input('extra', []));
         }
+        if ($request->filled('extra_json')) {
+            $decoded = json_decode($request->input('extra_json'), true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return back()
+                    ->withErrors(['extra_json' => 'Structured JSON is not valid. Please check commas, quotes, and brackets.'])
+                    ->withInput();
+            }
+            $extra = array_replace_recursive($extra, $decoded ?: []);
+        }
+        unset($data['extra_json']);
+        $data['extra'] = $extra ?: null;
 
         // Checkbox sends "1" when checked, nothing when unchecked
         $data['is_visible'] = $request->boolean('is_visible');

@@ -1,49 +1,50 @@
-# -------------------------
-# Stage 1: Frontend build
-# -------------------------
-FROM node:20 AS frontend-builder
+FROM node:20-alpine AS frontend-builder
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
-COPY . .
+COPY resources ./resources
+COPY public ./public
+COPY vite.config.js ./
 RUN npm run build
 
 
-# -------------------------
-# Stage 2: PHP App
-# -------------------------
 FROM php:8.3-fpm-alpine
 
-# System dependencies
 RUN apk add --no-cache \
-    curl git zip unzip libpng-dev libjpeg-turbo-dev freetype-dev \
-    libzip-dev oniguruma-dev nginx
+    curl \
+    freetype-dev \
+    git \
+    icu-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    libpq-dev \
+    libzip-dev \
+    nginx \
+    oniguruma-dev \
+    unzip \
+    zip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install bcmath exif gd intl mbstring pcntl pdo pdo_mysql pdo_pgsql zip
 
-# PHP extensions
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl gd
-
-# Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Copy project
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts
+
 COPY . .
-
-# Copy frontend build
 COPY --from=frontend-builder /app/public/build ./public/build
+COPY docker/nginx.conf /etc/nginx/http.d/default.conf
+COPY docker/entrypoint.sh /usr/local/bin/render-entrypoint
 
-# 🔥 IMPORTANT FIX
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+RUN composer dump-autoload --optimize \
+    && mkdir -p storage/app/public storage/framework/cache/data storage/framework/sessions storage/framework/views bootstrap/cache \
+    && chmod +x /usr/local/bin/render-entrypoint \
+    && chown -R www-data:www-data storage bootstrap/cache
 
-# Permissions
-RUN chmod -R 775 storage bootstrap/cache
-
-# Expose Render port
 EXPOSE 10000
 
-# Simple Laravel server (IMPORTANT for Render)
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+CMD ["/usr/local/bin/render-entrypoint"]

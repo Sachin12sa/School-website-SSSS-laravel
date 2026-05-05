@@ -11,6 +11,7 @@ storage/framework/views/*
 .editorconfig
 phpunit.xml
 tests
-# docker (removed to allow COPY in Dockerfile)
-Dockerfile
 README.md
+school-website.zip
+school_website
+*.zip

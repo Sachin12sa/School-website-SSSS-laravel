@@ -21,23 +21,8 @@ class HomePageBlockSeeder extends Seeder
 
         $blocks = [
 
-            // ── 1. HERO ─────────────────────────────────────────────────────
-            [
-                'type'        => 'hero',
-                'title'       => 'Sathya Sai Shiksha Sadan',
-                'subtitle'    => 'Nurturing excellence and character from Grade 1 to +2 with dedicated focus on holistic development and human values.',
-                'content'     => null,
-                'button_text' => 'Apply for Admission',
-                'button_url'  => '/admissions',
-                'image_path'  => null,
-                'is_visible'  => true,
-                'order'       => 0,
-                'extra'       => [
-                    'secondary_button_text' => 'Learn More',
-                    'secondary_button_url' => '/about',
-                    'badge_text' => 'Grade 1 to +2 Level · Value-Based Education',
-                ],
-            ],
+            
+            
 
             // ── 2. STATS ────────────────────────────────────────────────────
             [
@@ -69,7 +54,15 @@ class HomePageBlockSeeder extends Seeder
                 'image_path'  => null,
                 'is_visible'  => true,
                 'order'       => 2,
-                'extra'       => null,
+                'extra'       => [
+                    'background' => '#fff',
+                    'accent' => 'var(--gold)',
+                    'cards' => [
+                        ['title' => 'Primary Level', 'badge' => 'Grades 1-5', 'description' => 'Building strong foundations in core subjects with focus on holistic development.', 'color' => 'var(--gold)', 'image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700', 'url' => '/programs#primary'],
+                        ['title' => 'Secondary Level', 'badge' => 'Grades 6-10', 'description' => 'Comprehensive education preparing students for higher secondary and beyond.', 'color' => 'var(--navy)', 'image' => 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700', 'url' => '/programs#secondary'],
+                        ['title' => '+2 Science & Mgmt', 'badge' => 'Grades 11-12', 'description' => 'Specialised streams in Science and Management for confident future pathways.', 'color' => 'var(--gold-dark)', 'image' => 'https://images.unsplash.com/photo-1576319155264-99536e0be1ee?w=700', 'url' => '/programs#science'],
+                    ],
+                ],
             ],
 
             // ── 4. PROGRAMS ───────────────────────────────────────────────────
@@ -83,7 +76,17 @@ class HomePageBlockSeeder extends Seeder
                 'image_path'  => null,
                 'is_visible'  => true,
                 'order'       => 3,
-                'extra'       => null,
+                'extra'       => [
+                    'background' => 'var(--cream)',
+                    'accent' => 'var(--gold)',
+                    'items' => [
+                        ['number' => '1', 'title' => 'Truth (Sathya)', 'description' => 'Honesty and integrity in thought, word, and deed'],
+                        ['number' => '2', 'title' => 'Right Conduct (Dharma)', 'description' => 'Moral and ethical behavior in all situations'],
+                        ['number' => '3', 'title' => 'Peace (Shanti)', 'description' => 'Inner harmony and calm disposition'],
+                        ['number' => '4', 'title' => 'Love (Prema)', 'description' => 'Compassion and selfless service to others'],
+                        ['number' => '5', 'title' => 'Non-Violence (Ahimsa)', 'description' => 'Respect for all life and peaceful coexistence'],
+                    ],
+                ],
             ],
 
             // ── 5. FIVE HUMAN VALUES ──────────────────────────────────────────
@@ -97,7 +100,10 @@ class HomePageBlockSeeder extends Seeder
                 'image_path'  => null,
                 'is_visible'  => true,
                 'order'       => 4,
-                'extra'       => null,
+                'extra'       => [
+                    'background' => '#fff',
+                    'card_bg' => 'var(--cream)',
+                ],
             ],
 
             // ── 6. LEGACY / HISTORY TIMELINE ─────────────────────────────────
@@ -133,7 +139,13 @@ class HomePageBlockSeeder extends Seeder
                 'image_path'  => null,
                 'is_visible'  => true,
                 'order'       => 6,
-                'extra'       => null,
+                'extra'       => [
+                    'background' => '#111a30',
+                    'secondary_button_text' => 'Learn More',
+                    'secondary_button_url' => '/contact',
+                    'particle_1' => 'rgba(255,255,255,0.1)',
+                    'particle_2' => 'rgba(201,162,39,0.4)',
+                ],
             ],
 
             // ── 8. EVENTS FEED ────────────────────────────────────────────────
