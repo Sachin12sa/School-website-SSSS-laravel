@@ -1,6 +1,6 @@
 # Render Deployment
 
-This app is prepared for Render using Docker, PHP 8.3, Nginx, PHP-FPM, and Render Postgres.
+This app is prepared for Render using Docker, PHP 8.4, Nginx, PHP-FPM, and Render Postgres.
 
 ## What Render Will Create
 
