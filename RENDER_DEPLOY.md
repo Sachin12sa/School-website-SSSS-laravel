@@ -7,8 +7,8 @@ This app is prepared for Render using Docker, PHP 8.3, Nginx, PHP-FPM, and Rende
 - A free Docker web service named `school-website-demo`
 - A free Postgres database named `school-website-demo-db`
 - A generated Laravel `APP_KEY`
-- Automatic migrations before every deploy
-- Demo seed data after the first successful deploy
+- Automatic migrations at app startup
+- Demo seed data at app startup only when the database is empty
 
 Render supports Docker-based services and recommends Docker for PHP apps because PHP is not one of its native runtimes. Render also provides free web services and free Postgres for demos/testing, but not production.
 

@@ -7,8 +7,6 @@ services:
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /healthz
-    preDeployCommand: php artisan migrate --force
-    initialDeployHook: php artisan db:seed --force
     envVars:
       - key: APP_NAME
         value: "Sathya Sai Shiksha Sadan"
@@ -40,6 +38,10 @@ services:
         value: public
       - key: MAIL_MAILER
         value: log
+      - key: RUN_MIGRATIONS
+        value: "true"
+      - key: RUN_DEMO_SEEDING
+        value: "true"
 
 databases:
   - name: school-website-demo-db
