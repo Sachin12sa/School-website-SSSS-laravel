@@ -95,13 +95,14 @@ class PageBlock extends Model
     // ── Static helpers ─────────────────────────────────────────────────────────
 
     /**
-     * Cached homepage block collection (15-minute TTL).
-     * Returns ALL blocks so the controller/view can filter by type.
+     * Homepage block collection.
+     * Avoid caching Eloquent objects because serialized model collections can
+     * become incomplete after container deploys or PHP/framework changes.
      */
-    public static function cachedHomepageBlocks()
+    public static function homepageBlocks()
     {
-        return Cache::remember('homepage_blocks', now()->addMinutes(15), function () {
-            return static::homepage()->get();
-        });
+        Cache::forget('homepage_blocks');
+
+        return static::homepage()->get();
     }
 }

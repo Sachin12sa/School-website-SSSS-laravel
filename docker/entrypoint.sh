@@ -13,6 +13,8 @@ if echo "${APP_KEY:-}" | grep -Eq '^[A-Za-z0-9+/]{43}=$'; then
     export APP_KEY="base64:${APP_KEY}"
 fi
 
+php artisan cache:clear || true
+
 if [ "${RUN_MIGRATIONS:-false}" = "true" ]; then
     php artisan migrate --force
 fi
