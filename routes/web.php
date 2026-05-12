@@ -1,26 +1,26 @@
 <?php
 
-use App\Http\Controllers\admin\AdmissionController  as AdminAdmissionController;
+use App\Http\Controllers\Admin\AdmissionController  as AdminAdmissionController;
 
 // ── Public controllers ───────────────────────────────────────────────────────
-use App\Http\Controllers\admin\AuthController;
-use App\Http\Controllers\admin\BlockController;
-use App\Http\Controllers\admin\ContactController    as AdminContactController;
-use App\Http\Controllers\admin\DashboardController;
-use App\Http\Controllers\admin\EventController      as AdminEventController;
-use App\Http\Controllers\admin\FaqController        as AdminFaqController;
-use App\Http\Controllers\admin\GalleryController    as AdminGalleryController;
-use App\Http\Controllers\admin\MenuController;
-use App\Http\Controllers\admin\MenuItemController;
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BlockController;
+use App\Http\Controllers\Admin\ContactController    as AdminContactController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EventController      as AdminEventController;
+use App\Http\Controllers\Admin\FaqController        as AdminFaqController;
+use App\Http\Controllers\Admin\GalleryController    as AdminGalleryController;
+use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\CalendarController;
 
 // ── Admin controllers ────────────────────────────────────────────────────────
-use App\Http\Controllers\admin\NewsController       as AdminNewsController;
-use App\Http\Controllers\admin\PageSectionController;
-use App\Http\Controllers\admin\SettingsController;
-use App\Http\Controllers\admin\TeacherController    as AdminTeacherController;
-use App\Http\Controllers\admin\TestimonialController;
-use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\Admin\NewsController       as AdminNewsController;
+use App\Http\Controllers\Admin\PageSectionController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\TeacherController    as AdminTeacherController;
+use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\TransportController;
@@ -34,7 +34,7 @@ use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\admin\HeroController;
+use App\Http\Controllers\Admin\HeroController;
  
 
 // Home

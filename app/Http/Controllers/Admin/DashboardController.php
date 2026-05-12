@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\admin;
+<?php namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\{NewsPost, Event, Admission, Contact, Teacher, Gallery};
 
