@@ -27,6 +27,7 @@ class GalleryController extends Controller
             'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
             'order'       => 'nullable|integer',
+            'cover_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:51200',
         ]);
         $data['is_published'] = $request->boolean('is_published');
 
@@ -53,6 +54,7 @@ class GalleryController extends Controller
             'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
             'order'       => 'nullable|integer',
+            'cover_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:51200',
         ]);
         $data['is_published'] = $request->boolean('is_published');
 
@@ -98,13 +100,31 @@ class GalleryController extends Controller
     {
         $request->validate([
             'images'   => 'required|array|max:20',
-            'images.*' => 'required|image|mimes:jpg,jpeg,png,webp,gif|max:10240', // Max 10MB per file before compress
+            'images.*' => 'required|file|mimes:jpg,jpeg,png,webp,gif,mp4,mov,webm,avi|max:204800',
         ]);
 
         $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
         $uploaded = 0;
 
         foreach ($request->file('images', []) as $i => $file) {
+            $mime = (string) $file->getMimeType();
+            $isVideo = str_starts_with($mime, 'video/');
+
+            if ($isVideo) {
+                $path = $file->store('galleries/' . $gallery->id . '/videos', 'public');
+
+                GalleryImage::create([
+                    'gallery_id'  => $gallery->id,
+                    'image_path'  => $path,
+                    'media_type'  => 'video',
+                    'caption'     => $request->input("captions.{$i}", ''),
+                    'order'       => $gallery->images()->count(),
+                ]);
+
+                $uploaded++;
+                continue;
+            }
+
             // Generate a unique filename and set a path
             $filename = uniqid('img_') . '.webp';
             $path = 'galleries/' . $gallery->id . '/' . $filename;
@@ -120,13 +140,14 @@ class GalleryController extends Controller
             GalleryImage::create([
                 'gallery_id' => $gallery->id,
                 'image_path' => $path,
+                'media_type' => 'image',
                 'caption'    => $request->input("captions.{$i}", ''),
                 'order'      => $gallery->images()->count(),
             ]);
             $uploaded++;
         }
 
-        return back()->with('success', "{$uploaded} photo(s) optimized and uploaded successfully.");
+        return back()->with('success', "{$uploaded} media file(s) uploaded successfully.");
     }
 
     /**

@@ -31,6 +31,16 @@ class Gallery extends Model
             // Return relative URL so it works regardless of port/host (8000 vs 8001)
             return parse_url(Storage::url($this->cover_image), PHP_URL_PATH);
         }
+
+        $firstImage = $this->images()
+            ->where('media_type', 'image')
+            ->whereNotNull('image_path')
+            ->first();
+
+        if ($firstImage) {
+            return $firstImage->url;
+        }
+
         return 'https://placehold.co/600x400/1B2A4A/C9A227?text=' . urlencode($this->name);
     }
 }

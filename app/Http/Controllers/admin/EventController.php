@@ -43,6 +43,7 @@ class EventController extends Controller {
             'is_published' => 'boolean',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:51200',
         ]);
     }
 }

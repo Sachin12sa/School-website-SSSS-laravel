@@ -56,7 +56,13 @@
         @if ($gallery->exists)
             {{-- Upload more images --}}
             <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-                <h2 class="font-display font-bold text-navy-900 text-lg mb-5">Upload Photos</h2>
+                <h2 class="font-display font-bold text-navy-900 text-lg mb-5">Upload Photos & Videos</h2>
+                @error('upload')
+                    <p class="mb-3 text-red-500 text-xs font-semibold">{{ $message }}</p>
+                @enderror
+                @error('images')
+                    <p class="mb-3 text-red-500 text-xs font-semibold">{{ $message }}</p>
+                @enderror
                 <form action="{{ route('admin.gallery.images.upload', $gallery) }}" method="POST"
                     enctype="multipart/form-data" class="space-y-4">
                     @csrf
@@ -67,9 +73,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        <input type="file" name="images[]" multiple accept="image/*"
+                        <input type="file" name="images[]" multiple accept="image/*,video/mp4,video/quicktime,video/webm,video/x-msvideo"
                             class="w-full text-sm text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-navy-900 file:text-white file:text-sm file:font-semibold hover:file:bg-gold-500 file:transition-colors cursor-pointer">
-                        <p class="text-slate-400 text-xs mt-2">Select multiple images at once. Max 5MB each.</p>
+                        <p class="text-slate-400 text-xs mt-2">Select images or videos. Images are optimized automatically. Max 200MB per file.</p>
+                        @error('images.*')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
                     </div>
                     <button type="submit"
                         class="bg-navy-900 hover:bg-gold-500 text-white font-semibold px-6 py-2.5 rounded-xl transition-colors text-sm">Upload
@@ -80,12 +89,17 @@
             {{-- Existing images --}}
             @if ($gallery->images->count())
                 <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-                    <h2 class="font-display font-bold text-navy-900 text-lg mb-5">Photos ({{ $gallery->images->count() }})
+                    <h2 class="font-display font-bold text-navy-900 text-lg mb-5">Media ({{ $gallery->images->count() }})
                     </h2>
                     <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
                         @foreach ($gallery->images as $img)
                             <div class="relative group aspect-square">
-                                <img src="{{ $img->url }}" class="w-full h-full object-cover rounded-xl">
+                                @if ($img->is_video)
+                                    <video src="{{ $img->url }}" class="w-full h-full object-cover rounded-xl" muted preload="metadata"></video>
+                                    <span class="absolute left-2 top-2 bg-black/60 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Video</span>
+                                @else
+                                    <img src="{{ $img->url }}" class="w-full h-full object-cover rounded-xl">
+                                @endif
                                 <div
                                     class="absolute inset-0 bg-black/0 group-hover:bg-black/40 rounded-xl transition-colors flex items-center justify-center">
                                     <form action="{{ route('admin.gallery.images.destroy', $img) }}" method="POST"

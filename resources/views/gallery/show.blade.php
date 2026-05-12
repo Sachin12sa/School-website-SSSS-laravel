@@ -12,7 +12,7 @@
     <section class="py-14 bg-gray-50" x-data="lightbox()">
         <div class="max-w-7xl mx-auto px-4 lg:px-8">
 
-            {{-- Back link + photo count --}}
+            {{-- Back link + media count --}}
             <div class="flex items-center justify-between mb-8">
                 <a href="{{ route('gallery.index') }}"
                     class="inline-flex items-center gap-2 text-navy hover:text-gold transition-colors text-sm font-semibold group">
@@ -24,20 +24,25 @@
                     All Albums
                 </a>
                 <span class="text-gray-400 text-sm">{{ $gallery->images->count() }}
-                    {{ Str::plural('photo', $gallery->images->count()) }}</span>
+                    {{ Str::plural('media item', $gallery->images->count()) }}</span>
             </div>
 
             @if ($gallery->images->count())
 
-                {{-- Photo grid — clicking any photo opens lightbox --}}
+                {{-- Media grid — clicking any item opens lightbox --}}
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                     @foreach ($gallery->images as $img)
-                        <button @click="open('{{ $img->url }}', '{{ addslashes($img->caption ?? '') }}')"
+                        <button @click="open('{{ $img->url }}', '{{ addslashes($img->caption ?? '') }}', '{{ $img->media_type }}')"
                             class="group relative aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-zoom-in">
 
-                            <img src="{{ $img->url }}" alt="{{ $img->caption }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                loading="lazy">
+                            @if ($img->is_video)
+                                <video src="{{ $img->url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" muted preload="metadata"></video>
+                                <span class="absolute top-2 left-2 bg-black/60 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Video</span>
+                            @else
+                                <img src="{{ $img->url }}" alt="{{ $img->caption }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    loading="lazy">
+                            @endif
 
                             {{-- Hover overlay --}}
                             <div
@@ -62,7 +67,7 @@
                 </div>
             @else
                 <div class="text-center py-20 text-gray-400">
-                    <p class="text-lg font-medium">No photos in this album yet.</p>
+                    <p class="text-lg font-medium">No media in this album yet.</p>
                 </div>
             @endif
 
@@ -99,9 +104,12 @@
                 </svg>
             </button>
 
-            {{-- Image --}}
+            {{-- Media --}}
             <div class="max-w-5xl w-full mx-16">
-                <img :src="src" :alt="caption"
+                <template x-if="type === 'video'">
+                    <video :src="src" controls autoplay class="w-full max-h-[80vh] object-contain rounded-xl shadow-2xl"></video>
+                </template>
+                <img x-show="type !== 'video'" :src="src" :alt="caption"
                     class="w-full max-h-[80vh] object-contain rounded-xl shadow-2xl">
                 <p x-show="caption" x-text="caption" class="text-white/65 text-center mt-3 text-sm"></p>
                 {{-- Counter --}}
@@ -115,18 +123,20 @@
         <script>
             function lightbox() {
                 // Build images array from the DOM so prev/next works without extra DB calls
-                const imgs = @json($gallery->images->map(fn($i) => ['src' => $i->url, 'caption' => $i->caption ?? '']));
+                const imgs = @json($gallery->images->map(fn($i) => ['src' => $i->url, 'caption' => $i->caption ?? '', 'type' => $i->media_type ?? 'image']));
 
                 return {
                     visible: false,
                     src: '',
                     caption: '',
+                    type: 'image',
                     index: 0,
                     images: imgs,
 
-                    open(src, caption) {
+                    open(src, caption, type = 'image') {
                         this.src = src;
                         this.caption = caption;
+                        this.type = type;
                         this.index = this.images.findIndex(i => i.src === src);
                         this.visible = true;
                         document.body.style.overflow = 'hidden';
@@ -139,11 +149,13 @@
                         this.index = (this.index - 1 + this.images.length) % this.images.length;
                         this.src = this.images[this.index].src;
                         this.caption = this.images[this.index].caption;
+                        this.type = this.images[this.index].type || 'image';
                     },
                     next() {
                         this.index = (this.index + 1) % this.images.length;
                         this.src = this.images[this.index].src;
                         this.caption = this.images[this.index].caption;
+                        this.type = this.images[this.index].type || 'image';
                     },
                 };
             }

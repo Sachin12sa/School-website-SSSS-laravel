@@ -52,7 +52,7 @@ class SettingsController extends Controller
 
         // ── 1.5. Popup Image upload ──────────────────────────────────────────
         if ($request->hasFile('popup_image')) {
-            $request->validate(['popup_image' => 'image|max:3072']);
+            $request->validate(['popup_image' => 'image|mimes:jpg,jpeg,png,webp|max:51200']);
             $old = SiteSetting::get('popup_image');
             if ($old && Storage::disk('public')->exists($old)) {
                 Storage::disk('public')->delete($old);
@@ -70,7 +70,7 @@ class SettingsController extends Controller
 
         // ── 2. Logo upload ───────────────────────────────────────────────────
         if ($request->hasFile('logo')) {
-            $request->validate(['logo' => 'image|max:2048']);
+            $request->validate(['logo' => 'file|mimes:jpg,jpeg,png,webp,svg|max:51200']);
             // Delete old logo
             $old = SiteSetting::get('logo');
             if ($old && Storage::disk('public')->exists($old)) {
@@ -82,7 +82,7 @@ class SettingsController extends Controller
 
         // ── 3. Favicon upload ────────────────────────────────────────────────
         if ($request->hasFile('favicon')) {
-            $request->validate(['favicon' => 'image|max:512']);
+            $request->validate(['favicon' => 'file|mimes:jpg,jpeg,png,webp,svg,ico|max:10240']);
             $old = SiteSetting::get('favicon');
             if ($old && Storage::disk('public')->exists($old)) {
                 Storage::disk('public')->delete($old);
@@ -113,7 +113,7 @@ class SettingsController extends Controller
             if ($request->filled('hero_subtitle_block')) $heroData['subtitle'] = $request->input('hero_subtitle_block');
 
             if ($request->hasFile('hero_image')) {
-                $request->validate(['hero_image' => 'image|max:5120']);
+                $request->validate(['hero_image' => 'image|mimes:jpg,jpeg,png,webp|max:51200']);
                 $old = $heroBlock->image_path;
                 if ($old && Storage::disk('public')->exists($old)) {
                     Storage::disk('public')->delete($old);

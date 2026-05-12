@@ -12,6 +12,7 @@ class PageSectionController extends Controller
 {
     // Pages that use the sections system
     protected array $managedPages = [
+        'home'        => 'Home Page',
         'programs'    => 'Academic Programs',
         'life-at-ssss'=> 'Life at SSSS',
         'boarding'    => 'Boarding',
@@ -49,11 +50,12 @@ class PageSectionController extends Controller
             'badge_color'  => 'nullable|string|max:20',
             'items_json'   => 'nullable|string',
             'settings_json'=> 'nullable|string',
-            'layout'       => 'required|in:default,image-left,image-right,full-image,cards,list,stats,timeline,cta,program-tabs,steps,routes,video',
+            'layout'       => 'required|in:default,image-left,image-right,full-image,cards,program-cards,list,stats,timeline,cta,program-tabs,steps,routes,video',
             'button_text'  => 'nullable|string|max:100',
             'button_url'   => 'nullable|string|max:500',
             'order'        => 'nullable|integer',
             'is_published' => 'nullable|boolean',
+            'image'        => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:51200',
         ]);
 
         $data = $this->decodeStructuredFields($data);
@@ -91,11 +93,12 @@ class PageSectionController extends Controller
             'badge_color'  => 'nullable|string|max:20',
             'items_json'   => 'nullable|string',
             'settings_json'=> 'nullable|string',
-            'layout'       => 'required|in:default,image-left,image-right,full-image,cards,list,stats,timeline,cta,program-tabs,steps,routes,video',
+            'layout'       => 'required|in:default,image-left,image-right,full-image,cards,program-cards,list,stats,timeline,cta,program-tabs,steps,routes,video',
             'button_text'  => 'nullable|string|max:100',
             'button_url'   => 'nullable|string|max:500',
             'order'        => 'nullable|integer',
             'is_published' => 'nullable|boolean',
+            'image'        => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:51200',
         ]);
 
         $data = $this->decodeStructuredFields($data);

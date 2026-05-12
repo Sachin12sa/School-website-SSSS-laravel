@@ -39,6 +39,16 @@
                 'settings' => ['background' => 'cream', 'grid' => 'md:grid-cols-3'],
                 'note' => 'Use one item per card. Optional color changes the icon/card accent.',
             ],
+            'program-cards' => [
+                'items' => [
+                    ['title' => 'Primary Level', 'badge' => 'Grades 1-5', 'description' => 'Strong foundations with holistic development.', 'color' => 'var(--gold)', 'image' => 'https://example.com/primary.jpg', 'url' => '/programs#primary'],
+                    ['title' => 'Middle School', 'badge' => 'Grades 6-8', 'description' => 'Transition years for confidence and curiosity.', 'color' => 'var(--navy)', 'image' => 'https://example.com/middle.jpg', 'url' => '/programs#middle'],
+                    ['title' => 'Secondary Level', 'badge' => 'Grades 9-10', 'description' => 'Focused academic and examination preparation.', 'color' => 'var(--lotus-red)', 'image' => 'https://example.com/secondary.jpg', 'url' => '/programs#secondary'],
+                    ['title' => '+2 Science & Mgmt', 'badge' => 'Grades 11-12', 'description' => 'Specialised higher secondary streams.', 'color' => 'var(--gold-dark)', 'image' => 'https://example.com/plus-two.jpg', 'url' => '/programs#science'],
+                ],
+                'settings' => ['background' => 'white', 'grid' => 'sm:grid-cols-2 xl:grid-cols-4', 'aspect' => '3/4'],
+                'note' => 'Homepage-style image cards. Use one item per program with title, badge, description, image, URL, and color.',
+            ],
             'list' => [
                 'items' => [
                     ['title' => 'Verified Drivers', 'description' => 'Every driver is checked and trained.', 'icon' => 'M5 13l4 4L19 7'],
@@ -170,6 +180,7 @@
                             'image-right' => 'Image Right + Text Left',
                             'full-image'  => 'Full-width Image with Overlay',
                             'cards'       => 'Card Grid',
+                            'program-cards'=> 'Program Image Cards',
                             'list'        => 'Bullet List',
                             'stats'       => 'Stats Bar',
                             'timeline'    => 'Timeline / Routine',
@@ -305,7 +316,7 @@
                     @endif
                     <input type="file" name="image" accept="image/*"
                         class="w-full text-sm text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-navy-900 file:text-white file:text-sm file:font-semibold hover:file:bg-gold-500 file:transition-colors cursor-pointer">
-                    <p class="text-slate-400 text-xs mt-1">Recommended: 1200×600px, max 5MB.</p>
+                    <p class="text-slate-400 text-xs mt-1">Recommended: 1200×600px, max 50MB.</p>
                 </div>
             </div>
 

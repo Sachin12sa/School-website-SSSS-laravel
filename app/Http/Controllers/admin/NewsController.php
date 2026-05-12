@@ -123,6 +123,7 @@ class NewsController extends Controller
             'published_at'     => 'nullable|date',
             'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
+            'image'            => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:51200',
         ]);
 
         // Checkboxes come in as '1' or absent — cast manually

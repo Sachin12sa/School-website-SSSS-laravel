@@ -40,6 +40,7 @@ class TeacherController extends Controller {
             'linkedin' => 'nullable|url|max:255',
             'order' => 'nullable|integer',
             'is_published' => 'boolean',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:51200',
         ]);
     }
 }

@@ -806,7 +806,7 @@
                                     <ul class="text-blue-600 text-xs space-y-1">
                                         <li>• Recommended size: <strong>1080 × 720px</strong> (3:2 ratio)</li>
                                         <li>• Keep text large enough to read on mobile (min 24px)</li>
-                                        <li>• PNG for sharp edges · JPG for photos (max 3MB)</li>
+                                        <li>• PNG for sharp edges · JPG for photos (max 50MB)</li>
                                         <li>• Include your school colours: Navy <code
                                                 class="bg-blue-100 px-1 rounded">#1B2A4A</code> and Gold <code
                                                 class="bg-blue-100 px-1 rounded">#C9A227</code></li>
@@ -846,7 +846,7 @@
                                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     <p class="text-slate-500 text-sm font-semibold mb-1">Click to upload your banner</p>
-                                    <p class="text-slate-400 text-xs">PNG, JPG or WebP · Max 3MB · Recommended 1080×720px
+                                    <p class="text-slate-400 text-xs">PNG, JPG or WebP · Max 50MB · Recommended 1080×720px
                                     </p>
                                     <input type="file" id="popup-img-input" name="popup_image"
                                         accept="image/png,image/jpeg,image/webp" class="sr-only"

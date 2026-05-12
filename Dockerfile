@@ -38,6 +38,7 @@ RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoload
 COPY . .
 COPY --from=frontend-builder /app/public/build ./public/build
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
+COPY docker/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 COPY docker/entrypoint.sh /usr/local/bin/render-entrypoint
 
 RUN composer dump-autoload --optimize \

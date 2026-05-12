@@ -42,7 +42,8 @@
                 'programs' => [
                     'cards' => [
                         ['title' => 'Primary Level', 'badge' => 'Grades 1-5', 'description' => 'Building strong foundations in core subjects with holistic development.', 'color' => 'var(--gold)', 'image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700', 'url' => '/programs#primary'],
-                        ['title' => 'Secondary Level', 'badge' => 'Grades 6-10', 'description' => 'Comprehensive education preparing students for higher secondary and beyond.', 'color' => 'var(--navy)', 'image' => 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700', 'url' => '/programs#secondary'],
+                        ['title' => 'Middle School', 'badge' => 'Grades 6-8', 'description' => 'Guided transition years with confidence and curiosity.', 'color' => 'var(--navy)', 'image' => 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700', 'url' => '/programs#middle'],
+                        ['title' => 'Secondary Level', 'badge' => 'Grades 9-10', 'description' => 'Focused academic preparation with values and discipline.', 'color' => 'var(--lotus-red)', 'image' => 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=700', 'url' => '/programs#secondary'],
                         ['title' => '+2 Science & Mgmt', 'badge' => 'Grades 11-12', 'description' => 'Specialised streams for confident future pathways.', 'color' => '#A8841F', 'image' => 'https://images.unsplash.com/photo-1576319155264-99536e0be1ee?w=700', 'url' => '/programs#science'],
                     ],
                 ],
@@ -478,12 +479,15 @@
                                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     <p class="text-slate-400 text-xs">Click to upload a new image</p>
-                                    <p class="text-slate-300 text-[10px] mt-0.5">JPG, PNG, WebP · Max 5MB · Recommended
+                                    <p class="text-slate-300 text-[10px] mt-0.5">JPG, PNG, WebP · Max 50MB · Recommended
                                         1600×900px</p>
                                     <input type="file" id="img-{{ $block->id }}" name="image_path"
                                         accept="image/*" class="sr-only"
                                         onchange="previewBlockImg(this, 'prev-{{ $block->id }}')">
                                 </div>
+                                @error('image_path')
+                                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                                @enderror
                                 <div id="prev-{{ $block->id }}" class="hidden mt-3">
                                     <img src="" class="h-20 rounded-xl border border-slate-200 object-cover">
                                     <p class="text-xs text-emerald-600 font-semibold mt-1">✓ Ready — click Save to apply

@@ -55,13 +55,9 @@ class HomePageBlockSeeder extends Seeder
                 'is_visible'  => true,
                 'order'       => 2,
                 'extra'       => [
-                    'background' => '#fff',
+                    'background' => 'var(--cream)',
                     'accent' => 'var(--gold)',
-                    'cards' => [
-                        ['title' => 'Primary Level', 'badge' => 'Grades 1-5', 'description' => 'Building strong foundations in core subjects with focus on holistic development.', 'color' => 'var(--gold)', 'image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700', 'url' => '/programs#primary'],
-                        ['title' => 'Secondary Level', 'badge' => 'Grades 6-10', 'description' => 'Comprehensive education preparing students for higher secondary and beyond.', 'color' => 'var(--navy)', 'image' => 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700', 'url' => '/programs#secondary'],
-                        ['title' => '+2 Science & Mgmt', 'badge' => 'Grades 11-12', 'description' => 'Specialised streams in Science and Management for confident future pathways.', 'color' => 'var(--gold-dark)', 'image' => 'https://images.unsplash.com/photo-1576319155264-99536e0be1ee?w=700', 'url' => '/programs#science'],
-                    ],
+                    'section_label' => 'Who We Are',
                 ],
             ],
 
@@ -77,14 +73,13 @@ class HomePageBlockSeeder extends Seeder
                 'is_visible'  => true,
                 'order'       => 3,
                 'extra'       => [
-                    'background' => 'var(--cream)',
+                    'background' => '#fff',
                     'accent' => 'var(--gold)',
-                    'items' => [
-                        ['number' => '1', 'title' => 'Truth (Sathya)', 'description' => 'Honesty and integrity in thought, word, and deed'],
-                        ['number' => '2', 'title' => 'Right Conduct (Dharma)', 'description' => 'Moral and ethical behavior in all situations'],
-                        ['number' => '3', 'title' => 'Peace (Shanti)', 'description' => 'Inner harmony and calm disposition'],
-                        ['number' => '4', 'title' => 'Love (Prema)', 'description' => 'Compassion and selfless service to others'],
-                        ['number' => '5', 'title' => 'Non-Violence (Ahimsa)', 'description' => 'Respect for all life and peaceful coexistence'],
+                    'cards' => [
+                        ['title' => 'Primary Level', 'badge' => 'Grades 1-5', 'description' => 'Building strong foundations in core subjects with focus on holistic development.', 'color' => 'var(--gold)', 'image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700', 'url' => '/programs#primary'],
+                        ['title' => 'Middle School', 'badge' => 'Grades 6-8', 'description' => 'Guided transition years that strengthen confidence, curiosity, and independent study habits.', 'color' => 'var(--navy)', 'image' => 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700', 'url' => '/programs#middle'],
+                        ['title' => 'Secondary Level', 'badge' => 'Grades 9-10', 'description' => 'Focused academic preparation with values, discipline, and examination readiness.', 'color' => 'var(--lotus-red)', 'image' => 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=700', 'url' => '/programs#secondary'],
+                        ['title' => '+2 Science & Mgmt', 'badge' => 'Grades 11-12', 'description' => 'Specialised streams in Science and Management for confident future pathways.', 'color' => 'var(--gold-dark)', 'image' => 'https://images.unsplash.com/photo-1576319155264-99536e0be1ee?w=700', 'url' => '/programs#science'],
                     ],
                 ],
             ],
@@ -103,6 +98,13 @@ class HomePageBlockSeeder extends Seeder
                 'extra'       => [
                     'background' => '#fff',
                     'card_bg' => 'var(--cream)',
+                    'items' => [
+                        ['number' => '1', 'title' => 'Truth (Sathya)', 'description' => 'Honesty and integrity in thought, word, and deed'],
+                        ['number' => '2', 'title' => 'Right Conduct (Dharma)', 'description' => 'Moral and ethical behavior in all situations'],
+                        ['number' => '3', 'title' => 'Peace (Shanti)', 'description' => 'Inner harmony and calm disposition'],
+                        ['number' => '4', 'title' => 'Love (Prema)', 'description' => 'Compassion and selfless service to others'],
+                        ['number' => '5', 'title' => 'Non-Violence (Ahimsa)', 'description' => 'Respect for all life and peaceful coexistence'],
+                    ],
                 ],
             ],
 

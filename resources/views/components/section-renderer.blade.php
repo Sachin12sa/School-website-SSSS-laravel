@@ -96,6 +96,43 @@
                     </div>
                 @endforeach
             </div>
+        @elseif ($section->layout === 'program-cards')
+            @include('components.section-heading', ['section' => $section, 'isDark' => $isDark, 'center' => true])
+            <div class="grid {{ data_get($settings, 'grid', 'sm:grid-cols-2 xl:grid-cols-4') }} gap-6 stagger">
+                @foreach ($items as $item)
+                    @php
+                        $cardImage = data_get($item, 'image');
+                        $cardColor = data_get($item, 'color', $accent);
+                        $cardUrl = data_get($item, 'url', '#');
+                    @endphp
+                    <a href="{{ $cardUrl }}" class="prog-card block group">
+                        <div class="relative" style="aspect-ratio:{{ data_get($settings, 'aspect', '3/4') }}">
+                            @if ($cardImage)
+                                <img src="{{ $cardImage }}" alt="{{ data_get($item, 'title') }}" class="absolute inset-0 w-full h-full object-cover">
+                            @else
+                                <div class="absolute inset-0" style="background:linear-gradient(135deg,var(--navy),var(--gold-dark))"></div>
+                            @endif
+                            <div class="prog-overlay"></div>
+                            @if (data_get($item, 'badge'))
+                                <div class="absolute top-5 left-5 text-[10.5px] font-bold px-3.5 py-1.5 rounded-full tracking-wide uppercase"
+                                    style="background:{{ $cardColor }};font-family:'Plus Jakarta Sans',sans-serif;color:{{ data_get($item, 'badge_text_color', $cardColor === 'var(--navy)' ? 'var(--gold)' : 'var(--navy)') }}">
+                                    {{ data_get($item, 'badge') }}
+                                </div>
+                            @endif
+                            <div class="absolute bottom-0 left-0 right-0 p-7">
+                                <h3 class="font-display font-bold text-white text-2xl mb-2 leading-tight">{{ data_get($item, 'title') }}</h3>
+                                <p class="text-white/65 text-sm leading-relaxed mb-5" style="font-family:'Plus Jakarta Sans',sans-serif">{{ data_get($item, 'description') }}</p>
+                                <div class="flex items-center gap-2 font-semibold text-sm" style="color:var(--gold);font-family:'Plus Jakarta Sans',sans-serif">
+                                    {{ data_get($item, 'link_label', 'Explore') }}
+                                    <svg class="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
         @elseif ($section->layout === 'list')
             @include('components.section-heading', ['section' => $section, 'isDark' => $isDark, 'center' => true])
             <div class="max-w-4xl mx-auto bg-white border border-gray-100 rounded-[24px] shadow-sm p-8 reveal">

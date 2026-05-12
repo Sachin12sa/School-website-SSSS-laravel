@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class GalleryImage extends Model
 {
-    protected $fillable = ['gallery_id', 'image_path', 'caption', 'order'];
+    protected $fillable = ['gallery_id', 'image_path', 'media_type', 'caption', 'order'];
 
     public function gallery()
     {
@@ -26,5 +26,10 @@ class GalleryImage extends Model
             return parse_url(Storage::url($this->image_path), PHP_URL_PATH);
         }
         return 'https://placehold.co/400x300/1B2A4A/C9A227?text=Photo';
+    }
+
+    public function getIsVideoAttribute(): bool
+    {
+        return $this->media_type === 'video';
     }
 }

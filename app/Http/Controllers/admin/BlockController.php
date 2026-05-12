@@ -29,6 +29,10 @@ class BlockController extends Controller
 
     public function index()
     {
+        if (request()->routeIs('admin.blocks.index')) {
+            return redirect()->route('admin.sections.index', 'home');
+        }
+
         // Only global (non-page) blocks, ordered as they appear on the homepage
         $blocks = PageBlock::whereNull('page_id')
             ->orderBy('order')
@@ -55,6 +59,7 @@ class BlockController extends Controller
             'extra.teachers'         => 'nullable|string|max:20',
             'extra.years'            => 'nullable|string|max:20',
             'extra.programmes'       => 'nullable|string|max:20',
+            'image_path'             => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:51200',
         ]);
 
         // Merge extra fields when present (stats counters etc.)

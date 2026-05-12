@@ -238,7 +238,7 @@
                         <p class="text-slate-500 text-xs font-semibold mb-0.5">
                             {{ $post->exists && $post->image ? 'Replace image' : 'Upload image' }}
                         </p>
-                        <p class="text-slate-400 text-[11px]">JPG, PNG, WebP · Max 5MB<br>Recommended: 1200×630px</p>
+                        <p class="text-slate-400 text-[11px]">JPG, PNG, WebP · Max 50MB<br>Recommended: 1200×630px</p>
                         <input type="file" id="img-file" name="image" accept="image/*" class="sr-only"
                             onchange="previewImage(this)">
                     </div>

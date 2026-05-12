@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ADMIN_OPERATIONS_GUIDE</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="admin-guide-print.css" />
+</head>
+<body>
+<h1 id="admin-operations-guide">Admin Operations Guide</h1>
+<p>This guide explains how to manage the school website from the admin
+panel.</p>
+<p>Live demo URL:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>https://school-website-demo.onrender.com</span></code></pre></div>
+<p>Admin login URL:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>https://school-website-demo.onrender.com/admin/login</span></code></pre></div>
+<p>Default demo login:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Email: admin@school.edu</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Password: admin</span></code></pre></div>
+<p>Change this password immediately after login if the site is
+public.</p>
+<h2 id="admin-panel-basics">1. Admin Panel Basics</h2>
+<p>After logging in, the left sidebar is the main control center.</p>
+<p>Main areas:</p>
+<ul>
+<li><strong>Dashboard</strong>: quick overview of posts, events,
+admissions, and contact messages.</li>
+<li><strong>Page Heroes</strong>: edit the top hero/banner section for
+important pages.</li>
+<li><strong>Homepage Blocks</strong>: edit homepage sections, colors,
+images, buttons, and structured cards.</li>
+<li><strong>News &amp; Updates</strong>: manage news articles.</li>
+<li><strong>Events</strong>: manage upcoming/past events.</li>
+<li><strong>Faculty Members</strong>: manage teacher/faculty
+profiles.</li>
+<li><strong>Gallery</strong>: manage photo albums and gallery
+images.</li>
+<li><strong>Testimonials</strong>: manage testimonials shown on the
+site.</li>
+<li><strong>FAQs</strong>: manage frequently asked questions.</li>
+<li><strong>Page Sections</strong>: manage dynamic content for About,
+Programs, Life at SSSS, Boarding, Transportation, Admissions, and
+Contact.</li>
+<li><strong>Admissions</strong>: view and manage admission form
+submissions.</li>
+<li><strong>Messages</strong>: view contact form messages.</li>
+<li><strong>Site Settings</strong>: manage school identity, branding,
+footer, popup banner, SEO, and admission form settings.</li>
+<li><strong>Navigation Menus</strong>: manage menu links.</li>
+<li><strong>Users</strong>: manage admin/editor accounts.</li>
+</ul>
+<h2 id="dashboard">2. Dashboard</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Dashboard</span></code></pre></div>
+<p>Use the dashboard to check:</p>
+<ul>
+<li>Total news posts.</li>
+<li>Total events.</li>
+<li>Total faculty members.</li>
+<li>Total galleries.</li>
+<li>New admission applications.</li>
+<li>Unread contact messages.</li>
+</ul>
+<p>The lower area shows recent admission applications and recent
+messages. Click any item to open its detail page.</p>
+<h2 id="page-heroes">3. Page Heroes</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Page Heroes</span></code></pre></div>
+<p>Use this to edit the large hero section at the top of pages.</p>
+<p>Common fields:</p>
+<ul>
+<li><strong>Badge Text</strong>: small label above the heading. Leave
+blank to hide it.</li>
+<li><strong>Heading</strong>: main title.</li>
+<li><strong>Subheading</strong>: short description below the title.</li>
+<li><strong>Primary Button Text / URL</strong>: main call-to-action
+button.</li>
+<li><strong>Secondary Button Text / URL</strong>: optional second
+button.</li>
+<li><strong>Background Image</strong>: hero image.</li>
+<li><strong>Image Opacity</strong>: how visible the image is behind the
+overlay.</li>
+<li><strong>Overlay Style</strong>: dark, light, or gold tint.</li>
+<li><strong>Badge Style</strong>: white or gold.</li>
+<li><strong>Text Alignment</strong>: center or left.</li>
+<li><strong>Min Height</strong>: controls hero height.</li>
+<li><strong>Show Decorative Rings</strong>: turns subtle circle
+decorations on/off.</li>
+<li><strong>Stats Strip</strong>: optional numbers below hero
+buttons.</li>
+<li><strong>SEO Fields</strong>: meta title and description for that
+page.</li>
+</ul>
+<p>Recommended hero image size:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>1920x1080px or wider</span></code></pre></div>
+<p>Button URL examples:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>/admissions</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>/contact</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>/programs</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>#section-id</span></code></pre></div>
+<h2 id="homepage-blocks">4. Homepage Blocks</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Homepage Blocks</span></code></pre></div>
+<p>Homepage blocks control the main homepage sections. Each block can be
+expanded and edited.</p>
+<p>Common controls:</p>
+<ul>
+<li><strong>Visible/Hidden</strong>: turn a section on or off.</li>
+<li><strong>Title</strong>: section heading.</li>
+<li><strong>Subtitle</strong>: short text under the title.</li>
+<li><strong>Content</strong>: larger paragraph or HTML content.</li>
+<li><strong>Button Text / URL</strong>: optional action button.</li>
+<li><strong>Section Image</strong>: image used by that block.</li>
+<li><strong>Order</strong>: display order.</li>
+<li><strong>Template</strong>: visual style such as default, compact,
+editorial, or feature.</li>
+<li><strong>Background</strong>: section background color/style.</li>
+<li><strong>Accent</strong>: gold or highlight color.</li>
+<li><strong>Card Background</strong>: card color.</li>
+<li><strong>Text Color</strong>: heading/body color.</li>
+<li><strong>Muted Color</strong>: secondary text color.</li>
+<li><strong>Overlay</strong>: optional dark/light visual layer.</li>
+<li><strong>Structured Items JSON</strong>: advanced
+cards/lists/stats/timeline data.</li>
+</ul>
+<h3 id="template-meaning">Template Meaning</h3>
+<ul>
+<li><strong>Default</strong>: normal design.</li>
+<li><strong>Compact</strong>: smaller spacing; good for short
+sections.</li>
+<li><strong>Editorial</strong>: more elegant title style; good for
+story/history sections.</li>
+<li><strong>Feature</strong>: stronger visual framing; good for
+important homepage sections.</li>
+</ul>
+<h3 id="structured-items-json">Structured Items JSON</h3>
+<p>Use this when a section has repeated cards, stats, timeline items,
+values, or buttons.</p>
+<p>Example for stats:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;500+&quot;</span><span class="fu">,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;Students&quot;</span><span class="fu">,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;icon&quot;</span><span class="fu">:</span> <span class="st">&quot;M17 20h5v-2a3 3 0 00-5.356-1.857&quot;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;40+&quot;</span><span class="fu">,</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;Teachers&quot;</span><span class="fu">,</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;icon&quot;</span><span class="fu">:</span> <span class="st">&quot;M12 4.354a4 4 0 110 5.292&quot;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="ot">]</span></span></code></pre></div>
+<p>Example for program cards:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;Primary Level&quot;</span><span class="fu">,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;badge&quot;</span><span class="fu">:</span> <span class="st">&quot;Grade 1-5&quot;</span><span class="fu">,</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;Strong foundation with values-based education.&quot;</span><span class="fu">,</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;/programs&quot;</span><span class="fu">,</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#C9A227&quot;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;Secondary Level&quot;</span><span class="fu">,</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;badge&quot;</span><span class="fu">:</span> <span class="st">&quot;Grade 6-10&quot;</span><span class="fu">,</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;Balanced academics, discipline, and life skills.&quot;</span><span class="fu">,</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;/programs&quot;</span><span class="fu">,</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;#1B2A4A&quot;</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="ot">]</span></span></code></pre></div>
+<p>Important JSON rules:</p>
+<ul>
+<li>Use double quotes, not single quotes.</li>
+<li>Separate items with commas.</li>
+<li>Do not leave a trailing comma after the last item.</li>
+<li>If the page breaks after saving JSON, check for invalid JSON
+formatting.</li>
+</ul>
+<h2 id="dynamic-page-sections">5. Dynamic Page Sections</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; About Us</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Programs</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Life at SSSS</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Boarding</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Transportation</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Admissions</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Contact</span></code></pre></div>
+<p>Each of these pages is built from sections.</p>
+<p>For each section you can manage:</p>
+<ul>
+<li><strong>Layout</strong>: section design type.</li>
+<li><strong>Title</strong>: main section heading.</li>
+<li><strong>Subtitle</strong>: supporting heading.</li>
+<li><strong>Content</strong>: paragraph/content area. HTML is
+allowed.</li>
+<li><strong>Structured Items JSON</strong>: cards, lists, stats, tabs,
+routes, or timelines.</li>
+<li><strong>Section Settings JSON</strong>: background, grid, particles,
+colors, spacing, image alt text, etc.</li>
+<li><strong>Badge Text / Badge Color</strong>: optional visual
+label.</li>
+<li><strong>Section Image</strong>: optional image.</li>
+<li><strong>Button Text / URL</strong>: optional call-to-action.</li>
+<li><strong>Published</strong>: show/hide the section.</li>
+<li><strong>Order</strong>: display order.</li>
+</ul>
+<h3 id="layout-tips">Layout Tips</h3>
+<p>Use layouts based on the content type:</p>
+<ul>
+<li><strong>Stats Bar</strong>: short numbers such as students,
+teachers, years.</li>
+<li><strong>Cards / Feature Cards</strong>: programs, facilities,
+values.</li>
+<li><strong>Timeline</strong>: history or process.</li>
+<li><strong>Image Text</strong>: one image plus explanatory
+content.</li>
+<li><strong>CTA Banner</strong>: call-to-action section above
+footer.</li>
+<li><strong>FAQ / Accordion</strong>: question-answer content.</li>
+<li><strong>Tabs</strong>: multiple grouped topics.</li>
+</ul>
+<h3 id="section-settings-json-example">Section Settings JSON
+Example</h3>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;background&quot;</span><span class="fu">:</span> <span class="st">&quot;navy&quot;</span><span class="fu">,</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;class&quot;</span><span class="fu">:</span> <span class="st">&quot;!py-10&quot;</span><span class="fu">,</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;particle_type&quot;</span><span class="fu">:</span> <span class="st">&quot;geometric&quot;</span><span class="fu">,</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;image_alt&quot;</span><span class="fu">:</span> <span class="st">&quot;Campus&quot;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>Common backgrounds:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>white</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>cream</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>navy</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>dark</span></code></pre></div>
+<h2 id="news-updates">6. News &amp; Updates</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; News &amp; Updates</span></code></pre></div>
+<p>Use this section to create and manage news posts.</p>
+<p>Recommended workflow:</p>
+<ol type="1">
+<li>Click <strong>Create News</strong>.</li>
+<li>Add title.</li>
+<li>Add slug or let the system generate one.</li>
+<li>Add excerpt.</li>
+<li>Add full article body.</li>
+<li>Upload image if needed.</li>
+<li>Select category.</li>
+<li>Set published date.</li>
+<li>Turn <strong>Published</strong> on.</li>
+<li>Save.</li>
+</ol>
+<p>Use <strong>Featured</strong> for important news. Featured posts may
+appear more prominently depending on the page layout.</p>
+<h2 id="events">7. Events</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Events</span></code></pre></div>
+<p>Use this to manage school events.</p>
+<p>Fields usually include:</p>
+<ul>
+<li>Title.</li>
+<li>Slug.</li>
+<li>Short description.</li>
+<li>Full body/details.</li>
+<li>Image.</li>
+<li>Start date/time.</li>
+<li>End date/time.</li>
+<li>Location.</li>
+<li>Organizer.</li>
+<li>Published status.</li>
+<li>SEO title/description.</li>
+</ul>
+<p>Upcoming events appear on the homepage and event page when the date
+is today or in the future.</p>
+<h2 id="faculty-members">8. Faculty Members</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Faculty Members</span></code></pre></div>
+<p>Use this to manage teacher/faculty profiles.</p>
+<p>Fields:</p>
+<ul>
+<li>Name.</li>
+<li>Designation.</li>
+<li>Department.</li>
+<li>Email.</li>
+<li>Bio.</li>
+<li>Photo.</li>
+<li>LinkedIn link.</li>
+<li>Order.</li>
+<li>Published status.</li>
+</ul>
+<p>Use clear, professional photos with similar cropping for the best
+design consistency.</p>
+<h2 id="gallery">9. Gallery</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Gallery</span></code></pre></div>
+<p>Gallery is organized by albums.</p>
+<p>Recommended workflow:</p>
+<ol type="1">
+<li>Create a gallery album.</li>
+<li>Add album name.</li>
+<li>Add description.</li>
+<li>Upload cover image.</li>
+<li>Save.</li>
+<li>Open the album again.</li>
+<li>Upload gallery images.</li>
+<li>Add captions if needed.</li>
+</ol>
+<p>Important Render free hosting note:</p>
+<p>Uploaded images may disappear after redeploy/restart on Render free
+hosting because the filesystem is temporary. For a real production site,
+use persistent disk or cloud storage such as S3/Cloudinary.</p>
+<h2 id="testimonials">10. Testimonials</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Testimonials</span></code></pre></div>
+<p>Use this for parent, student, alumni, or community feedback.</p>
+<p>Fields:</p>
+<ul>
+<li>Author name.</li>
+<li>Author role.</li>
+<li>Testimonial content.</li>
+<li>Photo.</li>
+<li>Rating.</li>
+<li>Featured.</li>
+<li>Published.</li>
+<li>Order.</li>
+</ul>
+<p>Only publish testimonials that are approved for public display.</p>
+<h2 id="faqs">11. FAQs</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; FAQs</span></code></pre></div>
+<p>Use this for common questions.</p>
+<p>Fields:</p>
+<ul>
+<li>Question.</li>
+<li>Answer.</li>
+<li>Category.</li>
+<li>Order.</li>
+<li>Published.</li>
+</ul>
+<p>Good FAQ categories:</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Admissions</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>Fees</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>Boarding</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>Transportation</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>Academics</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>General</span></code></pre></div>
+<h2 id="admissions-inbox">12. Admissions Inbox</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Admissions</span></code></pre></div>
+<p>This area receives applications submitted from the public admission
+form.</p>
+<p>Statuses:</p>
+<ul>
+<li><strong>New</strong>: newly submitted.</li>
+<li><strong>Reviewed</strong>: admin has checked it.</li>
+<li><strong>Accepted</strong>: application accepted.</li>
+<li><strong>Rejected</strong>: application rejected.</li>
+</ul>
+<p>Recommended workflow:</p>
+<ol type="1">
+<li>Open the admission record.</li>
+<li>Review applicant and parent details.</li>
+<li>Check extra form fields if enabled.</li>
+<li>Add admin notes.</li>
+<li>Change status.</li>
+<li>Save.</li>
+</ol>
+<p>Admin notes are internal and should be used for follow-up reminders
+or decision details.</p>
+<h2 id="contact-messages">13. Contact Messages</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Messages</span></code></pre></div>
+<p>Use this to read messages sent from the public contact form.</p>
+<p>Recommended workflow:</p>
+<ol type="1">
+<li>Open unread message.</li>
+<li>Review sender name, email, phone, subject, and message.</li>
+<li>Mark as read.</li>
+<li>Follow up externally by email or phone.</li>
+<li>Delete spam or old messages if needed.</li>
+</ol>
+<h2 id="site-settings">14. Site Settings</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Site Settings</span></code></pre></div>
+<p>This is the main configuration area.</p>
+<p>Common tabs/areas:</p>
+<ul>
+<li><strong>Identity</strong>: school name, tagline, address, phone,
+email.</li>
+<li><strong>Branding</strong>: logo, favicon, brand assets.</li>
+<li><strong>Footer</strong>: footer introduction, quick links, contact
+title, footer credit.</li>
+<li><strong>Social</strong>: social media links.</li>
+<li><strong>SEO</strong>: meta description and default search text.</li>
+<li><strong>Admissions</strong>: admission year, class options, visible
+fields, required fields, success message.</li>
+<li><strong>Popup Banner</strong>: popup content, buttons, image, show
+rules, delay, and preview.</li>
+</ul>
+<h3 id="admissions-form-settings">Admissions Form Settings</h3>
+<p>Use this to control what fields appear on the public admission
+form.</p>
+<p>Common settings:</p>
+<ul>
+<li>Admission year.</li>
+<li>Class options.</li>
+<li>Form intro text.</li>
+<li>Success message.</li>
+<li>Visible fields.</li>
+<li>Required fields.</li>
+</ul>
+<p>If a field is required, make sure it is also visible.</p>
+<h3 id="popup-banner">Popup Banner</h3>
+<p>Use this to manage the popup shown to visitors.</p>
+<p>Controls:</p>
+<ul>
+<li>Enable/disable popup.</li>
+<li>Show on homepage or all pages.</li>
+<li>Delay before showing.</li>
+<li>Hide duration after user closes it.</li>
+<li>Popup title/subtitle.</li>
+<li>Badge/deadline text.</li>
+<li>Pills/tags.</li>
+<li>Primary and secondary buttons.</li>
+<li>Image or template mode.</li>
+<li>Live preview while editing.</li>
+</ul>
+<p>Use short text in popup fields. Long text can make the popup crowded
+on mobile.</p>
+<h2 id="navigation-menus">15. Navigation Menus</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Navigation Menus</span></code></pre></div>
+<p>Use this to manage menu groups and menu links.</p>
+<p>Menu item fields:</p>
+<ul>
+<li>Title.</li>
+<li>URL.</li>
+<li>Route name.</li>
+<li>Parent item.</li>
+<li>Order.</li>
+<li>Open in new tab.</li>
+</ul>
+<p>For normal internal pages, use URLs like:</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>/</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>/about</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>/programs</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>/admissions</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>/contact</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>/testimonials</span></code></pre></div>
+<p>Use <strong>Open in new tab</strong> only for external links.</p>
+<h2 id="users">16. Users</h2>
+<p>Path:</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Admin -&gt; Users</span></code></pre></div>
+<p>Only admin users should manage users.</p>
+<p>Roles:</p>
+<ul>
+<li><strong>Admin</strong>: full access.</li>
+<li><strong>Editor</strong>: content editing access.</li>
+</ul>
+<p>Recommended security rules:</p>
+<ul>
+<li>Change default password immediately.</li>
+<li>Use strong passwords.</li>
+<li>Give admin role only to trusted people.</li>
+<li>Remove old users who no longer need access.</li>
+</ul>
+<h2 id="safe-editing-rules">17. Safe Editing Rules</h2>
+<p>Before making large changes:</p>
+<ol type="1">
+<li>Edit one section at a time.</li>
+<li>Save.</li>
+<li>Open the live site in another tab.</li>
+<li>Check desktop and mobile layout.</li>
+<li>Continue editing.</li>
+</ol>
+<p>For JSON fields:</p>
+<ul>
+<li>Keep a backup of the old JSON before replacing it.</li>
+<li>Validate JSON formatting.</li>
+<li>Use examples from the admin guide buttons where available.</li>
+</ul>
+<p>For images:</p>
+<ul>
+<li>Use compressed JPG/WebP images where possible.</li>
+<li>Keep file names simple.</li>
+<li>Avoid very large files.</li>
+<li>Recommended hero images: 1920px wide or larger.</li>
+<li>Recommended card images: around 1200x600px.</li>
+</ul>
+<h2 id="render-free-hosting-notes">18. Render Free Hosting Notes</h2>
+<p>The demo is hosted on Render free tier.</p>
+<p>Important behavior:</p>
+<ul>
+<li>The site may sleep when inactive.</li>
+<li>First visit after sleep can take time to load.</li>
+<li>Database data stays in Render Postgres.</li>
+<li>Uploaded files/images can disappear after restart or redeploy unless
+persistent storage is added.</li>
+<li>For production, use paid persistent disk or external media
+storage.</li>
+</ul>
+<p>If the site shows a 500 error:</p>
+<ol type="1">
+<li>Open Render dashboard.</li>
+<li>Open the <code>school-website-demo</code> web service.</li>
+<li>Go to <strong>Logs</strong>.</li>
+<li>Search for:</li>
+</ol>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>production.ERROR</span></code></pre></div>
+<ol start="5" type="1">
+<li>Copy the first error line and stack trace.</li>
+<li>Send it to the developer.</li>
+</ol>
+<h2 id="recommended-admin-routine">19. Recommended Admin Routine</h2>
+<p>Daily:</p>
+<ul>
+<li>Check new admissions.</li>
+<li>Check unread messages.</li>
+</ul>
+<p>Weekly:</p>
+<ul>
+<li>Add/update news.</li>
+<li>Add upcoming events.</li>
+<li>Check homepage blocks.</li>
+<li>Check popup banner if admissions are open.</li>
+</ul>
+<p>Monthly:</p>
+<ul>
+<li>Review faculty profiles.</li>
+<li>Review gallery albums.</li>
+<li>Review FAQs.</li>
+<li>Check all major pages for outdated dates.</li>
+<li>Update footer/contact information if needed.</li>
+</ul>
+<h2 id="quick-url-list">20. Quick URL List</h2>
+<p>Public:</p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>/</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>/about</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>/programs</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>/life-at-ssss</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>/boarding</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>/transportation</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>/admissions</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>/faculty</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>/news</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>/events</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>/gallery</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>/testimonials</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>/faq</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>/contact</span></code></pre></div>
+<p>Admin:</p>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode txt"><code class="sourceCode default"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>/admin/login</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>/admin/dashboard</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>/admin/heroes</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>/admin/blocks</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>/admin/settings</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>/admin/admissions</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>/admin/contacts</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>/admin/news</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>/admin/events</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>/admin/teachers</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>/admin/gallery</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>/admin/testimonials</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>/admin/faqs</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>/admin/menus</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>/admin/users</span></code></pre></div>
+</body>
+</html>

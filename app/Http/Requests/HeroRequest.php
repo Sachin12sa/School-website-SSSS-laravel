@@ -18,7 +18,7 @@ class HeroRequest extends FormRequest
             'primary_button_url'     => ['nullable', 'string', 'max:255'],
             'secondary_button_text'  => ['nullable', 'string', 'max:60'],
             'secondary_button_url'   => ['nullable', 'string', 'max:255'],
-            'bg_image'               => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'bg_image'               => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:51200'],
             'bg_image_opacity'       => ['required', 'numeric', 'min:0', 'max:1'],
             'bg_overlay_style'       => ['required', 'in:dark,light,gold'],
             'badge_style'            => ['required', 'in:white,gold'],

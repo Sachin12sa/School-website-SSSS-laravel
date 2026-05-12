@@ -138,6 +138,7 @@ class DatabaseSeeder extends Seeder
             PageHeroSeeder::class,
             HomePageBlockSeeder::class,
             PageSectionSeeder::class,
+            HomePageSectionSeeder::class,
         ]);
     }
 }

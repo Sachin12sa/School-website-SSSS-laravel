@@ -8,8 +8,8 @@
             <p class="text-xs text-slate-400 mb-1">Dynamic Page Content</p>
             <p class="text-sm text-slate-500">
                 Changes appear live on
-                <a href="{{ url('/' . $pageKey) }}" target="_blank"
-                    class="text-gold-500 hover:underline font-medium">/{{ $pageKey }}</a>
+                <a href="{{ $pageKey === 'home' ? url('/') : url('/' . $pageKey) }}" target="_blank"
+                    class="text-gold-500 hover:underline font-medium">{{ $pageKey === 'home' ? '/' : '/' . $pageKey }}</a>
             </p>
         </div>
         <a href="{{ route('admin.sections.create', $pageKey) }}"
@@ -136,7 +136,7 @@
 
         {{-- Preview link --}}
         <div class="mt-6 text-center">
-            <a href="{{ url('/' . $pageKey) }}" target="_blank"
+            <a href="{{ $pageKey === 'home' ? url('/') : url('/' . $pageKey) }}" target="_blank"
                 class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-navy-900 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

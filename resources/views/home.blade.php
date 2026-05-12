@@ -299,6 +299,18 @@
         // Stats extra data
         $sd = $statsBlock ? ($statsBlock->extra ?? []) : [];
         $blockExtra = fn ($block, $key, $default = null) => data_get($block?->extra, $key, $default);
+        $validCards = function ($value) {
+            if (! is_array($value) || $value === []) return null;
+            return collect($value)->every(fn ($item) => is_array($item) && data_get($item, 'title') && data_get($item, 'image'))
+                ? $value
+                : null;
+        };
+        $validValueItems = function ($value) {
+            if (! is_array($value) || $value === []) return null;
+            return collect($value)->every(fn ($item) => is_array($item) && data_get($item, 'title') && data_get($item, 'description'))
+                ? $value
+                : null;
+        };
         $blockTemplateClass = function ($block) use ($blockExtra) {
             $template = preg_replace('/[^a-z0-9-]/', '', strtolower((string) $blockExtra($block, 'template', 'default')));
             return 'home-template-' . ($template ?: 'default');
@@ -324,18 +336,19 @@
             $heroBlock->stats = ($statsBlock && $statsBlock->is_visible) ? $statItems : [];
         }
 
-        $programCards = $blockExtra($programsBlock, 'cards', [
+        $programCards = $validCards($blockExtra($programsBlock, 'cards')) ?: [
             ['title' => 'Primary Level', 'badge' => 'Grades 1-5', 'description' => 'Building strong foundations in core subjects with focus on holistic development.', 'color' => 'var(--gold)', 'image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700', 'url' => route('page.show','programs').'#primary'],
-            ['title' => 'Secondary Level', 'badge' => 'Grades 6-10', 'description' => 'Comprehensive education preparing students for higher secondary and beyond.', 'color' => 'var(--navy)', 'image' => 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700', 'url' => route('page.show','programs').'#secondary'],
+            ['title' => 'Middle School', 'badge' => 'Grades 6-8', 'description' => 'Guided transition years that strengthen confidence, curiosity, and independent study habits.', 'color' => 'var(--navy)', 'image' => 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700', 'url' => route('page.show','programs').'#middle'],
+            ['title' => 'Secondary Level', 'badge' => 'Grades 9-10', 'description' => 'Focused academic preparation with values, discipline, and examination readiness.', 'color' => 'var(--lotus-red)', 'image' => 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=700', 'url' => route('page.show','programs').'#secondary'],
             ['title' => '+2 Science & Mgmt', 'badge' => 'Grades 11-12', 'description' => 'Specialised streams in Science and Management for confident future pathways.', 'color' => 'var(--gold-dark)', 'image' => 'https://images.unsplash.com/photo-1576319155264-99536e0be1ee?w=700', 'url' => route('page.show','programs').'#science'],
-        ]);
-        $valueItems = $blockExtra($valuesBlock, 'items', [
+        ];
+        $valueItems = $validValueItems($blockExtra($valuesBlock, 'items')) ?: [
             ['number' => '1', 'title' => 'Truth (Sathya)', 'description' => 'Honesty and integrity in thought, word, and deed'],
             ['number' => '2', 'title' => 'Right Conduct (Dharma)', 'description' => 'Moral and ethical behavior in all situations'],
             ['number' => '3', 'title' => 'Peace (Shanti)', 'description' => 'Inner harmony and calm disposition'],
             ['number' => '4', 'title' => 'Love (Prema)', 'description' => 'Compassion and selfless service to others'],
             ['number' => '5', 'title' => 'Non-Violence (Ahimsa)', 'description' => 'Respect for all life and peaceful coexistence'],
-        ]);
+        ];
     @endphp
 
     {{-- ══════════════════════════════════════════════════════════════
@@ -350,6 +363,12 @@
             </div>
         </x-page-hero>
     @endif
+
+    @if (($homeSections ?? collect())->isNotEmpty())
+        @foreach ($homeSections as $i => $section)
+            @include('components.section-renderer', ['section' => $section, 'index' => $i])
+        @endforeach
+    @else
 
     {{-- ══════════════════════════════════════════════════════════════
      § 2 — ABOUT INTRO
@@ -371,7 +390,7 @@
                             !!}
                         </div>
                         <div class="flex flex-wrap gap-4 mt-10">
-                            <a href="{{ $aboutBlock->button_url ?: route('about') }}" class="btn-primary" style="background:{{ $blockExtra($aboutBlock, 'button_bg', 'var(--gold)') }};color:{{ $blockExtra($aboutBlock, 'button_text_color', '#fff') }}">
+                            <a href="{{ $aboutBlock->button_url ?: route('about') }}" class="btn-primary" style="background:{{ $blockExtra($aboutBlock, 'button_bg', 'var(--vivid-red)') }};color:{{ $blockExtra($aboutBlock, 'button_text_color', '#fff') }}">
                                 {{ $aboutBlock->button_text ?: 'Our Story' }}
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -414,13 +433,13 @@
 
                 <div class="text-center mb-16 reveal">
                     <div class="section-label justify-center" style="color:{{ $blockExtra($programsBlock, 'accent', 'var(--gold)') }}">{{ $blockExtra($programsBlock, 'section_label', 'What We Offer') }}</div>
-                    <h2 class="section-title" style="color:{{ $blockExtra($programsBlock, 'text_color', 'var(--navy)') }}">{{ $programsBlock->title ?? 'Our Academic Programs' }}</h2>
+                    <h2 class="section-title" style="color:{{ $blockExtra($programsBlock, 'text_color', 'var(--navy)') }}">{{ $programsBlock?->title ?? 'Our Academic Programs' }}</h2>
                     <p class="text-sm mt-5 max-w-lg mx-auto leading-relaxed" style="font-family:'Plus Jakarta Sans',sans-serif;color:{{ $blockExtra($programsBlock, 'muted_color', '#9CA3AF') }}">
-                        {{ $programsBlock->subtitle ?? 'Comprehensive education from foundation to specialisation, designed to unlock every student\'s potential.' }}
+                        {{ $programsBlock?->subtitle ?? 'Comprehensive education from foundation to specialisation, designed to unlock every student\'s potential.' }}
                     </p>
                 </div>
 
-                <div class="grid md:grid-cols-3 gap-6 stagger">
+                <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-6 stagger">
                     @foreach ($programCards as $card)
                         @php
                             $title = data_get($card, 'title');
@@ -477,10 +496,10 @@
 
                     <div class="reveal from-right order-1 lg:order-2">
                         <div class="section-label" style="color:{{ $blockExtra($valuesBlock, 'accent', 'var(--gold)') }}">{{ $blockExtra($valuesBlock, 'section_label', 'Our Philosophy') }}</div>
-                        <h2 class="section-title mb-4" style="color:{{ $blockExtra($valuesBlock, 'text_color', 'var(--navy)') }}">{{ $valuesBlock->title ?? 'Five Human Values' }}</h2>
+                        <h2 class="section-title mb-4" style="color:{{ $blockExtra($valuesBlock, 'text_color', 'var(--navy)') }}">{{ $valuesBlock?->title ?? 'Five Human Values' }}</h2>
                         <div class="gold-bar mb-8"></div>
                         <p class="text-sm leading-[1.85] mb-8 max-w-md mt-8" style="font-family:'Plus Jakarta Sans',sans-serif;color:{{ $blockExtra($valuesBlock, 'muted_color', '#6B7280') }}">
-                            {{ $valuesBlock->subtitle ?? 'Our educational philosophy is built on five pillars that shape character and guide every student\'s growth:' }}
+                            {{ $valuesBlock?->subtitle ?? 'Our educational philosophy is built on five pillars that shape character and guide every student\'s growth:' }}
                         </p>
 
                         <div class="space-y-1">
@@ -526,10 +545,10 @@
                             </svg>
                             {{ $blockExtra($legacyBlock, 'section_label', 'Our Story') }}
                         </div>
-                        <h2 class="section-title mb-4" style="color:{{ $blockExtra($legacyBlock, 'text_color', 'var(--navy)') }}">{{ $legacyBlock->title ?? 'A Legacy of Excellence' }}</h2>
+                        <h2 class="section-title mb-4" style="color:{{ $blockExtra($legacyBlock, 'text_color', 'var(--navy)') }}">{{ $legacyBlock?->title ?? 'A Legacy of Excellence' }}</h2>
                         <div class="gold-bar mb-8"></div>
                         <p class="text-gray-500 leading-[1.85] mb-10 text-[14.5px] mt-8 max-w-md" style="font-family:'Plus Jakarta Sans',sans-serif">
-                            {{ $legacyBlock->content ?? 'Since our founding in 2000, Sathya Sai Shiksha Sadan has been a beacon of value-based education. What began as a small institution with a big vision has grown into a comprehensive school serving hundreds of students from Grade 1 to +2.' }}
+                            {{ $legacyBlock?->content ?? 'Since our founding in 2000, Sathya Sai Shiksha Sadan has been a beacon of value-based education. What began as a small institution with a big vision has grown into a comprehensive school serving hundreds of students from Grade 1 to +2.' }}
                         </p>
 
                         <div class="relative space-y-5">
@@ -580,13 +599,13 @@
                 <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-14 reveal">
                     <div>
                         <div class="section-label" style="color:{{ $blockExtra($galleryBlock, 'accent', 'var(--gold)') }}">{{ $blockExtra($galleryBlock, 'section_label', 'Campus Life') }}</div>
-                        <h2 class="section-title mt-1" style="color:{{ $blockExtra($galleryBlock, 'text_color', 'var(--navy)') }}">{{ $galleryBlock->title ?? 'Our Gallery' }}</h2>
+                        <h2 class="section-title mt-1" style="color:{{ $blockExtra($galleryBlock, 'text_color', 'var(--navy)') }}">{{ $galleryBlock?->title ?? 'Our Gallery' }}</h2>
                         <div class="gold-bar mt-4"></div>
                     </div>
                     <a href="{{ route('gallery.index') }}"
                         class="group mt-6 sm:mt-0 flex items-center gap-2 text-sm font-bold hover:text-navy transition-colors"
                         style="color:var(--navy);opacity:.6;transition-timing-function:var(--ease-out)">
-                        {{ $galleryBlock->button_text ?? 'View Gallery' }}
+                        {{ $galleryBlock?->button_text ?? 'View Gallery' }}
                         <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
@@ -633,7 +652,7 @@
 
                 <div class="text-center mb-16 reveal">
                     <div class="section-label justify-center" style="color:{{ $blockExtra($testiBlock, 'accent', 'var(--gold)') }}">{{ $blockExtra($testiBlock, 'section_label', 'Voices') }}</div>
-                    <h2 class="section-title" style="color:{{ $blockExtra($testiBlock, 'text_color', 'var(--navy)') }}">{{ $testiBlock->title ?? 'What Parents & Alumni Say' }}</h2>
+                    <h2 class="section-title" style="color:{{ $blockExtra($testiBlock, 'text_color', 'var(--navy)') }}">{{ $testiBlock?->title ?? 'What Parents & Alumni Say' }}</h2>
                     <div class="gold-bar mx-auto mt-4"></div>
                 </div>
 
@@ -688,13 +707,13 @@
                             </svg>
                             {{ $blockExtra($eventsBlock, 'section_label', "What's Coming") }}
                         </div>
-                        <h2 class="section-title mb-4" style="color:#fff">{{ $eventsBlock->title ?? 'Upcoming Events' }}</h2>
+                        <h2 class="section-title mb-4" style="color:#fff">{{ $eventsBlock?->title ?? 'Upcoming Events' }}</h2>
                         <div class="gold-bar mb-8"></div>
                         <p class="text-[14px] leading-relaxed mt-8 mb-10 max-w-sm" style="font-family:'Plus Jakarta Sans',sans-serif;color:{{ $blockExtra($eventsBlock, 'muted_color', 'rgba(255,255,255,0.4)') }}">
-                            {{ $eventsBlock->subtitle ?: 'Stay connected with school life. Join us for these upcoming events and activities.' }}
+                            {{ $eventsBlock?->subtitle ?: 'Stay connected with school life. Join us for these upcoming events and activities.' }}
                         </p>
-                        <a href="{{ $eventsBlock->button_url ?: route('events.index') }}" class="btn-primary" style="background:{{ $blockExtra($eventsBlock, 'button_bg', 'var(--gold)') }};color:{{ $blockExtra($eventsBlock, 'button_text_color', '#fff') }}">
-                            {{ $eventsBlock->button_text ?? 'View All Events' }}
+                        <a href="{{ $eventsBlock?->button_url ?: route('events.index') }}" class="btn-primary" style="background:{{ $blockExtra($eventsBlock, 'button_bg', 'var(--vivid-red)') }};color:{{ $blockExtra($eventsBlock, 'button_text_color', '#fff') }}">
+                            {{ $eventsBlock?->button_text ?? 'View All Events' }}
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
@@ -752,14 +771,14 @@
 
                 <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-16 reveal">
                     <div>
-                        <div class="section-label" style="color:{{ $blockExtra($newsBlock, 'accent', 'var(--gold)') }}">{{ $blockExtra($newsBlock, 'section_label', $newsBlock->subtitle ?? 'Stay Informed') }}</div>
-                        <h2 class="section-title mt-1" style="color:{{ $blockExtra($newsBlock, 'text_color', 'var(--navy)') }}">{{ $newsBlock->title ?? 'Latest News & Updates' }}</h2>
+                        <div class="section-label" style="color:{{ $blockExtra($newsBlock, 'accent', 'var(--gold)') }}">{{ $blockExtra($newsBlock, 'section_label', $newsBlock?->subtitle ?? 'Stay Informed') }}</div>
+                        <h2 class="section-title mt-1" style="color:{{ $blockExtra($newsBlock, 'text_color', 'var(--navy)') }}">{{ $newsBlock?->title ?? 'Latest News & Updates' }}</h2>
                         <div class="gold-bar mt-4"></div>
                     </div>
-                    <a href="{{ $newsBlock->button_url ?: route('news.index') }}"
+                    <a href="{{ $newsBlock?->button_url ?: route('news.index') }}"
                         class="group mt-6 sm:mt-0 flex items-center gap-2 text-sm font-bold text-navy/60 hover:text-navy transition-colors"
                         style="transition-timing-function:var(--ease-out)">
-                        {{ $newsBlock->button_text ?? 'View All' }}
+                        {{ $newsBlock?->button_text ?? 'View All' }}
                         <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
@@ -830,10 +849,10 @@
 
                 <div class="reveal">
                     <div class="section-label justify-center" style="color:{{ $blockExtra($contactBlock, 'accent', 'var(--gold)') }}">{{ $blockExtra($contactBlock, 'section_label', 'Reach Out') }}</div>
-                    <h2 class="section-title" style="color:{{ $blockExtra($contactBlock, 'text_color', 'var(--navy)') }}">{{ $contactBlock->title ?? 'Get in Touch' }}</h2>
+                    <h2 class="section-title" style="color:{{ $blockExtra($contactBlock, 'text_color', 'var(--navy)') }}">{{ $contactBlock?->title ?? 'Get in Touch' }}</h2>
                     <div class="gold-bar mx-auto mt-4 mb-5"></div>
                     <p class="text-sm mt-7 mb-14 max-w-md mx-auto leading-relaxed" style="font-family:'Plus Jakarta Sans',sans-serif;color:{{ $blockExtra($contactBlock, 'muted_color', '#9CA3AF') }}">
-                        {{ $contactBlock->subtitle ?? 'We\'d love to hear from you. Reach out to our team for admissions, enquiries, or campus visits.' }}
+                        {{ $contactBlock?->subtitle ?? 'We\'d love to hear from you. Reach out to our team for admissions, enquiries, or campus visits.' }}
                     </p>
                 </div>
 
@@ -858,8 +877,8 @@
                 </div>
 
                 <div class="reveal">
-                    <a href="{{ $contactBlock->button_url ?: route('contact.index') }}" class="btn-primary" style="background:{{ $blockExtra($contactBlock, 'button_bg', 'var(--gold)') }};color:{{ $blockExtra($contactBlock, 'button_text_color', '#fff') }}">
-                        {{ $contactBlock->button_text ?? 'Contact Us' }}
+                    <a href="{{ $contactBlock?->button_url ?: route('contact.index') }}" class="btn-primary" style="background:{{ $blockExtra($contactBlock, 'button_bg', 'var(--vivid-red)') }};color:{{ $blockExtra($contactBlock, 'button_text_color', '#fff') }}">
+                        {{ $contactBlock?->button_text ?? 'Contact Us' }}
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
@@ -885,19 +904,21 @@
             <div class="relative max-w-2xl mx-auto px-4 reveal">
                 <div class="section-label justify-center" style="color:{{ $blockExtra($ctaBlock, 'accent', 'rgba(201,162,39,0.8)') }}">{{ $blockExtra($ctaBlock, 'section_label', 'Join Our Community') }}</div>
                 <h2 class="font-display font-bold leading-tight mb-3 mt-2" style="font-size:clamp(2.2rem,5vw,4rem)">
-                    <span class="text-shimmer">{{ $ctaBlock->title ?? 'Join Our Learning Community' }}</span>
+                    <span class="text-shimmer">{{ $ctaBlock?->title ?? 'Join Our Learning Community' }}</span>
                 </h2>
                 <p class="mb-12 leading-relaxed text-[15px]" style="font-family:'Plus Jakarta Sans',sans-serif;color:{{ $blockExtra($ctaBlock, 'muted_color', 'rgba(255,255,255,0.5)') }}">
-                    {{ $ctaBlock->subtitle ?? 'Give your child the gift of quality education grounded in human values. Admissions are now open!' }}
+                    {{ $ctaBlock?->subtitle ?? 'Give your child the gift of quality education grounded in human values. Admissions are now open!' }}
                 </p>
                 <div class="flex flex-wrap gap-4 justify-center">
-                    <a href="{{ $ctaBlock->button_url ?? route('admissions.index') }}" class="btn-primary" style="background:{{ $blockExtra($ctaBlock, 'button_bg', 'var(--gold)') }};color:{{ $blockExtra($ctaBlock, 'button_text_color', '#fff') }}">
-                        {{ $ctaBlock->button_text ?? 'Apply Now' }}
+                    <a href="{{ $ctaBlock?->button_url ?? route('admissions.index') }}" class="btn-primary" style="background:{{ $blockExtra($ctaBlock, 'button_bg', 'var(--vivid-red)') }};color:{{ $blockExtra($ctaBlock, 'button_text_color', '#fff') }}">
+                        {{ $ctaBlock?->button_text ?? 'Apply Now' }}
                     </a>
                     <a href="{{ $blockExtra($ctaBlock, 'secondary_button_url', route('contact.index')) }}" class="btn-ghost-white">{{ $blockExtra($ctaBlock, 'secondary_button_text', 'Learn More') }}</a>
                 </div>
             </div>
         </section>
+    @endif
+
     @endif
 
 @endsection

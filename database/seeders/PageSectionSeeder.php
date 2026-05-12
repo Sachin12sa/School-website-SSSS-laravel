@@ -10,7 +10,7 @@ class PageSectionSeeder extends Seeder
 {
     public function run(): void
     {
-        $pages = ['about', 'programs', 'life-at-ssss', 'boarding', 'transport', 'contact', 'admissions'];
+        $pages = ['home', 'about', 'programs', 'life-at-ssss', 'boarding', 'transport', 'contact', 'admissions'];
         PageSection::whereIn('page_key', $pages)->delete();
 
         $check = 'M5 13l4 4L19 7';
@@ -20,6 +20,47 @@ class PageSectionSeeder extends Seeder
         $bus = 'M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z M15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3z';
 
         $sections = [
+            ['home', 'stats', null, null, null, [
+                ['value' => '500+', 'label' => 'Students', 'icon' => $check],
+                ['value' => '40+', 'label' => 'Teachers', 'icon' => $book],
+                ['value' => '26+', 'label' => 'Years', 'icon' => $home],
+                ['value' => '4', 'label' => 'Programs', 'icon' => $check],
+            ], ['background' => 'navy', 'class' => '!py-10']],
+            ['home', 'image-right', 'Who We Are', 'About Sathya Sai Shiksha Sadan', '<p>At Sathya Sai Shiksha Sadan, we believe education extends beyond textbooks. Our mission is to nurture young minds with academic excellence and human values.</p><p>From primary education through higher secondary (+2), we provide a supportive environment where students develop intellectually, emotionally, and morally.</p>', [
+                ['title' => 'Value-based learning', 'description' => 'Education rooted in Sathya, Dharma, Shanti, Prema, and Ahimsa.', 'icon' => $heart],
+                ['title' => 'Personal attention', 'description' => 'Dedicated faculty guide each child with care.', 'icon' => $check],
+            ], ['background' => 'cream', 'image' => 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=900', 'image_alt' => 'Students learning']],
+            ['home', 'program-cards', 'What We Offer', 'Our Academic Programs', 'Comprehensive education from foundation to specialisation, designed to unlock every student\'s potential.', [
+                ['title' => 'Primary Level', 'badge' => 'Grades 1-5', 'description' => 'Building strong foundations in core subjects with focus on holistic development.', 'color' => 'var(--gold)', 'image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=900', 'url' => '/programs#primary'],
+                ['title' => 'Middle School', 'badge' => 'Grades 6-8', 'description' => 'Guided transition years that strengthen confidence, curiosity, and independent study habits.', 'color' => 'var(--navy)', 'image' => 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=900', 'url' => '/programs#middle'],
+                ['title' => 'Secondary Level', 'badge' => 'Grades 9-10', 'description' => 'Focused academic preparation with values, discipline, and examination readiness.', 'color' => 'var(--lotus-red)', 'image' => 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=900', 'url' => '/programs#secondary'],
+                ['title' => '+2 Science & Mgmt', 'badge' => 'Grades 11-12', 'description' => 'Specialised streams in Science and Management for confident future pathways.', 'color' => 'var(--gold-dark)', 'image' => 'https://images.unsplash.com/photo-1576319155264-99536e0be1ee?w=900', 'url' => '/programs#science'],
+            ], ['background' => 'white', 'grid' => 'sm:grid-cols-2 xl:grid-cols-4']],
+            ['home', 'image-left', 'Our Philosophy', 'Five Human Values', 'Our educational philosophy is built on five pillars that shape character and guide every student\'s growth.', [
+                ['title' => 'Truth (Sathya)', 'description' => 'Honesty and integrity in thought, word, and deed.', 'icon' => $heart],
+                ['title' => 'Right Conduct (Dharma)', 'description' => 'Moral and ethical behavior in all situations.', 'icon' => $check],
+                ['title' => 'Peace (Shanti)', 'description' => 'Inner harmony and calm disposition.', 'icon' => $book],
+                ['title' => 'Love & Non-Violence', 'description' => 'Compassion, service, and respect for all life.', 'icon' => $heart],
+            ], ['background' => 'cream', 'image' => 'https://images.unsplash.com/photo-1562774053-701939374585?w=900', 'image_alt' => 'Campus values']],
+            ['home', 'timeline', 'Our Story', 'A Legacy of Excellence', null, [
+                ['title' => 'Milestones', 'items' => [
+                    ['year' => '2000', 'text' => 'Sathya Sai Shiksha Sadan established with a vision of value-based education'],
+                    ['year' => '2005', 'text' => 'Expanded to secondary level'],
+                    ['year' => '2010', 'text' => '+2 Science stream introduced'],
+                    ['year' => '2015', 'text' => '+2 Management stream launched'],
+                    ['year' => '2026', 'text' => '26 proud years of nurturing excellence and human values'],
+                ]],
+            ], ['background' => 'white', 'columns' => 'sm:grid-cols-1']],
+            ['home', 'cards', 'Reach Out', 'Get in Touch', null, [
+                ['title' => 'Call Us', 'description' => '+977-1-XXXXXXX', 'icon' => 'M3 5a2 2 0 012-2h3.28', 'color' => 'var(--vivid-red)'],
+                ['title' => 'Email Us', 'description' => 'info@school.edu', 'icon' => 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8', 'color' => 'var(--gold)'],
+                ['title' => 'Visit Us', 'description' => 'Sathya Sai Shiksha Sadan, Nepal', 'icon' => $home, 'color' => 'var(--navy)'],
+            ], ['background' => 'cream', 'grid' => 'md:grid-cols-3']],
+            ['home', 'cta', 'Join Our Community', 'Join Our Learning Community', 'Give your child the gift of quality education grounded in human values. Admissions are now open.', [
+                ['label' => 'Apply Now', 'url' => '/admissions'],
+                ['label' => 'Contact Us', 'url' => '/contact', 'style' => 'ghost'],
+            ], ['background' => 'dark', 'particle_type' => 'soft']],
+
             ['about', 'default', 'Why We Exist', 'Our Mission', 'Sathya Sai Shiksha Sadan is dedicated to providing quality education that nurtures academic excellence and character through Truth, Right Conduct, Peace, Love, and Non-Violence.<br><br>We develop the whole person intellectually, emotionally, physically, and spiritually so students become responsible citizens with strong moral foundations.', [], ['background' => 'white']],
             ['about', 'cards', 'Our Philosophy', 'Five Human Values', null, [
                 ['title' => 'Truth (Sathya)', 'description' => 'We cultivate honesty and integrity in all aspects of student life.', 'icon' => $heart],

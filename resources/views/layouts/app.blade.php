@@ -15,22 +15,22 @@
                 extend: {
                     colors: {
                         navy: {
-                            DEFAULT: '#0D1B2E',
-                            mid: '#1B2A4A',
-                            50: '#f0f3f9',
-                            100: '#d9e0ef',
-                            800: '#0f1729',
-                            900: '#060e1c',
+                            DEFAULT: '#1E3A5F',
+                            mid: '#27496F',
+                            50: '#F2F5F9',
+                            100: '#DCE5EF',
+                            800: '#18304F',
+                            900: '#10243D',
                         },
                         gold: {
-                            DEFAULT: '#C9A227',
-                            light: '#E2B93B',
-                            dark: '#A8841F',
-                            50: '#fdf8ec',
+                            DEFAULT: '#C8922E',
+                            light: '#D8A84A',
+                            dark: '#8C6239',
+                            50: '#FBF4E8',
                         },
                         cream: {
-                            DEFAULT: '#FAF7F2',
-                            mid: '#F3EEE6',
+                            DEFAULT: '#F7F3EB',
+                            mid: '#E8DDCC',
                         }
                     },
                     fontFamily: {
@@ -56,22 +56,26 @@
 
     <style>
         /* ══════════════════════════════════════════════════════════════
-           DESIGN SYSTEM — Luxury Editorial
-           Palette: Navy #0D1B2E · Cream #FAF7F2 · Gold #C9A227
+           DESIGN SYSTEM — Heritage + Minimal Modern Education
+           Palette: Heritage Blue #1E3A5F · Ivory #F7F3EB · Saffron Gold #C8922E · Lotus Red #B8423A
            Type: Cormorant Garamond (display) + Plus Jakarta Sans (body)
            Easing: Strong ease-out cubic-bezier(0.23, 1, 0.32, 1)
         ══════════════════════════════════════════════════════════════ */
 
         /* ── Tokens ──────────────────────────────────────────────── */
         :root {
-            --navy: #0D1B2E;
-            --navy-mid: #1B2A4A;
-            --gold: #C9A227;
-            --gold-light: #E2B93B;
-            --gold-dark: #A8841F;
-            --cream: #FAF7F2;
-            --cream-mid: #F3EEE6;
-            --text-muted: #6B7A8D;
+            --navy: #1E3A5F;
+            --navy-mid: #27496F;
+            --gold: #C8922E;
+            --gold-light: #D8A84A;
+            --gold-dark: #8C6239;
+            --lotus-red: #B8423A;
+            --vivid-red: #D92D20;
+            --vivid-red-dark: #B42318;
+            --cream: #F7F3EB;
+            --cream-mid: #E8DDCC;
+            --charcoal: #2A2A2A;
+            --text-muted: #5F6670;
             /* Emil-calibrated easing curves */
             --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
             --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
@@ -87,8 +91,8 @@
 
         body {
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-            background: #fff;
-            color: var(--navy);
+            background: var(--cream);
+            color: var(--charcoal);
             -webkit-font-smoothing: antialiased;
         }
 
@@ -238,13 +242,49 @@
             transform: translateY(-2px) scale(0.99);
         }
 
+        .prog-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform .35s var(--ease-spring), box-shadow .35s var(--ease-out);
+        }
+
+        .prog-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            border: 1.5px solid transparent;
+            transition: border-color .28s var(--ease-out), box-shadow .28s var(--ease-out);
+            pointer-events: none;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .prog-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 32px 64px rgba(30, 58, 95, 0.16);
+            }
+
+            .prog-card:hover::after {
+                border-color: rgba(200, 146, 46, 0.5);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .prog-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 30%, rgba(30, 58, 95, 0.94) 100%);
+        }
+
         /* ── Buttons — primary ─────────────────────────────────── */
         .btn-primary {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--gold);
-            color: var(--navy);
+            background: var(--vivid-red);
+            color: var(--cream);
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 13px;
             font-weight: 700;
@@ -253,16 +293,17 @@
             border: none;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 4px 16px rgba(201, 162, 39, 0.28);
+            box-shadow: 0 8px 24px rgba(217, 45, 32, 0.22);
             transition: background 0.18s ease,
                 transform 0.16s var(--ease-spring),
                 box-shadow 0.18s ease;
         }
 
         .btn-primary:hover {
-            background: var(--gold-light);
+            background: var(--vivid-red-dark);
+            color: var(--cream);
             transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(201, 162, 39, 0.38);
+            box-shadow: 0 12px 34px rgba(217, 45, 32, 0.34);
         }
 
         .btn-primary:active {

@@ -1,0 +1,639 @@
+Admin Operations Guide
+
+This guide explains how to manage the school website from the admin
+panel.
+
+Live demo URL:
+
+    https://school-website-demo.onrender.com
+
+Admin login URL:
+
+    https://school-website-demo.onrender.com/admin/login
+
+Default demo login:
+
+    Email: admin@school.edu
+    Password: admin
+
+Change this password immediately after login if the site is public.
+
+1. Admin Panel Basics
+
+After logging in, the left sidebar is the main control center.
+
+Main areas:
+
+- Dashboard: quick overview of posts, events, admissions, and contact
+  messages.
+- Page Heroes: edit the top hero/banner section for important pages.
+- Homepage Blocks: edit homepage sections, colors, images, buttons, and
+  structured cards.
+- News & Updates: manage news articles.
+- Events: manage upcoming/past events.
+- Faculty Members: manage teacher/faculty profiles.
+- Gallery: manage photo albums and gallery images.
+- Testimonials: manage testimonials shown on the site.
+- FAQs: manage frequently asked questions.
+- Page Sections: manage dynamic content for About, Programs, Life at
+  SSSS, Boarding, Transportation, Admissions, and Contact.
+- Admissions: view and manage admission form submissions.
+- Messages: view contact form messages.
+- Site Settings: manage school identity, branding, footer, popup banner,
+  SEO, and admission form settings.
+- Navigation Menus: manage menu links.
+- Users: manage admin/editor accounts.
+
+2. Dashboard
+
+Path:
+
+    Admin -> Dashboard
+
+Use the dashboard to check:
+
+- Total news posts.
+- Total events.
+- Total faculty members.
+- Total galleries.
+- New admission applications.
+- Unread contact messages.
+
+The lower area shows recent admission applications and recent messages.
+Click any item to open its detail page.
+
+3. Page Heroes
+
+Path:
+
+    Admin -> Page Heroes
+
+Use this to edit the large hero section at the top of pages.
+
+Common fields:
+
+- Badge Text: small label above the heading. Leave blank to hide it.
+- Heading: main title.
+- Subheading: short description below the title.
+- Primary Button Text / URL: main call-to-action button.
+- Secondary Button Text / URL: optional second button.
+- Background Image: hero image.
+- Image Opacity: how visible the image is behind the overlay.
+- Overlay Style: dark, light, or gold tint.
+- Badge Style: white or gold.
+- Text Alignment: center or left.
+- Min Height: controls hero height.
+- Show Decorative Rings: turns subtle circle decorations on/off.
+- Stats Strip: optional numbers below hero buttons.
+- SEO Fields: meta title and description for that page.
+
+Recommended hero image size:
+
+    1920x1080px or wider
+
+Button URL examples:
+
+    /admissions
+    /contact
+    /programs
+    #section-id
+
+4. Homepage Blocks
+
+Path:
+
+    Admin -> Homepage Blocks
+
+Homepage blocks control the main homepage sections. Each block can be
+expanded and edited.
+
+Common controls:
+
+- Visible/Hidden: turn a section on or off.
+- Title: section heading.
+- Subtitle: short text under the title.
+- Content: larger paragraph or HTML content.
+- Button Text / URL: optional action button.
+- Section Image: image used by that block.
+- Order: display order.
+- Template: visual style such as default, compact, editorial, or
+  feature.
+- Background: section background color/style.
+- Accent: gold or highlight color.
+- Card Background: card color.
+- Text Color: heading/body color.
+- Muted Color: secondary text color.
+- Overlay: optional dark/light visual layer.
+- Structured Items JSON: advanced cards/lists/stats/timeline data.
+
+Template Meaning
+
+- Default: normal design.
+- Compact: smaller spacing; good for short sections.
+- Editorial: more elegant title style; good for story/history sections.
+- Feature: stronger visual framing; good for important homepage
+  sections.
+
+Structured Items JSON
+
+Use this when a section has repeated cards, stats, timeline items,
+values, or buttons.
+
+Example for stats:
+
+    [
+      {
+        "value": "500+",
+        "label": "Students",
+        "icon": "M17 20h5v-2a3 3 0 00-5.356-1.857"
+      },
+      {
+        "value": "40+",
+        "label": "Teachers",
+        "icon": "M12 4.354a4 4 0 110 5.292"
+      }
+    ]
+
+Example for program cards:
+
+    [
+      {
+        "title": "Primary Level",
+        "badge": "Grade 1-5",
+        "description": "Strong foundation with values-based education.",
+        "url": "/programs",
+        "color": "#C9A227"
+      },
+      {
+        "title": "Secondary Level",
+        "badge": "Grade 6-10",
+        "description": "Balanced academics, discipline, and life skills.",
+        "url": "/programs",
+        "color": "#1B2A4A"
+      }
+    ]
+
+Important JSON rules:
+
+- Use double quotes, not single quotes.
+- Separate items with commas.
+- Do not leave a trailing comma after the last item.
+- If the page breaks after saving JSON, check for invalid JSON
+  formatting.
+
+5. Dynamic Page Sections
+
+Path:
+
+    Admin -> About Us
+    Admin -> Programs
+    Admin -> Life at SSSS
+    Admin -> Boarding
+    Admin -> Transportation
+    Admin -> Admissions
+    Admin -> Contact
+
+Each of these pages is built from sections.
+
+For each section you can manage:
+
+- Layout: section design type.
+- Title: main section heading.
+- Subtitle: supporting heading.
+- Content: paragraph/content area. HTML is allowed.
+- Structured Items JSON: cards, lists, stats, tabs, routes, or
+  timelines.
+- Section Settings JSON: background, grid, particles, colors, spacing,
+  image alt text, etc.
+- Badge Text / Badge Color: optional visual label.
+- Section Image: optional image.
+- Button Text / URL: optional call-to-action.
+- Published: show/hide the section.
+- Order: display order.
+
+Layout Tips
+
+Use layouts based on the content type:
+
+- Stats Bar: short numbers such as students, teachers, years.
+- Cards / Feature Cards: programs, facilities, values.
+- Timeline: history or process.
+- Image Text: one image plus explanatory content.
+- CTA Banner: call-to-action section above footer.
+- FAQ / Accordion: question-answer content.
+- Tabs: multiple grouped topics.
+
+Section Settings JSON Example
+
+    {
+      "background": "navy",
+      "class": "!py-10",
+      "particle_type": "geometric",
+      "image_alt": "Campus"
+    }
+
+Common backgrounds:
+
+    white
+    cream
+    navy
+    dark
+
+6. News & Updates
+
+Path:
+
+    Admin -> News & Updates
+
+Use this section to create and manage news posts.
+
+Recommended workflow:
+
+1.  Click Create News.
+2.  Add title.
+3.  Add slug or let the system generate one.
+4.  Add excerpt.
+5.  Add full article body.
+6.  Upload image if needed.
+7.  Select category.
+8.  Set published date.
+9.  Turn Published on.
+10. Save.
+
+Use Featured for important news. Featured posts may appear more
+prominently depending on the page layout.
+
+7. Events
+
+Path:
+
+    Admin -> Events
+
+Use this to manage school events.
+
+Fields usually include:
+
+- Title.
+- Slug.
+- Short description.
+- Full body/details.
+- Image.
+- Start date/time.
+- End date/time.
+- Location.
+- Organizer.
+- Published status.
+- SEO title/description.
+
+Upcoming events appear on the homepage and event page when the date is
+today or in the future.
+
+8. Faculty Members
+
+Path:
+
+    Admin -> Faculty Members
+
+Use this to manage teacher/faculty profiles.
+
+Fields:
+
+- Name.
+- Designation.
+- Department.
+- Email.
+- Bio.
+- Photo.
+- LinkedIn link.
+- Order.
+- Published status.
+
+Use clear, professional photos with similar cropping for the best design
+consistency.
+
+9. Gallery
+
+Path:
+
+    Admin -> Gallery
+
+Gallery is organized by albums.
+
+Recommended workflow:
+
+1.  Create a gallery album.
+2.  Add album name.
+3.  Add description.
+4.  Upload cover image.
+5.  Save.
+6.  Open the album again.
+7.  Upload gallery images.
+8.  Add captions if needed.
+
+Important Render free hosting note:
+
+Uploaded images may disappear after redeploy/restart on Render free
+hosting because the filesystem is temporary. For a real production site,
+use persistent disk or cloud storage such as S3/Cloudinary.
+
+10. Testimonials
+
+Path:
+
+    Admin -> Testimonials
+
+Use this for parent, student, alumni, or community feedback.
+
+Fields:
+
+- Author name.
+- Author role.
+- Testimonial content.
+- Photo.
+- Rating.
+- Featured.
+- Published.
+- Order.
+
+Only publish testimonials that are approved for public display.
+
+11. FAQs
+
+Path:
+
+    Admin -> FAQs
+
+Use this for common questions.
+
+Fields:
+
+- Question.
+- Answer.
+- Category.
+- Order.
+- Published.
+
+Good FAQ categories:
+
+    Admissions
+    Fees
+    Boarding
+    Transportation
+    Academics
+    General
+
+12. Admissions Inbox
+
+Path:
+
+    Admin -> Admissions
+
+This area receives applications submitted from the public admission
+form.
+
+Statuses:
+
+- New: newly submitted.
+- Reviewed: admin has checked it.
+- Accepted: application accepted.
+- Rejected: application rejected.
+
+Recommended workflow:
+
+1.  Open the admission record.
+2.  Review applicant and parent details.
+3.  Check extra form fields if enabled.
+4.  Add admin notes.
+5.  Change status.
+6.  Save.
+
+Admin notes are internal and should be used for follow-up reminders or
+decision details.
+
+13. Contact Messages
+
+Path:
+
+    Admin -> Messages
+
+Use this to read messages sent from the public contact form.
+
+Recommended workflow:
+
+1.  Open unread message.
+2.  Review sender name, email, phone, subject, and message.
+3.  Mark as read.
+4.  Follow up externally by email or phone.
+5.  Delete spam or old messages if needed.
+
+14. Site Settings
+
+Path:
+
+    Admin -> Site Settings
+
+This is the main configuration area.
+
+Common tabs/areas:
+
+- Identity: school name, tagline, address, phone, email.
+- Branding: logo, favicon, brand assets.
+- Footer: footer introduction, quick links, contact title, footer
+  credit.
+- Social: social media links.
+- SEO: meta description and default search text.
+- Admissions: admission year, class options, visible fields, required
+  fields, success message.
+- Popup Banner: popup content, buttons, image, show rules, delay, and
+  preview.
+
+Admissions Form Settings
+
+Use this to control what fields appear on the public admission form.
+
+Common settings:
+
+- Admission year.
+- Class options.
+- Form intro text.
+- Success message.
+- Visible fields.
+- Required fields.
+
+If a field is required, make sure it is also visible.
+
+Popup Banner
+
+Use this to manage the popup shown to visitors.
+
+Controls:
+
+- Enable/disable popup.
+- Show on homepage or all pages.
+- Delay before showing.
+- Hide duration after user closes it.
+- Popup title/subtitle.
+- Badge/deadline text.
+- Pills/tags.
+- Primary and secondary buttons.
+- Image or template mode.
+- Live preview while editing.
+
+Use short text in popup fields. Long text can make the popup crowded on
+mobile.
+
+15. Navigation Menus
+
+Path:
+
+    Admin -> Navigation Menus
+
+Use this to manage menu groups and menu links.
+
+Menu item fields:
+
+- Title.
+- URL.
+- Route name.
+- Parent item.
+- Order.
+- Open in new tab.
+
+For normal internal pages, use URLs like:
+
+    /
+    /about
+    /programs
+    /admissions
+    /contact
+    /testimonials
+
+Use Open in new tab only for external links.
+
+16. Users
+
+Path:
+
+    Admin -> Users
+
+Only admin users should manage users.
+
+Roles:
+
+- Admin: full access.
+- Editor: content editing access.
+
+Recommended security rules:
+
+- Change default password immediately.
+- Use strong passwords.
+- Give admin role only to trusted people.
+- Remove old users who no longer need access.
+
+17. Safe Editing Rules
+
+Before making large changes:
+
+1.  Edit one section at a time.
+2.  Save.
+3.  Open the live site in another tab.
+4.  Check desktop and mobile layout.
+5.  Continue editing.
+
+For JSON fields:
+
+- Keep a backup of the old JSON before replacing it.
+- Validate JSON formatting.
+- Use examples from the admin guide buttons where available.
+
+For images:
+
+- Use compressed JPG/WebP images where possible.
+- Keep file names simple.
+- Avoid very large files.
+- Recommended hero images: 1920px wide or larger.
+- Recommended card images: around 1200x600px.
+
+18. Render Free Hosting Notes
+
+The demo is hosted on Render free tier.
+
+Important behavior:
+
+- The site may sleep when inactive.
+- First visit after sleep can take time to load.
+- Database data stays in Render Postgres.
+- Uploaded files/images can disappear after restart or redeploy unless
+  persistent storage is added.
+- For production, use paid persistent disk or external media storage.
+
+If the site shows a 500 error:
+
+1.  Open Render dashboard.
+2.  Open the school-website-demo web service.
+3.  Go to Logs.
+4.  Search for:
+
+    production.ERROR
+
+5.  Copy the first error line and stack trace.
+6.  Send it to the developer.
+
+19. Recommended Admin Routine
+
+Daily:
+
+- Check new admissions.
+- Check unread messages.
+
+Weekly:
+
+- Add/update news.
+- Add upcoming events.
+- Check homepage blocks.
+- Check popup banner if admissions are open.
+
+Monthly:
+
+- Review faculty profiles.
+- Review gallery albums.
+- Review FAQs.
+- Check all major pages for outdated dates.
+- Update footer/contact information if needed.
+
+20. Quick URL List
+
+Public:
+
+    /
+    /about
+    /programs
+    /life-at-ssss
+    /boarding
+    /transportation
+    /admissions
+    /faculty
+    /news
+    /events
+    /gallery
+    /testimonials
+    /faq
+    /contact
+
+Admin:
+
+    /admin/login
+    /admin/dashboard
+    /admin/heroes
+    /admin/blocks
+    /admin/settings
+    /admin/admissions
+    /admin/contacts
+    /admin/news
+    /admin/events
+    /admin/teachers
+    /admin/gallery
+    /admin/testimonials
+    /admin/faqs
+    /admin/menus
+    /admin/users
