@@ -42,8 +42,8 @@ class PageSection extends Model
     // ── Helper: get all published sections for a page ─────────────────────────
     public static function forPageCached(string $pageKey): \Illuminate\Support\Collection
     {
-        return Cache::remember("sections_{$pageKey}", 3600, fn() =>
-            static::published()->forPage($pageKey)->orderBy('order')->get()
-        );
+        Cache::forget("sections_{$pageKey}");
+
+        return static::published()->forPage($pageKey)->orderBy('order')->get();
     }
 }
