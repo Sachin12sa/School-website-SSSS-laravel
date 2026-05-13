@@ -7,9 +7,7 @@ use App\Models\Gallery;   // adjust to your actual model name
 use App\Models\NewsPost;
 use App\Models\PageBlock;
 use App\Models\PageHero;
-use App\Models\PageSection;
 use App\Models\Testimonial;
-use App\Support\HomeSectionSync;
 
 class HomeController extends Controller
 {
@@ -17,8 +15,6 @@ class HomeController extends Controller
     {
         // ── All homepage blocks ───────────────────────────────────────────────
         $blocks = PageBlock::homepageBlocks();
-        HomeSectionSync::ensureFromBlocks();
-        $homeSections = PageSection::forPageCached('home');
 
         // ── Convenience shortcuts (expected by home.blade.php) ────────────────
         $hero  = PageHero::forPage('home');
@@ -67,7 +63,6 @@ class HomeController extends Controller
             'galleryAlbums',
             'testimonials',
             'upcomingEvents',
-            'homeSections',
         ));
     }
 }

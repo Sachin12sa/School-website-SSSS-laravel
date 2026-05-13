@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{PageBlock, PageSection};
-use App\Support\HomeSectionSync;
+use App\Models\PageSection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -26,10 +25,6 @@ class PageSectionController extends Controller
     public function index(string $pageKey)
     {
         abort_unless(array_key_exists($pageKey, $this->managedPages), 404);
-        if ($pageKey === 'home') {
-            HomeSectionSync::ensureFromBlocks();
-        }
-
         $pageTitle = $this->managedPages[$pageKey];
         $sections = PageSection::forPage($pageKey)->orderBy('order')->get();
         return view('admin.pages.sections.index', compact('sections', 'pageKey', 'pageTitle'));
@@ -172,10 +167,5 @@ class PageSectionController extends Controller
         }
 
         return $data;
-    }
-
-    protected function homeBlockToSectionData(PageBlock $block, int $order): array
-    {
-        return HomeSectionSync::blockToSectionData($block, $order);
     }
 }

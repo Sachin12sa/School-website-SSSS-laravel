@@ -364,12 +364,6 @@
         </x-page-hero>
     @endif
 
-    @if (($homeSections ?? collect())->isNotEmpty())
-        @foreach ($homeSections as $i => $section)
-            @include('components.section-renderer', ['section' => $section, 'index' => $i])
-        @endforeach
-    @else
-
     {{-- ══════════════════════════════════════════════════════════════
      § 2 — ABOUT INTRO
     ══════════════════════════════════════════════════════════════ --}}
@@ -917,8 +911,6 @@
                 </div>
             </div>
         </section>
-    @endif
-
     @endif
 
 @endsection

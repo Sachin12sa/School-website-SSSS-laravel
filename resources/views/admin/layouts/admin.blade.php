@@ -12,17 +12,17 @@
                 extend: {
                     colors: {
                         navy: {
-                            50: '#eef9ff',
-                            100: '#d8f1ff',
-                            200: '#b7e6ff',
-                            300: '#86d6ff',
-                            400: '#46b9f0',
-                            500: '#149bdc',
-                            600: '#087fbd',
-                            700: '#096696',
-                            800: '#0d567c',
-                            900: '#0f4968',
-                            950: '#0a3047'
+                            50: '#f4f6fa',
+                            100: '#e9edf5',
+                            200: '#c8d3e6',
+                            300: '#a7b8d6',
+                            400: '#6583b8',
+                            500: '#234d99',
+                            600: '#1f458a',
+                            700: '#1b3a73',
+                            800: '#152d59',
+                            900: '#1B2A4A',
+                            950: '#0d1525'
                         },
                         gold: {
                             50: '#fefbea',
@@ -74,8 +74,8 @@
         }
 
         .active-nav-item {
-            background: linear-gradient(90deg, rgba(20, 155, 220, .22) 0%, rgba(20, 155, 220, 0) 100%);
-            border-left: 3px solid #149BDC
+            background: linear-gradient(90deg, rgba(201, 162, 39, .15) 0%, rgba(201, 162, 39, 0) 100%);
+            border-left: 3px solid #C9A227
         }
 
         @keyframes fade-up {

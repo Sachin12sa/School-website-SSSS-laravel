@@ -15,12 +15,12 @@
                 extend: {
                     colors: {
                         navy: {
-                            DEFAULT: '#149BDC',
-                            mid: '#087FBD',
-                            50: '#EEF9FF',
-                            100: '#D8F1FF',
-                            800: '#0D567C',
-                            900: '#0A3047',
+                            DEFAULT: '#1E3A5F',
+                            mid: '#27496F',
+                            50: '#F2F5F9',
+                            100: '#DCE5EF',
+                            800: '#18304F',
+                            900: '#10243D',
                         },
                         gold: {
                             DEFAULT: '#C8922E',
@@ -29,8 +29,8 @@
                             50: '#FBF4E8',
                         },
                         cream: {
-                            DEFAULT: '#F7F3EB',
-                            mid: '#E8DDCC',
+                            DEFAULT: '#F1F5F9',
+                            mid: '#E2E8F0',
                         }
                     },
                     fontFamily: {
@@ -57,23 +57,23 @@
     <style>
         /* ══════════════════════════════════════════════════════════════
            DESIGN SYSTEM — Heritage + Minimal Modern Education
-           Palette: Logo Sky Blue #149BDC · Ivory #F7F3EB · Saffron Gold #C8922E · Lotus Red #B8423A
+           Palette: Heritage Blue #1E3A5F · Soft Slate #F1F5F9 · Saffron Gold #C8922E · Lotus Red #B8423A
            Type: Cormorant Garamond (display) + Plus Jakarta Sans (body)
            Easing: Strong ease-out cubic-bezier(0.23, 1, 0.32, 1)
         ══════════════════════════════════════════════════════════════ */
 
         /* ── Tokens ──────────────────────────────────────────────── */
         :root {
-            --navy: #149BDC;
-            --navy-mid: #087FBD;
+            --navy: #1E3A5F;
+            --navy-mid: #27496F;
             --gold: #C8922E;
             --gold-light: #D8A84A;
             --gold-dark: #8C6239;
             --lotus-red: #B8423A;
             --vivid-red: #D92D20;
             --vivid-red-dark: #B42318;
-            --cream: #F7F3EB;
-            --cream-mid: #E8DDCC;
+            --cream: #F1F5F9;
+            --cream-mid: #E2E8F0;
             --charcoal: #2A2A2A;
             --text-muted: #5F6670;
             /* Emil-calibrated easing curves */
