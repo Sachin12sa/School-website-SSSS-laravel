@@ -70,25 +70,14 @@ class SettingsController extends Controller
 
         // ── 2. Logo upload ───────────────────────────────────────────────────
         if ($request->hasFile('logo')) {
-            $request->validate(['logo' => 'file|mimes:jpg,jpeg,png,webp,svg|max:51200']);
-            // Delete old logo
-            $old = SiteSetting::get('logo');
-            if ($old && Storage::disk('public')->exists($old)) {
-                Storage::disk('public')->delete($old);
-            }
-            $path = $request->file('logo')->store('settings', 'public');
-            SiteSetting::set('logo', $path);
+            $request->validate(['logo' => 'file|mimes:jpg,jpeg,png,webp,svg|max:5120']);
+            SiteSetting::set('logo', $this->fileDataUri($request->file('logo')));
         }
 
         // ── 3. Favicon upload ────────────────────────────────────────────────
         if ($request->hasFile('favicon')) {
-            $request->validate(['favicon' => 'file|mimes:jpg,jpeg,png,webp,svg,ico|max:10240']);
-            $old = SiteSetting::get('favicon');
-            if ($old && Storage::disk('public')->exists($old)) {
-                Storage::disk('public')->delete($old);
-            }
-            $path = $request->file('favicon')->store('settings', 'public');
-            SiteSetting::set('favicon', $path);
+            $request->validate(['favicon' => 'file|mimes:jpg,jpeg,png,webp,svg,ico|max:1024']);
+            SiteSetting::set('favicon', $this->fileDataUri($request->file('favicon')));
         }
 
         // ── 4. Update the homepage STATS block (extra JSON) ──────────────────
@@ -148,5 +137,11 @@ class SettingsController extends Controller
         $tab = $request->input('active_tab', 'identity');
         return redirect()->to(route('admin.settings.index') . '#' . $tab)
             ->with('success', 'All settings saved successfully.');
+    }
+
+    protected function fileDataUri(\Illuminate\Http\UploadedFile $file): string
+    {
+        $mime = $file->getMimeType() ?: 'application/octet-stream';
+        return 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($file->getRealPath()));
     }
 }

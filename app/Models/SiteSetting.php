@@ -59,6 +59,9 @@ class SiteSetting extends Model
     {
         $logo = static::get('logo');
         if (!$logo) return null;
+        if (str_starts_with($logo, 'data:') || str_starts_with($logo, 'http://') || str_starts_with($logo, 'https://')) {
+            return $logo;
+        }
         if (Storage::disk('public')->exists($logo)) {
             return Storage::url($logo);
         }
@@ -69,6 +72,9 @@ class SiteSetting extends Model
     public static function faviconUrl(): string
     {
         $fav = static::get('favicon');
+        if ($fav && (str_starts_with($fav, 'data:') || str_starts_with($fav, 'http://') || str_starts_with($fav, 'https://'))) {
+            return $fav;
+        }
         if ($fav && Storage::disk('public')->exists($fav)) {
             return Storage::url($fav);
         }

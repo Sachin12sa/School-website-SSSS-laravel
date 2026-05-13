@@ -100,7 +100,7 @@
                                 <div class="shrink-0">
                                     <div
                                         class="w-24 h-24 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden flex items-center justify-center">
-                                        <img src="{{ \Illuminate\Support\Facades\Storage::url($settings['logo']) }}"
+                                        <img src="{{ \App\Models\SiteSetting::logoUrl() }}"
                                             alt="Current logo" class="max-w-full max-h-full object-contain p-2">
                                     </div>
                                     <p class="text-xs text-slate-400 mt-1.5 text-center">Current</p>
@@ -132,7 +132,7 @@
                                 <div class="shrink-0">
                                     <div
                                         class="w-14 h-14 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden flex items-center justify-center">
-                                        <img src="{{ \Illuminate\Support\Facades\Storage::url($settings['favicon']) }}"
+                                        <img src="{{ \App\Models\SiteSetting::faviconUrl() }}"
                                             alt="Favicon" class="w-8 h-8 object-contain">
                                     </div>
                                     <p class="text-xs text-slate-400 mt-1.5 text-center">Current</p>

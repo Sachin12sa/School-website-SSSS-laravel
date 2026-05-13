@@ -41,7 +41,7 @@ services:
       - key: RUN_MIGRATIONS
         value: "true"
       - key: RUN_DEMO_SEEDING
-        value: "true"
+        value: "false"
 
 databases:
   - name: school-website-demo-db

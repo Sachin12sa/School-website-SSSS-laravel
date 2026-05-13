@@ -15,12 +15,12 @@
                 extend: {
                     colors: {
                         navy: {
-                            DEFAULT: '#1E3A5F',
-                            mid: '#27496F',
-                            50: '#F2F5F9',
-                            100: '#DCE5EF',
-                            800: '#18304F',
-                            900: '#10243D',
+                            DEFAULT: '#149BDC',
+                            mid: '#087FBD',
+                            50: '#EEF9FF',
+                            100: '#D8F1FF',
+                            800: '#0D567C',
+                            900: '#0A3047',
                         },
                         gold: {
                             DEFAULT: '#C8922E',
@@ -57,15 +57,15 @@
     <style>
         /* ══════════════════════════════════════════════════════════════
            DESIGN SYSTEM — Heritage + Minimal Modern Education
-           Palette: Heritage Blue #1E3A5F · Ivory #F7F3EB · Saffron Gold #C8922E · Lotus Red #B8423A
+           Palette: Logo Sky Blue #149BDC · Ivory #F7F3EB · Saffron Gold #C8922E · Lotus Red #B8423A
            Type: Cormorant Garamond (display) + Plus Jakarta Sans (body)
            Easing: Strong ease-out cubic-bezier(0.23, 1, 0.32, 1)
         ══════════════════════════════════════════════════════════════ */
 
         /* ── Tokens ──────────────────────────────────────────────── */
         :root {
-            --navy: #1E3A5F;
-            --navy-mid: #27496F;
+            --navy: #149BDC;
+            --navy-mid: #087FBD;
             --gold: #C8922E;
             --gold-light: #D8A84A;
             --gold-dark: #8C6239;
