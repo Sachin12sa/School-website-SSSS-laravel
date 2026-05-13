@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\{PageBlock, PageSection};
+use App\Support\HomeSectionSync;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{Cache, Storage};
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class PageSectionController extends Controller
@@ -26,7 +27,7 @@ class PageSectionController extends Controller
     {
         abort_unless(array_key_exists($pageKey, $this->managedPages), 404);
         if ($pageKey === 'home') {
-            $this->syncHomeSectionsFromBlocksIfMissing();
+            HomeSectionSync::ensureFromBlocks();
         }
 
         $pageTitle = $this->managedPages[$pageKey];
@@ -173,81 +174,8 @@ class PageSectionController extends Controller
         return $data;
     }
 
-    protected function syncHomeSectionsFromBlocksIfMissing(): void
-    {
-        if (PageSection::forPage('home')->exists()) {
-            return;
-        }
-
-        $blocks = PageBlock::homepage()->get();
-        if ($blocks->isEmpty()) {
-            return;
-        }
-
-        foreach ($blocks as $index => $block) {
-            PageSection::create($this->homeBlockToSectionData($block, $index));
-        }
-
-        Cache::forget('sections_home');
-    }
-
     protected function homeBlockToSectionData(PageBlock $block, int $order): array
     {
-        $extra = $block->extra ?? [];
-        $layout = match ($block->type) {
-            'stats' => 'stats',
-            'programs' => 'program-cards',
-            'values', 'contact_strip' => 'cards',
-            'legacy' => 'timeline',
-            'cta_banner' => 'cta',
-            'about_intro' => 'image-right',
-            default => 'default',
-        };
-
-        $items = match ($block->type) {
-            'stats' => [
-                ['value' => data_get($extra, 'students', '500+'), 'label' => 'Students'],
-                ['value' => data_get($extra, 'teachers', '40+'), 'label' => 'Teachers'],
-                ['value' => data_get($extra, 'years', '26+'), 'label' => 'Years'],
-                ['value' => data_get($extra, 'programmes', '4'), 'label' => 'Programs'],
-            ],
-            'programs' => data_get($extra, 'cards', []),
-            'values' => data_get($extra, 'items', []),
-            'legacy' => [['title' => 'Milestones', 'items' => data_get($extra, 'timeline', [])]],
-            'contact_strip' => data_get($extra, 'cards', []),
-            'cta_banner' => array_filter([
-                ['label' => $block->button_text ?: 'Apply Now', 'url' => $block->button_url ?: '/admissions'],
-                data_get($extra, 'secondary_button_text') ? [
-                    'label' => data_get($extra, 'secondary_button_text'),
-                    'url' => data_get($extra, 'secondary_button_url', '/contact'),
-                    'style' => 'ghost',
-                ] : null,
-            ]),
-            default => [],
-        };
-
-        $settings = array_filter([
-            'background' => data_get($extra, 'background'),
-            'accent' => data_get($extra, 'accent'),
-            'section_label' => data_get($extra, 'section_label'),
-            'button_bg' => data_get($extra, 'button_bg'),
-            'button_text_color' => data_get($extra, 'button_text_color'),
-            'source_block_type' => $block->type,
-        ], fn ($value) => $value !== null && $value !== '');
-
-        return [
-            'page_key' => 'home',
-            'layout' => $layout,
-            'title' => $block->title,
-            'subtitle' => $block->subtitle,
-            'content' => $block->content,
-            'image' => $block->image_path,
-            'button_text' => $block->button_text,
-            'button_url' => $block->button_url,
-            'items' => $items ?: null,
-            'settings' => $settings ?: null,
-            'order' => $order,
-            'is_published' => (bool) $block->is_visible,
-        ];
+        return HomeSectionSync::blockToSectionData($block, $order);
     }
 }

@@ -20,7 +20,7 @@
     $sectionPadding = data_get($settings, 'padding', $section->layout === 'cta' ? 'py-16 lg:py-20' : 'py-28');
 @endphp
 
-<section class="{{ $section->layout === 'cta' ? 'grand-cta' : '' }} {{ $sectionPadding }} {{ $isDark ? 'text-white' : '' }} {{ data_get($settings, 'class') }}"
+<section class="dynamic-section {{ $section->layout === 'cta' ? 'grand-cta' : '' }} {{ $sectionPadding }} {{ $isDark ? 'text-white' : '' }} {{ data_get($settings, 'class') }}"
     style="{{ $bgStyle }};{{ data_get($settings, 'min_height') ? 'min-height:'.data_get($settings, 'min_height') : '' }}"
     data-particle-type="{{ data_get($settings, 'particle_type', 'soft') }}"
     data-particle-1="{{ data_get($settings, 'particle_1', $isDark ? 'rgba(255,255,255,0.15)' : 'rgba(13,27,46,0.18)') }}"
@@ -253,6 +253,15 @@
 </section>
 
 @once
+    @push('styles')
+        <style>
+            .dynamic-section .stagger > * {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        </style>
+    @endpush
+
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', () => {
