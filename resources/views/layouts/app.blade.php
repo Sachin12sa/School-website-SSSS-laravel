@@ -616,29 +616,33 @@
         {{-- Desktop unified header --}}
         <div class="hidden lg:block bg-white border-b border-navy/10" style="box-shadow:0 1px 0 rgba(13,27,46,0.06)">
             <div class="max-w-7xl mx-auto px-4 lg:px-8 min-h-[138px] flex items-center gap-8">
-                <a href="{{ route('home') }}" class="w-[360px] flex items-center gap-4 shrink-0">
+                <a href="{{ route('home') }}" class="w-[330px] flex items-center gap-3 shrink-0">
                     @if ($logoUrl)
-                        <div class="w-[83px] h-[83px] overflow-hidden bg-white flex items-center justify-center">
+                        <div class="w-[72px] h-[72px] overflow-hidden bg-white flex items-center justify-center">
                             <img src="{{ $logoUrl }}" alt="{{ $schoolName }}"
                                 class="w-full h-full object-contain">
                         </div>
                     @else
-                        <div class="w-[83px] h-[83px] rounded-xl flex items-center justify-center border border-gold/30"
+                        <div class="w-[72px] h-[72px] rounded-xl flex items-center justify-center border border-gold/30"
                             style="background:linear-gradient(135deg,var(--gold),var(--gold-light))">
                             <span
-                                class="font-display font-bold text-navy text-4xl">{{ strtoupper(substr($schoolName, 0, 1)) }}</span>
+                                class="font-display font-bold text-navy text-3xl">{{ strtoupper(substr($schoolName, 0, 1)) }}</span>
                         </div>
                     @endif
                     <div class="min-w-0">
-                        <div class="font-display font-bold text-navy text-[21px] leading-tight tracking-wide uppercase">
+                        <div class="font-display font-bold text-navy text-[17px] leading-tight tracking-wide uppercase whitespace-nowrap">
                             {{ $schoolName }}
+                        </div>
+                        <div class="mt-1 text-[10px] leading-tight tracking-[0.22em] uppercase whitespace-nowrap"
+                            style="color:var(--gold)">
+                            {{ $schoolTag }}
                         </div>
                     </div>
                 </a>
 
                 <div class="flex-1 py-5">
                     <div class="flex items-center justify-end gap-4 text-[13px] text-navy/65">
-                        @foreach ([['Book A Visit', route('contact.index')], ['For Parents', route('faq.index')], ['Alumni', route('testimonials.index')], ['Gallery', route('gallery.index')], ['Calendar', route('calendar.index')], ['Contact Us', route('contact.index')]] as [$label, $url])
+                        @foreach ([['Message Us', route('contact.index')], ['FAQs', route('faq.index')], ['Testimonials', route('testimonials.index')], ['Gallery', route('gallery.index')], ['Calendar', route('calendar.index')], ['Contact Us', route('contact.index')]] as [$label, $url])
                             <a href="{{ $url }}" class="hover:text-gold transition-colors">{{ $label }}</a>
                             @if (!$loop->last)
                                 <span class="text-navy/30">|</span>
@@ -769,6 +773,13 @@
                                 Life at SSSS
                             </span>
                             <span class="block mt-2 text-[12px] leading-tight text-navy/55">Student life</span>
+                        </a>
+
+                        <a href="{{ route('transport.index') }}" class="group text-center min-w-[106px]">
+                            <span class="block font-bold text-[15px] leading-tight text-navy group-hover:text-gold transition-colors">
+                                Transportation
+                            </span>
+                            <span class="block mt-2 text-[12px] leading-tight text-navy/55">Routes & buses</span>
                         </a>
 
                         <div class="drop-wrap relative text-center min-w-[92px]">
