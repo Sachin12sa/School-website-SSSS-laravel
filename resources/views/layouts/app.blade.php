@@ -189,8 +189,8 @@
         }
 
         .drop-panel-dark {
-            background: var(--navy-mid);
-            box-shadow: 0 24px 48px rgba(0, 0, 0, .28);
+            background: #fff;
+            box-shadow: 0 24px 48px rgba(13, 27, 46, 0.13), 0 2px 8px rgba(0, 0, 0, .04);
             top: 100%;
         }
 
@@ -220,11 +220,11 @@
         }
 
         .drop-item-dark {
-            border-bottom-color: rgba(255, 255, 255, .06);
+            border-bottom-color: rgba(13, 27, 46, .06);
         }
 
         .drop-item-dark:hover {
-            background: rgba(255, 255, 255, .06);
+            background: rgba(201, 162, 39, .06);
         }
 
         /* ── Card lift — directional hover ────────────────────── */
@@ -611,11 +611,11 @@
     {{-- ══════════════════════════════════════════════════════════
          TOP BAR — phone · email · socials
     ══════════════════════════════════════════════════════════ --}}
-    <div class="bg-navy-900 border-b border-white/5 hidden md:block" style="background:var(--navy)">
+    <div class="bg-white border-b border-navy/10 hidden md:block">
         <div class="max-w-7xl mx-auto px-4 lg:px-8 h-9 flex items-center justify-between">
 
             {{-- Left: contact --}}
-            <div class="flex items-center gap-6 text-white/50 text-[11px]">
+            <div class="flex items-center gap-6 text-navy/55 text-[11px]">
                 @if (\App\Models\SiteSetting::get('phone'))
                     <a href="tel:{{ \App\Models\SiteSetting::get('phone') }}"
                         class="flex items-center gap-1.5 hover:text-gold transition-colors duration-200"
@@ -645,7 +645,7 @@
                 @foreach (['facebook', 'twitter', 'instagram', 'youtube'] as $s)
                     @if (\App\Models\SiteSetting::get($s))
                         <a href="{{ \App\Models\SiteSetting::get($s) }}" target="_blank" rel="noopener"
-                            class="w-6 h-6 flex items-center justify-center text-white/30 hover:text-gold transition-colors duration-200">
+                            class="w-6 h-6 flex items-center justify-center text-navy/35 hover:text-gold transition-colors duration-200">
                             @if ($s === 'facebook')
                                 <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
@@ -782,15 +782,15 @@
             </div>
         </div>
 
-        {{-- ROW 2: Navy secondary nav --}}
-        <div class="hidden lg:block border-b border-white/5" style="background:var(--navy)">
+        {{-- ROW 2: White secondary nav --}}
+        <div class="hidden lg:block border-b border-navy/10 bg-white">
             <div class="max-w-7xl mx-auto px-4 lg:px-8 flex items-center justify-between h-11">
                 <nav class="flex items-center">
 
                     {{-- Programs --}}
                     <div class="drop-wrap relative">
                         <button
-                            class="nav-item-light flex items-center gap-2 px-5 h-11 text-[13px] font-semibold text-white/80 hover:text-gold transition-colors {{ request()->is('programs*') ? 'active !text-gold' : '' }}"
+                            class="nav-item-light flex items-center gap-2 px-5 h-11 text-[13px] font-semibold text-navy/75 hover:text-gold transition-colors {{ request()->is('programs*') ? 'active !text-gold' : '' }}"
                             style="transition-timing-function:var(--ease-out)">
                             <svg class="w-3.5 h-3.5 opacity-60 shrink-0" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -808,7 +808,7 @@
                         </button>
                         <div class="drop-panel-dark">
                             <div class="px-4 pt-3 pb-1.5">
-                                <span class="text-[10px] font-bold text-white/35 uppercase tracking-widest">Academic
+                                <span class="text-[10px] font-bold text-navy/35 uppercase tracking-widest">Academic
                                     Programmes</span>
                             </div>
                             @foreach ($programItems as $prog)
@@ -817,10 +817,10 @@
                                     <span class="w-1.5 h-1.5 rounded-full bg-gold shrink-0 mt-1.5"></span>
                                     <div>
                                         <div
-                                            class="text-[13px] font-medium text-white/85 group-hover:text-gold transition-colors">
+                                            class="text-[13px] font-medium text-navy/85 group-hover:text-gold transition-colors">
                                             {{ $prog['label'] }}</div>
                                         @if ($prog['sub'])
-                                            <div class="text-[11px] text-white/35 mt-0.5">{{ $prog['sub'] }}</div>
+                                            <div class="text-[11px] text-navy/45 mt-0.5">{{ $prog['sub'] }}</div>
                                         @endif
                                     </div>
                                 </a>
@@ -830,7 +830,7 @@
 
                     {{-- Life at SSSS --}}
                     <a href="{{ route('page.show', 'life-at-ssss') }}"
-                        class="nav-item-light flex items-center gap-2 px-5 h-11 text-[13px] font-semibold text-white/80 hover:text-gold transition-colors {{ request()->is('life-at-ssss') ? 'active !text-gold' : '' }}"
+                        class="nav-item-light flex items-center gap-2 px-5 h-11 text-[13px] font-semibold text-navy/75 hover:text-gold transition-colors {{ request()->is('life-at-ssss') ? 'active !text-gold' : '' }}"
                         style="transition-timing-function:var(--ease-out)">
                         <svg class="w-3.5 h-3.5 opacity-60 shrink-0" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
@@ -843,7 +843,7 @@
                     {{-- Boarding --}}
                     <div class="drop-wrap relative">
                         <button
-                            class="nav-item-light flex items-center gap-2 px-5 h-11 text-[13px] font-semibold text-white/80 hover:text-gold transition-colors {{ request()->is('boarding') ? 'active !text-gold' : '' }}"
+                            class="nav-item-light flex items-center gap-2 px-5 h-11 text-[13px] font-semibold text-navy/75 hover:text-gold transition-colors {{ request()->is('boarding') ? 'active !text-gold' : '' }}"
                             style="transition-timing-function:var(--ease-out)">
                             <svg class="w-3.5 h-3.5 opacity-60 shrink-0" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -859,7 +859,7 @@
                         </button>
                         <div class="drop-panel-dark">
                             <div class="px-4 pt-3 pb-1.5">
-                                <span class="text-[10px] font-bold text-white/35 uppercase tracking-widest">Boarding
+                                <span class="text-[10px] font-bold text-navy/35 uppercase tracking-widest">Boarding
                                     Facility</span>
                             </div>
                             @foreach ($boardingItems as [$lbl, $url, $sub])
@@ -868,9 +868,9 @@
                                     <span class="w-1.5 h-1.5 rounded-full bg-gold shrink-0 mt-1.5"></span>
                                     <div>
                                         <div
-                                            class="text-[13px] font-medium text-white/85 group-hover:text-gold transition-colors">
+                                            class="text-[13px] font-medium text-navy/85 group-hover:text-gold transition-colors">
                                             {{ $lbl }}</div>
-                                        <div class="text-[11px] text-white/35 mt-0.5">{{ $sub }}</div>
+                                        <div class="text-[11px] text-navy/45 mt-0.5">{{ $sub }}</div>
                                     </div>
                                 </a>
                             @endforeach
@@ -880,7 +880,7 @@
                     {{-- Admissions --}}
                     <div class="drop-wrap relative">
                         <button
-                            class="nav-item-light flex items-center gap-2 px-5 h-11 text-[13px] font-semibold text-white/80 hover:text-gold transition-colors {{ request()->is('admissions*') ? 'active !text-gold' : '' }}"
+                            class="nav-item-light flex items-center gap-2 px-5 h-11 text-[13px] font-semibold text-navy/75 hover:text-gold transition-colors {{ request()->is('admissions*') ? 'active !text-gold' : '' }}"
                             style="transition-timing-function:var(--ease-out)">
                             <svg class="w-3.5 h-3.5 opacity-60 shrink-0" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -896,7 +896,7 @@
                         </button>
                         <div class="drop-panel-dark">
                             <div class="px-4 pt-3 pb-1.5">
-                                <span class="text-[10px] font-bold text-white/35 uppercase tracking-widest">Admissions
+                                <span class="text-[10px] font-bold text-navy/35 uppercase tracking-widest">Admissions
                                     2026–27</span>
                             </div>
                             @foreach ($admissionsItems as [$lbl, $url, $sub])
@@ -905,9 +905,9 @@
                                     <span class="w-1.5 h-1.5 rounded-full bg-gold shrink-0 mt-1.5"></span>
                                     <div>
                                         <div
-                                            class="text-[13px] font-medium text-white/85 group-hover:text-gold transition-colors">
+                                            class="text-[13px] font-medium text-navy/85 group-hover:text-gold transition-colors">
                                             {{ $lbl }}</div>
-                                        <div class="text-[11px] text-white/35 mt-0.5">{{ $sub }}</div>
+                                        <div class="text-[11px] text-navy/45 mt-0.5">{{ $sub }}</div>
                                     </div>
                                 </a>
                             @endforeach
@@ -916,7 +916,7 @@
 
                     {{-- Transportation --}}
                     <a href="{{ route('transport.index') }}"
-                        class="nav-item-light flex items-center gap-2 px-5 h-11 text-[13px] font-semibold text-white/80 hover:text-gold transition-colors"
+                        class="nav-item-light flex items-center gap-2 px-5 h-11 text-[13px] font-semibold text-navy/75 hover:text-gold transition-colors"
                         style="transition-timing-function:var(--ease-out)">
                         <svg class="w-3.5 h-3.5 opacity-60 shrink-0" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
@@ -928,7 +928,7 @@
                 </nav>
 
                 <a href="{{ route('teachers.index') }}"
-                    class="flex items-center gap-1.5 text-white/35 hover:text-gold text-[12px] font-medium transition-colors">
+                    class="flex items-center gap-1.5 text-navy/45 hover:text-gold text-[12px] font-medium transition-colors">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
