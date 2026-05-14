@@ -616,17 +616,17 @@
         {{-- Desktop unified header --}}
         <div class="hidden lg:block bg-white border-b border-navy/10" style="box-shadow:0 1px 0 rgba(13,27,46,0.06)">
             <div class="max-w-7xl mx-auto px-4 lg:px-8 min-h-[138px] flex items-center gap-8">
-                <a href="{{ route('home') }}" class="w-[390px] flex items-center gap-4 shrink-0">
+                <a href="{{ route('home') }}" class="w-[360px] flex items-center gap-4 shrink-0">
                     @if ($logoUrl)
-                        <div class="w-[92px] h-[92px] overflow-hidden bg-white flex items-center justify-center">
+                        <div class="w-[83px] h-[83px] overflow-hidden bg-white flex items-center justify-center">
                             <img src="{{ $logoUrl }}" alt="{{ $schoolName }}"
                                 class="w-full h-full object-contain">
                         </div>
                     @else
-                        <div class="w-[92px] h-[92px] rounded-xl flex items-center justify-center border border-gold/30"
+                        <div class="w-[83px] h-[83px] rounded-xl flex items-center justify-center border border-gold/30"
                             style="background:linear-gradient(135deg,var(--gold),var(--gold-light))">
                             <span
-                                class="font-display font-bold text-navy text-5xl">{{ strtoupper(substr($schoolName, 0, 1)) }}</span>
+                                class="font-display font-bold text-navy text-4xl">{{ strtoupper(substr($schoolName, 0, 1)) }}</span>
                         </div>
                     @endif
                     <div class="min-w-0">
@@ -651,24 +651,157 @@
                         </svg>
                     </div>
 
-                    <nav class="mt-7 flex items-start justify-end gap-8">
-                        @foreach ([
-                            ['Home', route('home'), 'Welcome'],
-                            ['About', route('about'), 'Who we are'],
-                            ['Programs', route('page.show', 'programs'), 'Grades 1-12'],
-                            ['Boarding', route('page.show', 'boarding'), 'Residential care'],
-                            ['Life at SSSS', route('page.show', 'life-at-ssss'), 'Student life'],
-                            ['Admissions', route('admissions.index'), 'Apply now'],
-                        ] as [$label, $url, $sub])
-                            <a href="{{ $url }}" class="group text-center min-w-[96px]">
-                                <span class="block font-bold text-[16px] leading-tight text-navy group-hover:text-gold transition-colors">
-                                    {{ $label }}
+                    <nav class="mt-7 flex items-start justify-end gap-5">
+                        <a href="{{ route('home') }}" class="group text-center min-w-[72px]">
+                            <span class="block font-bold text-[15px] leading-tight text-navy group-hover:text-gold transition-colors">
+                                Home
+                            </span>
+                            <span class="block mt-2 text-[12px] leading-tight text-navy/55">Welcome</span>
+                        </a>
+
+                        <a href="{{ route('about') }}" class="group text-center min-w-[78px]">
+                            <span class="block font-bold text-[15px] leading-tight text-navy group-hover:text-gold transition-colors">
+                                About
+                            </span>
+                            <span class="block mt-2 text-[12px] leading-tight text-navy/55">Who we are</span>
+                        </a>
+
+                        <div class="drop-wrap relative text-center min-w-[78px]">
+                            <button class="group w-full">
+                                <span class="flex items-center justify-center gap-1 font-bold text-[15px] leading-tight text-navy group-hover:text-gold transition-colors">
+                                    Pages
+                                    <svg class="w-3 h-3 opacity-45" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
                                 </span>
-                                <span class="block mt-2 text-[13px] leading-tight text-navy/55">
-                                    {{ $sub }}
+                                <span class="block mt-2 text-[12px] leading-tight text-navy/55">Explore</span>
+                            </button>
+                            <div class="drop-panel-dark text-left">
+                                <div class="px-4 pt-3 pb-1.5">
+                                    <span class="text-[10px] font-bold text-navy/35 uppercase tracking-widest">News &
+                                        Events</span>
+                                </div>
+                                @foreach ([['News & Updates', route('news.index'), 'Latest updates'], ['Events Calendar', route('events.index'), 'Campus activities'], ['Testimonials', route('testimonials.index'), 'Community voices'], ['FAQ', route('faq.index'), 'Common questions']] as [$label, $url, $sub])
+                                    <a href="{{ $url }}"
+                                        class="drop-item drop-item-dark group {{ $loop->last ? 'rounded-b-[11px]' : '' }}">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-gold shrink-0 mt-1.5"></span>
+                                        <div>
+                                            <div
+                                                class="text-[13px] font-medium text-navy/85 group-hover:text-gold transition-colors">
+                                                {{ $label }}</div>
+                                            <div class="text-[11px] text-navy/45 mt-0.5">{{ $sub }}</div>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="drop-wrap relative text-center min-w-[92px]">
+                            <button class="group w-full">
+                                <span class="flex items-center justify-center gap-1 font-bold text-[15px] leading-tight text-navy group-hover:text-gold transition-colors">
+                                    Programs
+                                    <svg class="w-3 h-3 opacity-45" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
                                 </span>
-                            </a>
-                        @endforeach
+                                <span class="block mt-2 text-[12px] leading-tight text-navy/55">Grades 1-12</span>
+                            </button>
+                            <div class="drop-panel-dark text-left">
+                                <div class="px-4 pt-3 pb-1.5">
+                                    <span class="text-[10px] font-bold text-navy/35 uppercase tracking-widest">Academic
+                                        Programmes</span>
+                                </div>
+                                @foreach ($programItems as $prog)
+                                    <a href="{{ $prog['url'] }}"
+                                        class="drop-item drop-item-dark group {{ $loop->last ? 'rounded-b-[11px]' : '' }}">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-gold shrink-0 mt-1.5"></span>
+                                        <div>
+                                            <div
+                                                class="text-[13px] font-medium text-navy/85 group-hover:text-gold transition-colors">
+                                                {{ $prog['label'] }}</div>
+                                            @if ($prog['sub'])
+                                                <div class="text-[11px] text-navy/45 mt-0.5">{{ $prog['sub'] }}</div>
+                                            @endif
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="drop-wrap relative text-center min-w-[88px]">
+                            <button class="group w-full">
+                                <span class="flex items-center justify-center gap-1 font-bold text-[15px] leading-tight text-navy group-hover:text-gold transition-colors">
+                                    Boarding
+                                    <svg class="w-3 h-3 opacity-45" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </span>
+                                <span class="block mt-2 text-[12px] leading-tight text-navy/55">Residential care</span>
+                            </button>
+                            <div class="drop-panel-dark text-left">
+                                <div class="px-4 pt-3 pb-1.5">
+                                    <span class="text-[10px] font-bold text-navy/35 uppercase tracking-widest">Boarding
+                                        Facility</span>
+                                </div>
+                                @foreach ($boardingItems as [$lbl, $url, $sub])
+                                    <a href="{{ $url }}"
+                                        class="drop-item drop-item-dark group {{ $loop->last ? 'rounded-b-[11px]' : '' }}">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-gold shrink-0 mt-1.5"></span>
+                                        <div>
+                                            <div
+                                                class="text-[13px] font-medium text-navy/85 group-hover:text-gold transition-colors">
+                                                {{ $lbl }}</div>
+                                            <div class="text-[11px] text-navy/45 mt-0.5">{{ $sub }}</div>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <a href="{{ route('page.show', 'life-at-ssss') }}" class="group text-center min-w-[98px]">
+                            <span class="block font-bold text-[15px] leading-tight text-navy group-hover:text-gold transition-colors">
+                                Life at SSSS
+                            </span>
+                            <span class="block mt-2 text-[12px] leading-tight text-navy/55">Student life</span>
+                        </a>
+
+                        <div class="drop-wrap relative text-center min-w-[92px]">
+                            <button class="group w-full">
+                                <span class="flex items-center justify-center gap-1 font-bold text-[15px] leading-tight text-navy group-hover:text-gold transition-colors">
+                                    Admissions
+                                    <svg class="w-3 h-3 opacity-45" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </span>
+                                <span class="block mt-2 text-[12px] leading-tight text-navy/55">Apply now</span>
+                            </button>
+                            <div class="drop-panel-dark text-left">
+                                <div class="px-4 pt-3 pb-1.5">
+                                    <span class="text-[10px] font-bold text-navy/35 uppercase tracking-widest">Admissions
+                                        2026-27</span>
+                                </div>
+                                @foreach ($admissionsItems as [$lbl, $url, $sub])
+                                    <a href="{{ $url }}"
+                                        class="drop-item drop-item-dark group {{ $loop->last ? 'rounded-b-[11px]' : '' }}">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-gold shrink-0 mt-1.5"></span>
+                                        <div>
+                                            <div
+                                                class="text-[13px] font-medium text-navy/85 group-hover:text-gold transition-colors">
+                                                {{ $lbl }}</div>
+                                            <div class="text-[11px] text-navy/45 mt-0.5">{{ $sub }}</div>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
                     </nav>
                 </div>
 
